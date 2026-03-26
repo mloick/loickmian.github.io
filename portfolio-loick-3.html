@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loïck MIAN — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:      #080f26;
+  --navy-mid:  #0e1a38;
+  --navy-card: #121f45;
+  --teal:      #00d4d4;
+  --teal-light:#00ffee;
+  --teal-dim:  rgba(0,212,212,0.08);
+  --orange:    #ff8c42;
+  --white:     #eef2ff;
+  --muted:     #6a7fa8;
+  --radius:    14px;
+  --FD: 'Syne', sans-serif;
+  --FB: 'Outfit', sans-serif;
+  --FM: 'DM Mono', monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--white);font-family:var(--FB);font-size:16px;line-height:1.65;overflow-x:hidden;cursor:none}
+
+/* ── CUSTOM CURSOR ── */
+.cursor{position:fixed;width:10px;height:10px;background:var(--teal);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,width .3s,height .3s,opacity .3s;mix-blend-mode:difference}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(0,212,212,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .15s ease-out,width .3s,height .3s,border-color .3s}
+.cursor.hover{width:20px;height:20px;opacity:.6}
+.cursor-ring.hover{width:56px;height:56px;border-color:var(--teal)}
+
+/* ── CANVAS PARTICLES ── */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.45}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 56px;background:rgba(8,15,38,0.82);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,212,212,0.08);transition:padding .3s}
+nav.scrolled{padding:12px 56px;background:rgba(8,15,38,0.96)}
+.nav-logo{font-family:var(--FD);font-size:1.5rem;font-weight:800;letter-spacing:0.06em;color:var(--teal);text-decoration:none;position:relative}
+.nav-logo span{color:var(--white)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.76rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;transition:color .2s;position:relative;padding-bottom:4px}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1.5px;background:var(--teal);transition:width .3s}
+.nav-links a:hover{color:var(--teal)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{padding:9px 22px;border-radius:8px;background:var(--teal);color:var(--navy)!important;font-weight:700!important;transition:transform .2s,box-shadow .2s!important}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,212,212,0.3)}
+.nav-cta::after{display:none!important}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px;padding:130px 80px 80px;position:relative;z-index:1}
+.hero-bg-mesh{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 70% 40%, rgba(0,212,212,0.07) 0%, transparent 70%),radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,212,212,0.04) 0%, transparent 70%);pointer-events:none}
+
+.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:20px;opacity:0;animation:fadeUp .7s .1s ease forwards}
+.hero-eyebrow-line{width:32px;height:2px;background:var(--teal)}
+.hero-eyebrow-text{font-family:var(--FM);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal)}
+
+.hero-name{font-family:var(--FD);font-size:clamp(3.5rem,7.5vw,7.5rem);font-weight:800;line-height:.92;letter-spacing:.02em;opacity:0;animation:fadeUp .7s .2s ease forwards}
+.hero-name .line2{color:var(--teal);display:block;position:relative}
+.hero-name .line2::after{content:'';position:absolute;bottom:-4px;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--teal),transparent);transform:scaleX(0);transform-origin:left;animation:lineGrow 1s 1s ease forwards}
+@keyframes lineGrow{to{transform:scaleX(1)}}
+
+.hero-title-pill{display:inline-flex;align-items:center;gap:8px;margin:22px 0 10px;padding:7px 18px;background:rgba(0,212,212,0.1);border:1px solid rgba(0,212,212,0.28);border-radius:100px;font-size:.8rem;font-weight:600;color:var(--teal);letter-spacing:.06em;opacity:0;animation:fadeUp .7s .3s ease forwards}
+.hero-title-pill-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,212,212,.5)}70%{box-shadow:0 0 0 8px rgba(0,212,212,0)}}
+
+.hero-tagline{font-size:1.05rem;color:var(--muted);max-width:460px;line-height:1.75;margin-bottom:32px;opacity:0;animation:fadeUp .7s .4s ease forwards}
+.hero-tagline strong{color:var(--white);font-weight:600}
+
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .5s ease forwards}
+.btn-primary{padding:14px 34px;border-radius:9px;background:var(--teal);color:var(--navy);font-weight:700;font-size:.88rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border:none;cursor:none;transition:transform .2s,box-shadow .2s;font-family:var(--FB)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,212,212,.35)}
+.btn-ghost{padding:14px 34px;border-radius:9px;background:transparent;border:1px solid rgba(0,212,212,.35);color:var(--teal);font-weight:600;font-size:.88rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;cursor:none;transition:background .2s,border-color .2s,transform .2s;font-family:var(--FB)}
+.btn-ghost:hover{background:rgba(0,212,212,.08);border-color:var(--teal);transform:translateY(-3px)}
+
+.hero-right{display:flex;flex-direction:column;gap:14px;opacity:0;animation:fadeUp .7s .5s ease forwards}
+.hero-card{background:var(--navy-card);border:1px solid rgba(0,212,212,.12);border-radius:var(--radius);padding:22px 26px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+.hero-card:hover{border-color:rgba(0,212,212,.3);transform:translateX(4px)}
+.hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,var(--teal),transparent)}
+.hero-card-label{font-family:var(--FM);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:7px;opacity:.8}
+.hero-card-value{font-weight:600;font-size:1rem;line-height:1.4}
+.hero-card-value.large{font-family:var(--FD);font-size:1.9rem;letter-spacing:.04em;color:var(--teal)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+/* ── ALTERNANCE BANNER ── */
+#alternance{padding:0;position:relative;z-index:1}
+.alt-banner{margin:0 80px;background:linear-gradient(135deg,rgba(0,212,212,.12) 0%,rgba(0,212,212,.04) 50%,rgba(255,140,66,.06) 100%);border:1px solid rgba(0,212,212,.25);border-radius:20px;padding:48px 60px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;position:relative;overflow:hidden}
+.alt-banner::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,212,.12),transparent 70%);pointer-events:none}
+.alt-banner-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:rgba(255,140,66,.15);border:1px solid rgba(255,140,66,.4);border-radius:100px;font-family:var(--FM);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:14px}
+.alt-banner-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--orange);animation:pulse-orange 2s infinite}
+@keyframes pulse-orange{0%,100%{box-shadow:0 0 0 0 rgba(255,140,66,.5)}70%{box-shadow:0 0 0 8px rgba(255,140,66,0)}}
+.alt-banner-title{font-family:var(--FD);font-size:2.2rem;font-weight:800;letter-spacing:.03em;margin-bottom:12px;line-height:1.1}
+.alt-banner-title span{color:var(--teal)}
+.alt-banner-desc{color:var(--muted);font-size:.95rem;line-height:1.7;max-width:540px}
+.alt-banner-desc strong{color:var(--white)}
+.alt-roles{display:flex;flex-direction:column;gap:12px;min-width:220px}
+.alt-role-card{background:rgba(8,15,38,.6);border:1px solid rgba(0,212,212,.2);border-radius:10px;padding:16px 20px;transition:border-color .2s,transform .2s}
+.alt-role-card:hover{border-color:var(--teal);transform:translateX(-4px)}
+.alt-role-label{font-family:var(--FM);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:5px}
+.alt-role-name{font-weight:600;font-size:.9rem}
+.alt-info{display:flex;flex-wrap:wrap;gap:16px;margin-top:18px}
+.alt-chip{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted)}
+.alt-chip span{color:var(--white);font-weight:500}
+
+/* ── SECTIONS ── */
+section{padding:100px 80px;position:relative;z-index:1}
+.section-header{margin-bottom:64px}
+.section-label{font-family:var(--FM);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:14px;display:block}
+.section-title{font-family:var(--FD);font-size:clamp(2.4rem,4.5vw,4rem);font-weight:800;line-height:.95;letter-spacing:.02em}
+.section-divider{width:48px;height:2.5px;background:linear-gradient(90deg,var(--teal),transparent);margin-top:18px;border-radius:2px}
+
+/* ── ABOUT ── */
+#about{background:var(--navy-mid)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.about-text{font-size:1.02rem;color:var(--muted);line-height:1.85}
+.about-text strong{color:var(--white);font-weight:600}
+.about-text p+p{margin-top:18px}
+.about-goal{margin-top:28px;padding:20px 22px;background:rgba(0,212,212,.06);border-left:3px solid var(--teal);border-radius:0 10px 10px 0;font-size:.93rem;color:var(--white);font-style:italic;line-height:1.7}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stat-box{background:var(--navy-card);border:1px solid rgba(0,212,212,.1);border-radius:var(--radius);padding:26px;text-align:center;transition:transform .25s,border-color .25s;cursor:default}
+.stat-box:hover{transform:translateY(-4px);border-color:rgba(0,212,212,.35)}
+.stat-number{font-family:var(--FD);font-size:2.8rem;font-weight:800;color:var(--teal);line-height:1}
+.stat-desc{font-size:.8rem;color:var(--muted);margin-top:7px;line-height:1.4}
+
+/* ── SKILLS ── */
+#skills{background:var(--navy)}
+.skills-categories{display:flex;flex-direction:column;gap:56px}
+.skill-category-header{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.skill-category-icon{width:42px;height:42px;border-radius:10px;background:rgba(0,212,212,.1);border:1px solid rgba(0,212,212,.22);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.skill-category-name{font-family:var(--FD);font-size:1.5rem;font-weight:700;letter-spacing:.05em}
+.skill-category-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(0,212,212,.25),transparent)}
+.skill-tags{display:flex;flex-wrap:wrap;gap:9px}
+.stag{display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border-radius:8px;font-size:.83rem;font-weight:500;border:1px solid;transition:transform .2s,box-shadow .2s;cursor:default}
+.stag:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.stag-core{background:rgba(0,212,212,.1);border-color:rgba(0,212,212,.38);color:var(--white)}
+.stag-core .stag-dot{background:var(--teal)}
+.stag-secondary{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.1);color:var(--muted)}
+.stag-secondary .stag-dot{background:var(--muted)}
+.stag-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.mastery-block{margin-top:28px}
+.mastery-row{display:grid;grid-template-columns:150px 1fr 42px;align-items:center;gap:16px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.mastery-row:last-child{border-bottom:none}
+.mastery-label{font-size:.86rem;color:var(--white);font-weight:500}
+.mastery-bar-bg{background:rgba(255,255,255,.07);border-radius:100px;height:5px;overflow:hidden}
+.mastery-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--teal),var(--teal-light));transform:scaleX(0);transform-origin:left;transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+.mastery-bar-fill.animated{transform:scaleX(1)}
+.mastery-pct{font-family:var(--FM);font-size:.72rem;color:var(--teal);text-align:right}
+.skills-two-col{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.skills-legend{margin-top:40px;display:flex;gap:24px;align-items:center}
+.legend-item{display:flex;align-items:center;gap:8px}
+.legend-dot{width:9px;height:9px;border-radius:50%}
+.legend-text{font-size:.76rem;color:var(--muted)}
+
+/* ── PROJETS ── */
+#projets{background:var(--navy-mid)}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px}
+.project-card{background:var(--navy-card);border:1px solid rgba(0,212,212,.08);border-radius:var(--radius);padding:32px;position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s}
+.project-card:hover{transform:translateY(-8px);border-color:rgba(0,212,212,.35);box-shadow:0 24px 56px rgba(0,0,0,.35),0 0 40px rgba(0,212,212,.06)}
+.project-card-accent{position:absolute;top:0;left:0;right:0;height:2.5px}
+.accent-teal{background:linear-gradient(90deg,var(--teal),var(--teal-light))}
+.accent-orange{background:linear-gradient(90deg,var(--orange),#ffb347)}
+.project-glow{position:absolute;top:-60px;right:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,212,.07),transparent 70%);pointer-events:none;opacity:0;transition:opacity .4s}
+.project-card:hover .project-glow{opacity:1}
+.project-role{display:inline-block;font-family:var(--FM);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);background:rgba(0,212,212,.1);padding:4px 11px;border-radius:100px;margin-bottom:14px}
+.project-title{font-family:var(--FD);font-size:1.7rem;font-weight:700;letter-spacing:.04em;margin-bottom:6px;line-height:1.1}
+.project-period{font-family:var(--FM);font-size:.68rem;color:var(--muted);margin-bottom:12px;letter-spacing:.06em}
+.project-context{font-size:.87rem;color:var(--muted);margin-bottom:18px;line-height:1.65}
+.project-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.tag{font-size:.7rem;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);color:var(--muted)}
+
+/* MÉTRIQUES */
+.project-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.metric-box{background:rgba(0,212,212,.06);border:1px solid rgba(0,212,212,.14);border-radius:10px;padding:14px 16px;text-align:center;transition:border-color .2s,transform .2s}
+.metric-box:hover{border-color:rgba(0,212,212,.35);transform:scale(1.03)}
+.metric-number{font-family:var(--FD);font-size:1.8rem;font-weight:700;color:var(--teal);line-height:1}
+.metric-number.orange{color:var(--orange)}
+.metric-label{font-size:.68rem;color:var(--muted);margin-top:4px;line-height:1.3}
+
+.project-results{border-top:1px solid rgba(255,255,255,.06);padding-top:16px;margin-top:4px}
+.project-results-label{font-family:var(--FM);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.project-results ul{list-style:none}
+.project-results li{font-size:.86rem;color:var(--muted);padding:3px 0;display:flex;align-items:flex-start;gap:8px}
+.project-results li::before{content:'→';color:var(--teal);font-weight:700;flex-shrink:0;margin-top:1px}
+
+/* ── FORMATION ── */
+#formation{background:var(--navy)}
+.formation-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+.edu-card{background:var(--navy-card);border:1px solid rgba(0,212,212,.1);border-radius:var(--radius);padding:28px;position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
+.edu-card:hover{transform:translateY(-4px);border-color:rgba(0,212,212,.32)}
+.edu-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),transparent);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.edu-card:hover::after{transform:scaleX(1)}
+.edu-school{font-family:var(--FM);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:9px}
+.edu-degree{font-weight:700;font-size:1.02rem;margin-bottom:7px}
+.edu-detail{font-size:.86rem;color:var(--muted)}
+
+/* ── CERTIFICATIONS ── */
+#certifications{background:var(--navy-mid)}
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.cert-card{background:var(--navy-card);border:1px solid rgba(0,212,212,.08);border-radius:var(--radius);padding:26px;text-align:center;transition:transform .25s,border-color .25s,box-shadow .25s}
+.cert-card:hover{transform:translateY(-5px);border-color:rgba(0,212,212,.38);box-shadow:0 16px 40px rgba(0,0,0,.25)}
+.cert-year{font-family:var(--FD);font-size:2.2rem;font-weight:800;color:var(--teal);opacity:.25;margin-bottom:6px}
+.cert-icon{font-size:1.8rem;margin-bottom:10px;display:block}
+.cert-name{font-weight:700;font-size:.92rem;line-height:1.45}
+.cert-org{font-size:.74rem;color:var(--muted);margin-top:6px}
+
+/* ── CONTACT ── */
+#contact{background:var(--navy)}
+.contact-inner{max-width:680px;margin:0 auto;text-align:center}
+.contact-inner .section-header{text-align:center}
+.contact-inner .section-divider{margin:18px auto 0}
+.contact-subtitle{color:var(--muted);margin-bottom:44px;font-size:1rem;line-height:1.7}
+.contact-links{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
+.contact-link{display:flex;align-items:center;gap:13px;padding:18px 26px;border-radius:var(--radius);background:var(--navy-card);border:1px solid rgba(0,212,212,.12);text-decoration:none;color:var(--white);font-weight:500;transition:transform .22s,border-color .22s,box-shadow .22s}
+.contact-link:hover{transform:translateY(-4px);border-color:var(--teal);box-shadow:0 10px 30px rgba(0,212,212,.12)}
+.contact-link-icon{font-size:1.3rem}
+.contact-link-detail{font-size:.79rem;color:var(--muted);margin-top:2px}
+
+footer{text-align:center;padding:32px;border-top:1px solid rgba(255,255,255,.05);font-family:var(--FM);font-size:.76rem;color:var(--muted)}
+footer span{color:var(--teal)}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ── COUNTER ANIMATION ── */
+.counter{display:inline-block}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  #hero,.about-grid,.skills-two-col{grid-template-columns:1fr;gap:40px}
+  #hero{padding:110px 32px 60px}
+  section{padding:80px 32px}
+  .alt-banner{margin:0 32px;grid-template-columns:1fr;padding:36px 32px}
+  nav{padding:14px 28px}
+  .nav-links{gap:18px}
+}
+@media(max-width:640px){
+  .nav-links{display:none}
+  #hero{padding:90px 22px 60px}
+  section{padding:60px 22px}
+  .alt-banner{margin:0 22px;padding:28px 22px}
+  .project-metrics{grid-template-columns:1fr 1fr}
+  .mastery-row{grid-template-columns:110px 1fr 34px}
+}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" href="#hero">L<span>M</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#alternance">Alternance</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projets">Projets</a></li>
+    <li><a href="#certifications">Certifs</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-mesh"></div>
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="hero-eyebrow-text">Chef de Projet Digital Junior</span>
+    </div>
+    <h1 class="hero-name">
+      LOÏCK
+      <span class="line2">MIAN</span>
+    </h1>
+    <div class="hero-title-pill">
+      <span class="hero-title-pill-dot"></span>
+      Tech · Business · Produit
+    </div>
+    <p class="hero-tagline">
+      Transformer les <strong>besoins métiers</strong> en solutions digitales concrètes et mesurables.
+      Profil à l'intersection du <strong>produit</strong>, de la <strong>tech</strong> et du <strong>business</strong>.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projets" class="btn-primary">Voir mes projets</a>
+      <a href="#alternance" class="btn-ghost">Je cherche une alternance →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="hero-card-label">Formation actuelle</div>
+      <div class="hero-card-value">Mastère Product Management<br>+ Dev Mobile & IoT — Ynov Paris</div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-label">Rythme alternance</div>
+      <div class="hero-card-value">1 semaine école / 2 semaines entreprise</div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-label">Objectif visé</div>
+      <div class="hero-card-value large">IT Product Manager</div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-label">Disponibilité · Lieu</div>
+      <div class="hero-card-value">📍 Paris, France · Disponible immédiatement</div>
+    </div>
+  </div>
+</section>
+
+<!-- ALTERNANCE BANNER -->
+<section id="alternance" style="padding:40px 0 80px">
+  <div class="alt-banner reveal">
+    <div>
+      <div class="alt-banner-badge">
+        <span class="alt-banner-badge-dot"></span>
+        Recherche active · Sept. 2026
+      </div>
+      <h2 class="alt-banner-title">Ouvert à l'<span>alternance</span><br>dès septembre 2026</h2>
+      <p class="alt-banner-desc">
+        Titulaire d'un Bachelor EPITECH et en double Mastère à Ynov Campus Paris, je cherche une alternance
+        au rythme <strong>1 semaine école / 2 semaines entreprise</strong>. Polyvalent par formation,
+        je suis ouvert aussi bien à des postes côté <strong>Produit</strong> que côté <strong>Développement</strong> —
+        ce qui me permet de m'adapter à l'équipe et au contexte de chaque entreprise.
+        Bilingue <strong>Français / Anglais</strong>, permis B, basé à Paris.
+      </p>
+      <div class="alt-info">
+        <div class="alt-chip">🗓️ Disponibilité : <span>Sept. 2026 / Immédiate</span></div>
+        <div class="alt-chip">📍 Localisation : <span>Paris & IDF</span></div>
+        <div class="alt-chip">⏱️ Rythme : <span>1S école / 2S entreprise</span></div>
+        <div class="alt-chip">🌐 Langues : <span>FR · EN Courant</span></div>
+      </div>
+    </div>
+    <div class="alt-roles">
+      <div class="alt-role-card">
+        <div class="alt-role-label">Poste recherché #1</div>
+        <div class="alt-role-name">Product Manager / Chef de Projet Digital</div>
+      </div>
+      <div class="alt-role-card">
+        <div class="alt-role-label">Poste recherché #2</div>
+        <div class="alt-role-name">Développeur Full-Stack / Mobile (Flutter, React)</div>
+      </div>
+      <div class="alt-role-card">
+        <div class="alt-role-label">Poste recherché #3</div>
+        <div class="alt-role-name">Business Analyst / IT Project Manager</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- À PROPOS -->
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-label">// 01 — Qui suis-je</span>
+    <h2 class="section-title">À PROPOS</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>Passionné par l'intersection entre la technologie et la création de valeur, je suis
+        <strong>Chef de Projet Digital Junior</strong> avec une solide base technique issue d'<strong>EPITECH Bénin</strong>.</p>
+      <p>Mon profil se situe à la croisée du <strong>produit</strong>, de la <strong>technologie</strong> et du <strong>business</strong>.
+        J'accompagne les entreprises dans leur transformation digitale, la structuration de projets IT
+        et la création de solutions orientées utilisateurs.</p>
+      <p>Je m'appuie sur des méthodologies <strong>agiles</strong> et une compréhension concrète du cycle de vie
+        d'un produit digital — de la conception technique à la structuration stratégique.
+        Bilingue <strong>Français / Anglais</strong>, je pense résolution de problèmes et impact mesurable.</p>
+      <div class="about-goal">
+        🎯 Objectif : évoluer en tant que <strong>Product Manager / Chef de projet digital</strong>,
+        où la technique sert la vision produit et non l'inverse.
+      </div>
+    </div>
+    <div class="about-stats reveal reveal-delay-2">
+      <div class="stat-box">
+        <div class="stat-number counter" data-target="3">0</div>
+        <div class="stat-desc">Expériences professionnelles</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number counter" data-target="4">0</div>
+        <div class="stat-desc">Certifications 2025</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number"><span class="counter" data-target="15">0</span>+</div>
+        <div class="stat-desc">Technologies maîtrisées</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number counter" data-target="2">0</div>
+        <div class="stat-desc">Langues · FR & EN</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header reveal">
+    <span class="section-label">// 02 — Stack & Compétences</span>
+    <h2 class="section-title">SKILLS<br>TECHNIQUES</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="skills-categories">
+
+    <div class="reveal">
+      <div class="skill-category-header">
+        <div class="skill-category-icon">💻</div>
+        <h3 class="skill-category-name">DÉVELOPPEMENT & STACK</h3>
+        <div class="skill-category-line"></div>
+      </div>
+      <div class="skill-tags">
+        <span class="stag stag-core"><span class="stag-dot"></span>JavaScript</span>
+        <span class="stag stag-core"><span class="stag-dot"></span>Python</span>
+        <span class="stag stag-core"><span class="stag-dot"></span>HTML / CSS</span>
+        <span class="stag stag-core"><span class="stag-dot"></span>Flutter</span>
+        <span class="stag stag-core"><span class="stag-dot"></span>React</span>
+        <span class="stag stag-core"><span class="stag-dot"></span>SQL · MySQL</span>
+        <span class="stag stag-core"><span class="stag-dot"></span>Git / GitHub</span>
+        <span class="stag stag-core"><span class="stag-dot"></span>Intégration API</span>
+        <span class="stag stag-secondary"><span class="stag-dot"></span>Java</span>
+        <span class="stag stag-secondary"><span class="stag-dot"></span>C++ / C#</span>
+        <span class="stag stag-secondary"><span class="stag-dot"></span>PHP</span>
+        <span class="stag stag-secondary"><span class="stag-dot"></span>Linux</span>
+        <span class="stag stag-secondary"><span class="stag-dot"></span>Développement Android</span>
+        <span class="stag stag-secondary"><span class="stag-dot"></span>Front-End / Back-End</span>
+      </div>
+    </div>
+
+    <div class="skills-two-col">
+      <div class="reveal">
+        <div class="skill-category-header">
+          <div class="skill-category-icon">📋</div>
+          <h3 class="skill-category-name">GESTION DE PROJET</h3>
+          <div class="skill-category-line"></div>
+        </div>
+        <div class="skill-tags">
+          <span class="stag stag-core"><span class="stag-dot"></span>Scrum</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>Agile</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>Kanban</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>JIRA</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>Notion</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>Trello</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>ClickUp</span>
+          <span class="stag stag-secondary"><span class="stag-dot"></span>WBS</span>
+          <span class="stag stag-secondary"><span class="stag-dot"></span>Gestion des risques</span>
+        </div>
+        <div class="mastery-block">
+          <div class="mastery-row"><div class="mastery-label">Scrum / Agile</div><div class="mastery-bar-bg"><div class="mastery-bar-fill" data-width="90"></div></div><div class="mastery-pct">90%</div></div>
+          <div class="mastery-row"><div class="mastery-label">JIRA / ClickUp</div><div class="mastery-bar-bg"><div class="mastery-bar-fill" data-width="85"></div></div><div class="mastery-pct">85%</div></div>
+          <div class="mastery-row"><div class="mastery-label">Planif. sprints</div><div class="mastery-bar-bg"><div class="mastery-bar-fill" data-width="82"></div></div><div class="mastery-pct">82%</div></div>
+          <div class="mastery-row"><div class="mastery-label">Gestion risques</div><div class="mastery-bar-bg"><div class="mastery-bar-fill" data-width="70"></div></div><div class="mastery-pct">70%</div></div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="skill-category-header">
+          <div class="skill-category-icon">📊</div>
+          <h3 class="skill-category-name">BUSINESS INTELLIGENCE</h3>
+          <div class="skill-category-line"></div>
+        </div>
+        <div class="skill-tags">
+          <span class="stag stag-core"><span class="stag-dot"></span>Power BI</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>Excel</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>Suivi KPIs</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>Reporting</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>Dashboards</span>
+          <span class="stag stag-secondary"><span class="stag-dot"></span>Analyse du ROI</span>
+          <span class="stag stag-secondary"><span class="stag-dot"></span>Prévisions budgétaires</span>
+        </div>
+        <div class="mastery-block">
+          <div class="mastery-row"><div class="mastery-label">Power BI</div><div class="mastery-bar-bg"><div class="mastery-bar-fill" data-width="80"></div></div><div class="mastery-pct">80%</div></div>
+          <div class="mastery-row"><div class="mastery-label">Excel</div><div class="mastery-bar-bg"><div class="mastery-bar-fill" data-width="88"></div></div><div class="mastery-pct">88%</div></div>
+          <div class="mastery-row"><div class="mastery-label">KPIs / Reporting</div><div class="mastery-bar-bg"><div class="mastery-bar-fill" data-width="85"></div></div><div class="mastery-pct">85%</div></div>
+          <div class="mastery-row"><div class="mastery-label">Analyse ROI</div><div class="mastery-bar-bg"><div class="mastery-bar-fill" data-width="72"></div></div><div class="mastery-pct">72%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="skills-two-col">
+      <div class="reveal">
+        <div class="skill-category-header">
+          <div class="skill-category-icon">💰</div>
+          <h3 class="skill-category-name">FINANCE & OPS</h3>
+          <div class="skill-category-line"></div>
+        </div>
+        <div class="skill-tags">
+          <span class="stag stag-core"><span class="stag-dot"></span>Gestion budgétaire</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>Allocation ressources</span>
+          <span class="stag stag-secondary"><span class="stag-dot"></span>Reporting financier</span>
+          <span class="stag stag-secondary"><span class="stag-dot"></span>Suivi des coûts</span>
+          <span class="stag stag-secondary"><span class="stag-dot"></span>Gestion fournisseurs</span>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="skill-category-header">
+          <div class="skill-category-icon">🤝</div>
+          <h3 class="skill-category-name">SOFT SKILLS</h3>
+          <div class="skill-category-line"></div>
+        </div>
+        <div class="skill-tags">
+          <span class="stag stag-core"><span class="stag-dot"></span>Leadership</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>Bilingue FR / EN</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>Pensée stratégique</span>
+          <span class="stag stag-core"><span class="stag-dot"></span>Communication</span>
+          <span class="stag stag-secondary"><span class="stag-dot"></span>Résolution de conflits</span>
+          <span class="stag stag-secondary"><span class="stag-dot"></span>Mentorat</span>
+          <span class="stag stag-secondary"><span class="stag-dot"></span>Rédaction technique</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="skills-legend reveal">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div><span class="legend-text">Maîtrise forte</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--muted)"></div><span class="legend-text">Pratique / En développement</span></div>
+  </div>
+</section>
+
+<!-- PROJETS & EXPÉRIENCES -->
+<section id="projets">
+  <div class="section-header reveal">
+    <span class="section-label">// 03 — Expériences & Impact</span>
+    <h2 class="section-title">PROJETS &<br>EXPÉRIENCES</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="projects-grid">
+
+    <!-- IMPACT PLUS -->
+    <div class="project-card reveal">
+      <div class="project-card-accent accent-teal"></div>
+      <div class="project-glow"></div>
+      <div class="project-role">Chef de Projet Digital & Responsable IT</div>
+      <h3 class="project-title">IMPACT PLUS</h3>
+      <div class="project-period">Nov. 2023 – Juin 2024 · Cabinet de conseil · Cotonou, Bénin</div>
+      <p class="project-context">Modernisation complète des processus internes et de l'infrastructure IT d'un cabinet en pleine croissance.</p>
+      <!-- MÉTRIQUES CHIFFRÉES -->
+      <div class="project-metrics">
+        <div class="metric-box">
+          <div class="metric-number counter" data-target="42">0</div><span class="metric-number">%</span>
+          <div class="metric-label">Gain de productivité</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-number counter orange" data-target="60" style="color:var(--orange)">0</div><span class="metric-number orange" style="color:var(--orange)">%</span>
+          <div class="metric-label">Réduction perte de temps</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-number counter" data-target="100">0</div><span class="metric-number">%</span>
+          <div class="metric-label">Docs numérisés</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-number counter orange" data-target="30" style="color:var(--orange)">0</div><span class="metric-number orange" style="color:var(--orange)">j</span>
+          <div class="metric-label">Déploiement TECHhub</div>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Transformation Digitale</span><span class="tag">IT Management</span><span class="tag">Formations</span><span class="tag">TECHhub</span>
+      </div>
+      <div class="project-results">
+        <div class="project-results-label">Réalisations clés</div>
+        <ul>
+          <li>Développement et déploiement de TECHhub — plateforme interne coworking + gestion des tâches</li>
+          <li>Numérisation complète des documents internes du cabinet</li>
+          <li>Formations utilisateurs et ateliers de gestion du changement</li>
+          <li>Reporting exécutif et coordination des parties prenantes</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- DREAMXR -->
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-card-accent accent-teal"></div>
+      <div class="project-glow"></div>
+      <div class="project-role">Assistant Chef de Projet</div>
+      <h3 class="project-title">DREAMXR</h3>
+      <div class="project-period">Jan. – Avr. 2025 · Projets AR/Digital · Cotonou, Bénin</div>
+      <p class="project-context">Gestion de projets digitaux innovants intégrant des expériences de Réalité Augmentée en mode agile.</p>
+      <div class="project-metrics">
+        <div class="metric-box">
+          <div class="metric-number counter" data-target="35">0</div><span class="metric-number">%</span>
+          <div class="metric-label">Hausse de vélocité</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-number counter orange" data-target="28" style="color:var(--orange)">0</div><span class="metric-number orange" style="color:var(--orange)">%</span>
+          <div class="metric-label">Délais réduits</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-number counter" data-target="3">0</div><span class="metric-number">+</span>
+          <div class="metric-label">Projets livrés</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-number counter orange" data-target="95" style="color:var(--orange)">0</div><span class="metric-number orange" style="color:var(--orange)">%</span>
+          <div class="metric-label">Taux de livraison</div>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">AR</span><span class="tag">Scrum</span><span class="tag">JIRA</span><span class="tag">ClickUp</span><span class="tag">KPIs</span>
+      </div>
+      <div class="project-results">
+        <div class="project-results-label">Réalisations clés</div>
+        <ul>
+          <li>Planification et suivi de sprints avec méthodes agiles (JIRA, ClickUp, Trello)</li>
+          <li>Coordination inter-fonctionnelle équipes tech / métiers / clients</li>
+          <li>Documentation via rapports de statut et demandes de changement</li>
+          <li>Rétrospectives et boucles de feedback pour l'amélioration continue</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SOCAR -->
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-card-accent accent-teal"></div>
+      <div class="project-glow"></div>
+      <div class="project-role">Asst. Chef de Projet Marketing Digital</div>
+      <h3 class="project-title">SOCAR BÉNIN</h3>
+      <div class="project-period">Août – Déc. 2022 · E-commerce & Marketing · Cotonou, Bénin</div>
+      <p class="project-context">Refonte de la stratégie digitale et optimisation du catalogue e-commerce pour développer la visibilité de la marque.</p>
+      <div class="project-metrics">
+        <div class="metric-box">
+          <div class="metric-number counter" data-target="48">0</div><span class="metric-number">%</span>
+          <div class="metric-label">Croissance trafic web</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-number counter orange" data-target="22" style="color:var(--orange)">0</div><span class="metric-number orange" style="color:var(--orange)">%</span>
+          <div class="metric-label">Hausse des ventes</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-number counter" data-target="3">0</div><span class="metric-number">x</span>
+          <div class="metric-label">Engagement social</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-number counter orange" data-target="100" style="color:var(--orange)">0</div><span class="metric-number orange" style="color:var(--orange)">%</span>
+          <div class="metric-label">Site refondu</div>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Marketing Digital</span><span class="tag">E-commerce</span><span class="tag">Social Media</span><span class="tag">SEO</span>
+      </div>
+      <div class="project-results">
+        <div class="project-results-label">Réalisations clés</div>
+        <ul>
+          <li>Stratégie réseaux sociaux, e-mailing et campagnes sponsorisées</li>
+          <li>Refonte complète et remodélisation du site e-commerce</li>
+          <li>Création de contenus visuels et rédactionnels multi-plateformes</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LBT -->
+    <div class="project-card reveal reveal-delay-3">
+      <div class="project-card-accent accent-orange"></div>
+      <div class="project-glow"></div>
+      <div class="project-role">Fondateur & Porteur de projet</div>
+      <h3 class="project-title">LA BOUTIQUE TECH</h3>
+      <div class="project-period">Projet entrepreneurial · Distribution tech premium</div>
+      <p class="project-context">Création d'une entreprise de distribution de produits tech premium face à un marché saturé de produits reconditionnés de faible qualité.</p>
+      <div class="project-metrics">
+        <div class="metric-box">
+          <div class="metric-number" style="color:var(--orange);font-family:var(--FD);font-size:1.8rem">0→1</div>
+          <div class="metric-label">Création from scratch</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-number counter" data-target="100">0</div><span class="metric-number">%</span>
+          <div class="metric-label">Vision produit propre</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-number counter orange" data-target="5" style="color:var(--orange)">0</div><span class="metric-number orange" style="color:var(--orange)">+</span>
+          <div class="metric-label">Outils digitaux déployés</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-number counter" data-target="100">0</div><span class="metric-number">%</span>
+          <div class="metric-label">Stratégie autonome</div>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Entrepreneuriat</span><span class="tag">Vision produit</span><span class="tag">Stratégie</span><span class="tag">Outils digitaux</span>
+      </div>
+      <div class="project-results">
+        <div class="project-results-label">Contributions clés</div>
+        <ul>
+          <li>Analyse marché & positionnement premium différenciant</li>
+          <li>Structuration de l'offre produit et de la proposition de valeur</li>
+          <li>Mise en place des outils digitaux (présence en ligne, CRM, processus)</li>
+          <li>Gestion des décisions stratégiques et opérationnelles end-to-end</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FORMATION -->
+<section id="formation">
+  <div class="section-header reveal">
+    <span class="section-label">// 04 — Parcours académique</span>
+    <h2 class="section-title">FORMATION</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="formation-grid">
+    <div class="edu-card reveal">
+      <div class="edu-school">Ynov Campus Paris</div>
+      <div class="edu-degree">Mastère Product Management</div>
+      <div class="edu-detail">En cours · Paris, France</div>
+    </div>
+    <div class="edu-card reveal reveal-delay-1">
+      <div class="edu-school">Ynov Campus Paris</div>
+      <div class="edu-degree">Mastère Développement Mobile & IoT</div>
+      <div class="edu-detail">En cours · Paris, France</div>
+    </div>
+    <div class="edu-card reveal reveal-delay-2">
+      <div class="edu-school">EPITECH Bénin</div>
+      <div class="edu-degree">Bachelor en Expertise Informatique</div>
+      <div class="edu-detail">2021 – 2024 · Cotonou, Bénin</div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-header reveal">
+    <span class="section-label">// 05 — Certifications</span>
+    <h2 class="section-title">CERTIFICATIONS</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="certs-grid">
+    <div class="cert-card reveal">
+      <div class="cert-year">2025</div><span class="cert-icon">🏆</span>
+      <div class="cert-name">PMI Kickoff™</div>
+      <div class="cert-org">Project Management Institute</div>
+    </div>
+    <div class="cert-card reveal reveal-delay-1">
+      <div class="cert-year">2025</div><span class="cert-icon">📐</span>
+      <div class="cert-name">Google Project Management Certificate</div>
+      <div class="cert-org">Coursera / Google</div>
+    </div>
+    <div class="cert-card reveal reveal-delay-2">
+      <div class="cert-year">2025</div><span class="cert-icon">⚡</span>
+      <div class="cert-name">Scrum Fundamentals Certified</div>
+      <div class="cert-org">Scrum.org / Alison Learning</div>
+    </div>
+    <div class="cert-card reveal reveal-delay-3">
+      <div class="cert-year">2025</div><span class="cert-icon">🎯</span>
+      <div class="cert-name">PSPO Fundamentals</div>
+      <div class="cert-org">Professional Scrum Product Owner · Scrum.org</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-header reveal">
+      <span class="section-label">// 06 — Travaillons ensemble</span>
+      <h2 class="section-title">CONTACTEZ-MOI</h2>
+      <div class="section-divider"></div>
+    </div>
+    <p class="contact-subtitle reveal">Une opportunité d'alternance, un projet, ou simplement envie d'échanger ? Je suis disponible et enthousiaste.</p>
+    <div class="contact-links reveal">
+      <a href="mailto:loickmian@gmail.com" class="contact-link">
+        <span class="contact-link-icon">✉️</span>
+        <div><div>Email</div><div class="contact-link-detail">loickmian@gmail.com</div></div>
+      </a>
+      <a href="https://www.linkedin.com/in/loick-mian-843382281" target="_blank" class="contact-link">
+        <span class="contact-link-icon">💼</span>
+        <div><div>LinkedIn</div><div class="contact-link-detail">loick-mian</div></div>
+      </a>
+      <a href="tel:+33663787783" class="contact-link">
+        <span class="contact-link-icon">📞</span>
+        <div><div>Téléphone</div><div class="contact-link-detail">+33 6 63 78 77 83</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer><span>Loïck MIAN</span> · Portfolio · <span>2025</span> · Fait avec passion 🚀</footer>
+
+<script>
+/* ── CUSTOM CURSOR ── */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)}
+animRing();
+document.querySelectorAll('a,button,.stag,.project-card,.stat-box,.cert-card,.metric-box').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.classList.add('hover');ring.classList.add('hover')});
+  el.addEventListener('mouseleave',()=>{cur.classList.remove('hover');ring.classList.remove('hover')});
+});
+
+/* ── NAV SCROLL ── */
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+
+/* ── PARTICLES ── */
+const canvas=document.getElementById('particles');
+const ctx=canvas.getContext('2d');
+let W,H,pts=[];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<70;i++)pts.push({x:Math.random()*2000,y:Math.random()*1200,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:Math.random()*1.2+.3,a:Math.random()*.5+.15});
+function drawPts(){
+  ctx.clearRect(0,0,W,H);
+  pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,212,212,${p.a})`;ctx.fill()});
+  pts.forEach((p,i)=>pts.slice(i+1).forEach(q=>{const d=Math.hypot(p.x-q.x,p.y-q.y);if(d<120){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgba(0,212,212,${.12*(1-d/120)})`;ctx.lineWidth=.6;ctx.stroke()}}));
+  requestAnimationFrame(drawPts);
+}
+drawPts();
+
+/* ── SCROLL REVEAL ── */
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      // Animate bars inside
+      e.target.querySelectorAll('.mastery-bar-fill').forEach(b=>{
+        b.style.width=b.dataset.width+'%';
+        b.classList.add('animated');
+      });
+      // Animate counters inside
+      e.target.querySelectorAll('.counter').forEach(animCounter);
+    }
+  });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+/* Also trigger bars/counters on direct .reveal elements */
+const rootObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.mastery-bar-fill').forEach(b=>{
+        b.style.width=b.dataset.width+'%';
+        b.classList.add('animated');
+      });
+    }
+  });
+},{threshold:.1});
+document.querySelectorAll('section').forEach(s=>rootObs.observe(s));
+
+/* ── COUNTER ANIMATION ── */
+function animCounter(el){
+  if(el.dataset.done) return;
+  el.dataset.done='1';
+  const target=+el.dataset.target;
+  const dur=1400;
+  const start=performance.now();
+  function step(now){
+    const t=Math.min((now-start)/dur,1);
+    const ease=1-Math.pow(1-t,3);
+    el.textContent=Math.round(ease*target);
+    if(t<1)requestAnimationFrame(step);
+    else el.textContent=target;
+  }
+  requestAnimationFrame(step);
+}
+
+/* Trigger counters when stat boxes come into view */
+const cntObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.querySelectorAll('.counter').forEach(animCounter);
+  });
+},{threshold:.2});
+document.querySelectorAll('.stat-box,.project-metrics,.about-stats').forEach(el=>cntObs.observe(el));
+</script>
+</body>
+</html>
