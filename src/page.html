@@ -1,0 +1,108 @@
+<title>Loick Mian · Mission Control</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Loick Mian, Digital Project Manager & Builder. A 3D galaxy of the jobs, missions and products that shaped him. Available in English and French.">
+<meta name="theme-color" content="#02030a">
+<link rel="icon" href="assets/logos/lbt-symbol.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<!--/head-->
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="fx" aria-hidden="true"></div>
+<div id="flash" aria-hidden="true"></div>
+<div id="labels" aria-hidden="false"></div>
+
+<section id="intro" aria-label="Welcome">
+  <div class="intro-top">
+    <span class="mono" data-i18n="kicker">Mission control · Loick Mian</span>
+    <div class="lang" role="group" aria-label="Language"><button data-lang="en" aria-pressed="true">EN</button><button data-lang="fr" aria-pressed="false">FR</button></div>
+  </div>
+  <div class="intro-core">
+    <div class="boot" id="boot" aria-hidden="true"></div>
+    <h1 id="welcome" data-i18n="welcome">Welcome to my universe.</h1>
+    <p data-i18n="sub">Digital Project Manager &amp; Builder.</p>
+    <div class="launch">
+      <svg viewBox="0 0 148 148" aria-hidden="true"><circle class="tick" cx="74" cy="74" r="72"/><circle class="trk" cx="74" cy="74" r="70"/><circle class="prg" id="launchRing" cx="74" cy="74" r="70"/></svg>
+      <button id="launchBtn"><span id="launchLabel" data-i18n="hold">Hold to launch</span></button>
+    </div>
+  </div>
+  <div class="intro-brief"><a href="#brief" data-i18n="briefLink">Mission brief · 30 seconds</a></div>
+</section>
+
+<header id="hud" hidden>
+  <button class="brand" id="brand" title="Galaxy view"><b>Loick Mian</b><span>// Mission control</span></button>
+  <div class="hud-right">
+    <button class="btn small" id="planBtn" data-i18n="flightPlan">Flight plan</button>
+    <button class="btn small" id="linksBtn" data-i18n="links">Skill links</button>
+    <a class="btn small hide-sm" href="#contact" data-i18n="contact">Contact</a>
+    <button class="btn small hide-sm" id="soundBtn" aria-pressed="false"><span data-i18n="sound">Sound</span> <span id="soundState">OFF</span></button>
+    <div class="lang" role="group" aria-label="Language"><button data-lang="en" aria-pressed="true">EN</button><button data-lang="fr" aria-pressed="false">FR</button></div>
+    <a class="btn small gold" href="#brief" data-i18n="brief">Mission brief</a>
+  </div>
+</header>
+<div class="telemetry" id="telemetry" hidden></div>
+
+<div id="arrival" class="glass" hidden>
+  <span class="mono" id="arrivalKicker">17 worlds</span>
+  <h2 data-i18n="arrivalTitle">16 worlds. One trajectory.</h2>
+  <p data-i18n="arrivalText"></p>
+  <div class="row"><button class="btn primary" id="tourBtn" data-i18n="tour">Start the guided tour</button><button class="btn" id="freeBtn" data-i18n="free">Free flight</button></div>
+</div>
+
+<nav id="plan" class="glass" hidden aria-label="Flight plan">
+  <h3 data-i18n="flightPlan">Flight plan</h3>
+  <div id="planList"></div>
+</nav>
+
+<aside id="panel" class="glass" hidden aria-live="polite">
+  <button class="pclose" id="pclose" aria-label="Close">✕</button>
+  <div class="pbody" id="pbody"></div>
+  <div class="pfoot"><button class="btn small" id="prevBtn">←</button><span class="mono" id="stopN"></span><button class="btn small primary" id="nextBtn"></button></div>
+</aside>
+
+<aside id="linksPanel" class="glass" hidden>
+  <h3 data-i18n="links">Skill links</h3>
+  <p data-i18n="linksHint"></p>
+  <div id="linksList"></div>
+</aside>
+<div id="linkStory" class="glass" hidden role="status"></div>
+
+<section id="brief" class="overlay" hidden aria-label="Mission brief"><div class="ov-wrap" id="briefBody"></div></section>
+
+<section id="contact" class="overlay" hidden aria-label="Contact">
+  <div class="ov-wrap">
+    <div class="ov-top"><span class="mono" id="contactKicker">// Contact</span><a class="btn small" href="#galaxy" data-i18n="explore">Explore the galaxy</a></div>
+    <div class="cgrid">
+      <form class="cform glass" id="cform" novalidate>
+        <h2 data-i18n="contactTitle">Open a channel</h2>
+        <p data-i18n="contactText"></p>
+        <div class="field"><label for="cName" data-i18n="name">Name</label><input id="cName" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="cEmail" data-i18n="email">Email</label><input id="cEmail" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="cMsg" data-i18n="message">Message</label><textarea id="cMsg" name="message" required></textarea></div>
+        <label class="check"><input type="checkbox" id="cOptin" name="newsletter"><span data-i18n="optin"></span></label>
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div><button class="btn primary" type="submit" id="cSend" data-i18n="send">Transmit</button></div>
+        <p class="formmsg" id="cMsgOut" role="status"></p>
+      </form>
+      <div style="display:grid;gap:18px">
+        <form class="news glass" id="nform" novalidate>
+          <h2 data-i18n="newsTitle">Newsletter</h2>
+          <p data-i18n="newsText"></p>
+          <div class="field"><label for="nEmail" data-i18n="email">Email</label><input id="nEmail" type="email" autocomplete="email" required></div>
+          <div><button class="btn gold" type="submit" data-i18n="subscribe">Subscribe</button></div>
+          <p class="formmsg" id="nMsgOut" role="status"></p>
+        </form>
+        <div class="news glass">
+          <span class="mono">Direct</span>
+          <div class="crow"><code>loickmian@gmail.com</code></div>
+          <div class="crow"><button class="btn small copy-email" data-i18n="copy">Copy email</button><a class="btn small" href="https://www.linkedin.com/in/loick-mian-843382281" target="_blank" rel="noopener">LinkedIn</a><a class="btn small" href="https://github.com/mloick" target="_blank" rel="noopener">GitHub</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<noscript><div style="position:fixed;inset:0;z-index:99;background:#02030a;color:#e8ecf6;padding:40px 20px;font:16px/1.6 sans-serif"><h1>Loick Mian</h1><p>Digital Project Manager &amp; Builder. ITSM Project Manager (apprenticeship) at Konica Minolta, builder of SimuFlow, founder of LBT.</p><p>loickmian@gmail.com · <a href="https://www.linkedin.com/in/loick-mian-843382281" style="color:#6ef2ff">LinkedIn</a> · <a href="assets/cv/Loick_MIAN_Resume_EN.pdf" style="color:#6ef2ff">Résumé (PDF)</a></p></div></noscript>
+<script type="module" src="js/main.js"></script>
