@@ -2,7 +2,7 @@
 from pathlib import Path
 
 root = Path(__file__).parent
-PAGES = {"page.html": "index.html", "expedition.html": "expedition.html"}
+PAGES = {"page.html": "index.html"}
 
 for src, dst in PAGES.items():
     head, body = (root / "src" / src).read_text().split("<!--/head-->", 1)

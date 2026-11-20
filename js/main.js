@@ -1,259 +1,385 @@
-import { UI, SECTORS, WORLDS, LINKS } from "./content.js";
+// Loick Mian's portfolio: I introduce myself, you board the ship, then you explore my universe.
+// Career data lives in content.js (WORLDS, LINKS). Interface copy lives in X below, written natively in EN and FR.
+import { WORLDS, LINKS } from "./content.js";
 
 const WEB3FORMS_KEY = "98a5ced1-d2fd-4c80-ba9a-78023c1d476b";
-const $ = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const store = {
-  get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-};
-const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const redacted = s => esc(s).replace(/\[\[(.*?)\]\]/g, (_, w) => `<span class="redact" title="Redacted">${"█".repeat(w.length)}</span>`);
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+const byId = id => WORLDS.find(w => w.id === id);
+const idx = id => WORLDS.findIndex(w => w.id === id);
 
 let lang = store.get("lang", (navigator.language || "en").toLowerCase().startsWith("fr") ? "fr" : "en");
-const t = () => UI[lang];
-let galaxy = null, current = -1, tour = false, activeLink = null;
+const qLang = location.search.match(/lang=(en|fr)/); if (qLang) lang = qLang[1];
+let galaxy = null, current = -1, tour = false, activeLink = null, launched = false, tab = "explore";
 const seen = new Set(store.get("seen", []));
 
-/* ================= text effects ================= */
-const GL = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&/<>[]{}=+*";
-function decodeTo(el, text, dur = 700) {
-  if (reduce) { el.textContent = text; return; }
-  const start = performance.now();
-  const step = now => {
-    const k = Math.min(1, (now - start) / dur); let out = "";
-    for (let i = 0; i < text.length; i++) { const c = text[i]; out += (c === " " || i / text.length < k) ? c : GL[(Math.random() * GL.length) | 0]; }
-    el.textContent = out; if (k < 1) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-}
-const redacted = s => esc(s).replace(/\[\[(.*?)\]\]/g, (_, w) => `<span class="redact" title="Redacted">${"█".repeat(w.length)}</span>`);
-
-/* ================= audio (off by default) ================= */
-const audio = {
-  ctx: null, on: false, pad: null,
-  init() {
-    if (this.ctx) return; const C = window.AudioContext || window.webkitAudioContext; if (!C) return;
-    this.ctx = new C(); const ctx = this.ctx;
-    const master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination); this.master = master;
-    const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 700; lp.connect(master);
-    [55, 82.4, 110.3, 164.8].forEach((f, i) => { const o = ctx.createOscillator(); o.type = i % 2 ? "sawtooth" : "triangle"; o.frequency.value = f; o.detune.value = (i - 1.5) * 6; const g = ctx.createGain(); g.gain.value = .05; o.connect(g); g.connect(lp); o.start(); });
-    const lfo = ctx.createOscillator(); lfo.frequency.value = .07; const lg = ctx.createGain(); lg.gain.value = 380; lfo.connect(lg); lg.connect(lp.frequency); lfo.start();
+/* ================= copy ================= */
+const X = {
+  en: {
+    resume: "Résumé", welcome: "Welcome to my universe",
+    heroTitle: "From an idea to <em>the real thing.</em>",
+    heroLead: "I'm Loick Mian, Digital Project Manager & Builder. My job is to solve real problems with solutions people actually use: a clearer process, a tool, an app, an AI workflow. From the first sketch to adoption.",
+    board: "Board", boardTitle: "Board the ship", boardHint: "Hold the button. I'll show you around.",
+    briefLink: "In a hurry? The 30-second brief",
+    bubble: ["Hi, I'm Loick. Welcome to my universe!", "I'll be your guide. Hop in the ship when you're ready.", "Fun fact: I designed and built this whole site.", "Hold the yellow button and we're off."],
+    boarding: "Buckle up!",
+    tExplore: "Explore", tAbout: "About", tMethod: "Method", tSkills: "Skills", tImpact: "Impact", tContact: "Contact",
+    flightPlan: "Flight plan",
+    arrivalKicker: "15 stops · 4 phases", arrivalTitle: "Welcome aboard. Here's my universe.",
+    arrivalText: "Each world is a job, a mission or something I built. The guided tour goes from where I started to what I'm building now. The tabs above stay open to you at any time.",
+    tour: "Start the guided tour", free: "Explore freely",
+    phases: { basecamp: ["Basecamp", "2021 – 2026"], command: ["First commands", "2022 – 2025"], mission: ["Current mission", "2026 – today"], frontier: ["New frontiers", "Now → 2027"] },
+    guide: { basecamp: "This is where it all started: code, and real jobs alongside it.", command: "My first projects as a project manager.", mission: "This is where I am today.", frontier: "And this is what I'm building next." },
+    guideIdle: "Click any world, or let me take you on the tour.",
+    next: "Next stop", stop: "Stop", of: "of", end: "That's the tour. Shall we talk?",
+    caseL: ["Problem", "What I did", "Result"], log: "The details", skillsHere: "Skills at work here", clear: "Clear",
+    status: { done: "Completed", current: "Current role", live: "Live", building: "Ongoing", founder: "Founder", classified: "Classified" },
+    decodeHint: "Tap each line to decrypt it.",
+    // about
+    aboutEy: "About", aboutTitle: "Meet your guide.",
+    aboutLede: "I studied software development at EPITECH in Benin, moved to Paris for my MSc at YNOV, and I'm now a work-study ITSM project manager at Konica Minolta.",
+    aboutLog: ["I write the specs, and I can build the first working version myself.", "I've led digital projects in consulting, XR, retail and energy, in Benin and in France.", "I've also worked checkouts, kitchens and phone lines. Those jobs taught me more about pressure and customers than any course.", "Alongside, I founded a brand, I ship my own product, and I'm working on something I can't tell you about yet."],
+    aboutCard: "Born and raised in Cotonou. Now based in the Paris area.",
+    roleBox: "My role: solve problems with solutions people actually use.", roleSub: "Sometimes that's a cleaner process. Sometimes a tool, an app or an AI workflow. Always something the team adopts.",
+    principles: [["Start from the field", "Before choosing any tool, I watch how people really work. Supermarket floors and call centres taught me that."], ["Show, don't tell", "A working prototype settles more debates than a slide deck. So I build one early."], ["Bring people along", "A project only succeeds if people make it theirs. Training and feedback are in the plan from day one."]],
+    // method
+    methodEy: "Method", methodTitle: "How I take an idea all the way to delivery.",
+    methodSub: "I don't just tick off a task list. I look for the real problem behind the request, pick the simplest solution that works, and stay until people use it.",
+    pillars: [
+      { c: "#f2c46d", k: "The field", h: "Understand the real problem", p: "I go where the work happens, listen, and map how things really run before choosing any tool.", ex: "Opti-Mall · Konica Minolta · ALYCE" },
+      { c: "#8cc8ff", k: "Tech", h: "Build the right solution", p: "With a software development background, I write specs developers trust, and I can build the first version myself: web, mobile, back end.", ex: "SimuFlow · IMPACT PLUS · EPITECH" },
+      { c: "#a891ff", k: "AI", h: "Use AI like an engineer", p: "Not just a chatbot. I run coding agents with clear specs, curated context, small iterations, review and tests, and I put AI into products where it removes manual work.", ex: "Claude Code · on-device text recognition in SimuFlow" }
+    ],
+    pipeline: [["Understand", "Go on the ground, listen, map how the work really happens."], ["Frame", "Set the scope, the priorities and the success metrics."], ["Design", "Pick the right tech and AI, write specs people can build from."], ["Prototype", "Show a working version early and test it with real users."], ["Deliver", "Roll out, train, measure, then improve."]],
+    // skills
+    skillsEy: "Skills", skillsTitle: "Six skills at the helm. The full toolbox below.",
+    spoke: "Skill", usedAt: "Where I used it", light: "Light it up in the galaxy",
+    matrix: [
+      ["#f2c46d", "Project & product", ["Project management", "Scrum & Kanban", "PSPO (Product Owner)", "Roadmaps & planning", "Functional specifications", "Risk & stakeholder management", "Change management & training", "Jira · ClickUp · Notion"]],
+      ["#8cc8ff", "ITSM & process", ["ITIL practices", "Incident, request & change management", "Workflow modelling (draw.io, BPMN 2.0)", "SLA / OLA", "Process documentation", "Level 2/3 support"]],
+      ["#6fe3a8", "Software development", ["HTML · CSS · JavaScript", "TypeScript", "React · React Native · Expo", "Flutter", "Python · Django", "SQL & databases", "Supabase", "REST APIs", "Git"]],
+      ["#a891ff", "AI engineering", ["Agentic coding (Claude Code)", "Prompt & context engineering", "Spec-driven development with AI", "AI-assisted prototyping", "AI inside products (on-device OCR)"]],
+      ["#ff8f6b", "Design & tools", ["Figma", "Wireframes & prototypes", "Product demos"]],
+      ["#eef1f8", "Languages", ["French (native)", "English (professional)"]]
+    ],
+    // impact
+    impactEy: "Impact", impactTitle: "Results, in numbers.",
+    stats: [["+", "60", "%", "faster case processing after digitising internal processes", "IMPACT PLUS"], ["~", "100", "%", "of processes digitised, in a few weeks", "Opti-Mall"], ["−", "50", "%", "site trips, thanks to remote project management", "Opti-Mall"], ["", "85", "%", "adoption of the new tools, 30+ colleagues trained", "IMPACT PLUS"], ["−", "20", "%", "sprint blockers, 3 teams in one rhythm", "DreamXR"], ["+", "35", "%", "engagement after the digital marketing rollout", "SOCAR Benin"], ["", "1", "", "product shipped solo, on iOS, Android and web", "SimuFlow"], ["÷", "2", "", "workflow set-up time: the goal SimuFlow is built for", "Goal"]],
+    roadmap: "Roadmap", rmStatus: "Status: <b>on track</b>. Next milestone: a permanent role from October 2027.",
+    // contact
+    contactEy: "Contact", contactTitle: "Your team could be the next stop.",
+    contactSub: "A permanent role from October 2027, a project, a question, or just a hello. Your message lands straight in my inbox.",
+    letsBuild: "Let's build", letsLink: "Let's link", formTitle: "Send a message",
+    name: "Name", email: "Email", message: "Message", optin: "Also send me the newsletter (a short email when I launch something).",
+    send: "Send", sending: "Sending…", sent: "Message received. I'll get back to you soon.", failed: "Sending failed. Write to me directly at loickmian@gmail.com.",
+    newsTitle: "Newsletter", newsText: "One short email when I launch something: SimuFlow, LBT, new builds. No spam.", subscribe: "Subscribe", subscribed: "You're on the list.",
+    direct: "Direct line", copy: "Copy email", copied: "Copied",
+    endLine: "That's my universe so far. Shall we build the next part together?",
+    // brief
+    briefTitle: "The 30-second brief", briefRole: "Digital Project Manager & Builder · AI & Innovation",
+    briefIntro: "Project manager with a software development background. I take projects from framing to adoption, and I can build the prototype myself. ITSM project manager (work-study) at Konica Minolta, MSc student at YNOV Campus Paris, builder of SimuFlow, founder of LBT. Open to permanent roles from October 2027.",
+    secXp: "Experience", secBuild: "Builder & founder", secField: "Field experience", secSkills: "Key skills", secEdu: "Education & certifications", explore: "Explore the universe",
+    briefSkills: ["Project management", "Scrum & Kanban · PSPO", "ITSM / ITIL", "Workflow modelling (draw.io, BPMN)", "Change management", "HTML · CSS · JavaScript · TypeScript", "React · React Native · Flutter", "Python · Django · SQL · Supabase", "AI engineering (Claude Code)", "French (native)", "English (professional)"],
+    resumeHref: "assets/cv/Loick_MIAN_Resume_EN.pdf", webgl: "Your browser can't display the 3D universe, so here is the brief."
   },
-  toggle() {
-    this.init(); if (!this.ctx) return; this.on = !this.on; this.ctx.resume();
-    this.master.gain.cancelScheduledValues(this.ctx.currentTime);
-    this.master.gain.linearRampToValueAtTime(this.on ? .5 : 0, this.ctx.currentTime + .8);
-    $("#soundState").textContent = this.on ? "ON" : "OFF"; $("#soundBtn").setAttribute("aria-pressed", String(this.on));
-  },
-  whoosh(len = 1.2) {
-    if (!this.on || !this.ctx) return; const ctx = this.ctx, n = ctx.sampleRate * len, buf = ctx.createBuffer(1, n, ctx.sampleRate), d = buf.getChannelData(0);
-    for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 1.5);
-    const s = ctx.createBufferSource(); s.buffer = buf; const f = ctx.createBiquadFilter(); f.type = "bandpass"; f.Q.value = 3;
-    f.frequency.setValueAtTime(300, ctx.currentTime); f.frequency.exponentialRampToValueAtTime(3200, ctx.currentTime + len * .6);
-    const g = ctx.createGain(); g.gain.value = .5; s.connect(f); f.connect(g); g.connect(ctx.destination); s.start();
-  },
-  blip(freq = 880) {
-    if (!this.on || !this.ctx) return; const ctx = this.ctx, o = ctx.createOscillator(), g = ctx.createGain();
-    o.type = "sine"; o.frequency.value = freq; g.gain.setValueAtTime(.12, ctx.currentTime); g.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + .18);
-    o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime + .2);
+  fr: {
+    resume: "CV", welcome: "Bienvenue dans mon univers",
+    heroTitle: "De l'idée à <em>la réalisation.</em>",
+    heroLead: "Je suis Loick Mian, chef de projet digital et builder. Mon métier : résoudre de vrais problèmes avec des solutions que les gens utilisent vraiment. Un processus plus clair, un outil, une application, un workflow IA. Du premier croquis jusqu'à l'adoption.",
+    board: "Embarquer", boardTitle: "Montez à bord", boardHint: "Maintenez le bouton, je vous fais visiter.",
+    briefLink: "Pressé ? Le résumé en 30 secondes",
+    bubble: ["Bonjour, moi c'est Loick. Bienvenue dans mon univers !", "Je serai votre guide. Montez à bord quand vous êtes prêt.", "Petit secret : j'ai conçu et codé ce site de A à Z.", "Maintenez le bouton jaune, et c'est parti."],
+    boarding: "Attachez vos ceintures !",
+    tExplore: "Explorer", tAbout: "Profil", tMethod: "Méthode", tSkills: "Compétences", tImpact: "Impact", tContact: "Contact",
+    flightPlan: "Plan de vol",
+    arrivalKicker: "15 escales · 4 phases", arrivalTitle: "Bienvenue à bord. Voici mon univers.",
+    arrivalText: "Chaque monde est un poste, une mission ou un projet que j'ai construit. La visite guidée part de mes débuts et va jusqu'à ce que je construis aujourd'hui. Les onglets en haut restent accessibles à tout moment.",
+    tour: "Lancer la visite guidée", free: "Explorer librement",
+    phases: { basecamp: ["Camp de base", "2021 – 2026"], command: ["Premières missions", "2022 – 2025"], mission: ["Mission en cours", "2026 – auj."], frontier: ["Nouveaux horizons", "Auj. → 2027"] },
+    guide: { basecamp: "Tout a commencé ici : le code, et de vrais jobs à côté.", command: "Mes premiers projets en tant que chef de projet.", mission: "Voici où j'en suis aujourd'hui.", frontier: "Et voici ce que je construis pour la suite." },
+    guideIdle: "Cliquez sur un monde, ou laissez-moi vous faire la visite.",
+    next: "Escale suivante", stop: "Escale", of: "sur", end: "Fin de la visite. On en parle ?",
+    caseL: ["Le problème", "Ce que j'ai fait", "Le résultat"], log: "Le détail", skillsHere: "Compétences mobilisées", clear: "Effacer",
+    status: { done: "Terminé", current: "Poste actuel", live: "En ligne", building: "En continu", founder: "Fondateur", classified: "Confidentiel" },
+    decodeHint: "Touchez chaque ligne pour la déchiffrer.",
+    aboutEy: "Profil", aboutTitle: "Votre guide, en quelques mots.",
+    aboutLede: "Formé au développement logiciel à EPITECH au Bénin, je suis arrivé à Paris pour mon mastère à YNOV. Aujourd'hui, je suis chef de projet ITSM en alternance chez Konica Minolta.",
+    aboutLog: ["J'écris les spécifications, et je sais construire moi-même la première version qui fonctionne.", "J'ai mené des projets digitaux dans le conseil, la XR, le retail et l'énergie, au Bénin comme en France.", "J'ai aussi tenu des caisses, des cuisines et des lignes téléphoniques. Ces jobs m'en ont appris plus sur la pression et le client que bien des cours.", "En parallèle, j'ai fondé une marque, je développe mon propre produit, et je prépare un projet dont je ne peux pas encore parler."],
+    aboutCard: "Né et grandi à Cotonou. Installé en Île-de-France.",
+    roleBox: "Mon rôle : résoudre des problèmes avec des solutions que les gens utilisent vraiment.", roleSub: "Parfois un processus plus clair, parfois un outil, une application ou un workflow IA. Toujours quelque chose que l'équipe adopte.",
+    principles: [["Partir du terrain", "Avant de choisir un outil, j'observe comment les gens travaillent vraiment. Les rayons de supermarché et les centres d'appels me l'ont appris."], ["Montrer plutôt que convaincre", "Un prototype qui fonctionne tranche plus de débats qu'un PowerPoint. Alors j'en construis un tôt."], ["Embarquer les équipes", "Un projet ne réussit que si les gens se l'approprient. La formation et les retours font partie du plan dès le départ."]],
+    methodEy: "Méthode", methodTitle: "Comment je mène une idée jusqu'à sa réalisation.",
+    methodSub: "Je ne me contente pas d'exécuter une liste de tâches. Je cherche le vrai problème derrière la demande, je choisis la solution la plus simple qui fonctionne, et je reste jusqu'à ce qu'elle soit utilisée.",
+    pillars: [
+      { c: "#f2c46d", k: "Le terrain", h: "Comprendre le vrai problème", p: "Je vais là où le travail se fait, j'écoute et je cartographie le fonctionnement réel avant de choisir le moindre outil.", ex: "Opti-Mall · Konica Minolta · ALYCE" },
+      { c: "#8cc8ff", k: "La tech", h: "Construire la bonne solution", p: "Avec ma formation de développeur, j'écris des specs fiables pour les équipes techniques, et je sais construire la première version moi-même : web, mobile, back-end.", ex: "SimuFlow · IMPACT PLUS · EPITECH" },
+      { c: "#a891ff", k: "L'IA", h: "Utiliser l'IA en ingénieur", p: "Pas seulement un chatbot. Je pilote des agents de code avec des specs claires, un contexte maîtrisé, de petites itérations, de la relecture et des tests, et j'intègre l'IA dans les produits là où elle supprime du travail manuel.", ex: "Claude Code · reconnaissance de texte embarquée dans SimuFlow" }
+    ],
+    pipeline: [["Comprendre", "Aller sur le terrain, écouter, cartographier le travail réel."], ["Cadrer", "Fixer le périmètre, les priorités et les indicateurs de réussite."], ["Concevoir", "Choisir la tech et l'IA adaptées, rédiger des specs exploitables."], ["Prototyper", "Montrer vite une version qui marche, la tester avec de vrais utilisateurs."], ["Livrer", "Déployer, former, mesurer, puis améliorer."]],
+    skillsEy: "Compétences", skillsTitle: "Six compétences à la barre. Et la boîte à outils complète.",
+    spoke: "Compétence", usedAt: "Où je l'ai mise en pratique", light: "La voir dans la galaxie",
+    matrix: [
+      ["#f2c46d", "Gestion de projet & produit", ["Gestion de projet", "Scrum & Kanban", "PSPO (Product Owner)", "Roadmap & planification", "Spécifications fonctionnelles", "Gestion des risques et des parties prenantes", "Conduite du changement & formation", "Jira · ClickUp · Notion"]],
+      ["#8cc8ff", "ITSM & processus", ["Pratiques ITIL", "Gestion des incidents, demandes et changements", "Modélisation de workflows (draw.io, BPMN 2.0)", "SLA / OLA", "Documentation des processus", "Support N2/N3"]],
+      ["#6fe3a8", "Développement logiciel", ["HTML · CSS · JavaScript", "TypeScript", "React · React Native · Expo", "Flutter", "Python · Django", "SQL & bases de données", "Supabase", "API REST", "Git"]],
+      ["#a891ff", "Ingénierie IA", ["Développement agentique (Claude Code)", "Prompt & context engineering", "Développement piloté par les specs avec l'IA", "Prototypage assisté par IA", "IA intégrée aux produits (OCR embarqué)"]],
+      ["#ff8f6b", "Design & outils", ["Figma", "Maquettes & prototypes", "Démos produit"]],
+      ["#eef1f8", "Langues", ["Français (langue maternelle)", "Anglais (professionnel)"]]
+    ],
+    impactEy: "Impact", impactTitle: "Des résultats, chiffrés.",
+    stats: [["+", "60", "%", "de rapidité dans le traitement des dossiers, après numérisation des processus", "IMPACT PLUS"], ["~", "100", "%", "des processus numérisés, en quelques semaines", "Opti-Mall"], ["−", "50", "%", "de déplacements sur site grâce au pilotage à distance", "Opti-Mall"], ["", "85", "%", "d'adoption des nouveaux outils, plus de 30 collaborateurs formés", "IMPACT PLUS"], ["−", "20", "%", "de blocages de sprint, 3 équipes au même rythme", "DreamXR"], ["+", "35", "%", "d'engagement après le déploiement du plan marketing digital", "SOCAR Bénin"], ["", "1", "", "produit livré en solo, sur iOS, Android et web", "SimuFlow"], ["÷", "2", "", "le temps de mise en place d'un workflow : l'objectif de SimuFlow", "Objectif"]],
+    roadmap: "Feuille de route", rmStatus: "Statut : <b>dans les temps</b>. Prochain jalon : un CDI à partir d'octobre 2027.",
+    contactEy: "Contact", contactTitle: "Et si votre équipe était la prochaine escale ?",
+    contactSub: "Un CDI à partir d'octobre 2027, un projet, une question ou simplement un bonjour : votre message arrive directement dans ma boîte mail.",
+    letsBuild: "Construisons ensemble", letsLink: "Échangeons sur LinkedIn", formTitle: "Envoyer un message",
+    name: "Nom", email: "E-mail", message: "Message", optin: "Recevoir aussi la newsletter (un e-mail court quand je lance quelque chose).",
+    send: "Envoyer", sending: "Envoi…", sent: "Message reçu, je vous réponds rapidement.", failed: "L'envoi a échoué. Écrivez-moi directement à loickmian@gmail.com.",
+    newsTitle: "Newsletter", newsText: "Un e-mail court quand je lance quelque chose : SimuFlow, LBT, nouveaux projets. Pas de spam.", subscribe: "M'inscrire", subscribed: "C'est noté, vous êtes inscrit.",
+    direct: "En direct", copy: "Copier l'e-mail", copied: "Copié",
+    endLine: "Voilà mon univers jusqu'ici. On construit la suite ensemble ?",
+    briefTitle: "Le résumé en 30 secondes", briefRole: "Chef de projet digital & builder · IA & innovation",
+    briefIntro: "Chef de projet avec une formation de développeur. Je mène un projet du cadrage jusqu'à l'adoption, et je sais construire le prototype moi-même. Chef de projet ITSM en alternance chez Konica Minolta, en mastère à YNOV Campus Paris, créateur de SimuFlow, fondateur de LBT. Disponible en CDI à partir d'octobre 2027.",
+    secXp: "Expériences", secBuild: "Projets & entrepreneuriat", secField: "Expérience terrain", secSkills: "Compétences clés", secEdu: "Formation & certifications", explore: "Explorer l'univers",
+    briefSkills: ["Gestion de projet", "Scrum & Kanban · PSPO", "ITSM / ITIL", "Modélisation de workflows (draw.io, BPMN)", "Conduite du changement", "HTML · CSS · JavaScript · TypeScript", "React · React Native · Flutter", "Python · Django · SQL · Supabase", "Ingénierie IA (Claude Code)", "Français (langue maternelle)", "Anglais (professionnel)"],
+    resumeHref: "assets/cv/Loick_MIAN_CV_FR.pdf", webgl: "Votre navigateur ne peut pas afficher l'univers 3D, voici donc le résumé."
   }
 };
+const t = () => X[lang];
+const PHASES = ["basecamp", "command", "mission", "frontier"];
+const RM = { basecamp: [2021, 2026.6], command: [2022.6, 2025.9], mission: [2026.7, 2027.8], frontier: [2026.8, 2027.8] };
+
+/* ================= drawings: me, and the ship ================= */
+function astroSVG(p, flag = true) {
+  return `<defs><linearGradient id="${p}v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1236"/><stop offset=".62" stop-color="#2a2d6b"/><stop offset=".63" stop-color="#f2c46d"/><stop offset="1" stop-color="#e48a5c"/></linearGradient>
+    <linearGradient id="${p}s" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#c9d0e2"/></linearGradient></defs>
+    ${flag ? `<line x1="38" y1="26" x2="38" y2="224" stroke="#cfd6e6" stroke-width="3" stroke-linecap="round"/><g class="ex-flag" style="transform-origin:38px 30px"><path d="M37 28 H-12 L-3 42 L-12 56 H37 Z" fill="#f2c46d"/><text x="12" y="47" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="14" fill="#1d1406">LM</text></g>` : ""}
+    <rect x="50" y="84" width="60" height="72" rx="13" fill="#9aa4bf"/>
+    <rect x="58" y="158" width="19" height="50" rx="9" fill="url(#${p}s)"/><rect x="83" y="158" width="19" height="50" rx="9" fill="url(#${p}s)"/>
+    <rect x="53" y="200" width="27" height="17" rx="7" fill="#5d6888"/><rect x="80" y="200" width="27" height="17" rx="7" fill="#5d6888"/>
+    <rect x="52" y="88" width="56" height="84" rx="22" fill="url(#${p}s)"/><rect x="53" y="150" width="54" height="8" fill="#c3cbdd"/>
+    <rect x="65" y="110" width="30" height="22" rx="5" fill="#26305a"/>
+    <circle cx="72" cy="121" r="2.6" fill="#8cc8ff" class="ex-light"/><circle cx="80" cy="121" r="2.6" fill="#f2c46d"/><circle cx="88" cy="121" r="2.6" fill="#6fe3a8" class="ex-light"/>
+    <line x1="55" y1="100" x2="42" y2="146" stroke="#e6eaf3" stroke-width="16" stroke-linecap="round"/><circle cx="41" cy="150" r="8.5" fill="#5d6888"/>
+    <rect x="60" y="85" width="40" height="9" rx="4.5" fill="#c3cbdd"/>
+    <line x1="102" y1="38" x2="110" y2="18" stroke="#c3cbdd" stroke-width="2.5"/><circle cx="110" cy="17" r="3.5" fill="#f2c46d"/>
+    <circle cx="80" cy="58" r="32" fill="url(#${p}s)" stroke="#c3cbdd" stroke-width="1.5"/>
+    <rect x="56" y="41" width="48" height="36" rx="17" fill="url(#${p}v)"/>
+    <ellipse cx="68" cy="51" rx="7" ry="3" fill="#fff" opacity=".55" transform="rotate(-24 68 51)"/>
+    <g class="ex-arm-wave"><line x1="105" y1="100" x2="126" y2="66" stroke="#e6eaf3" stroke-width="16" stroke-linecap="round"/><circle cx="128" cy="62" r="8.5" fill="#5d6888"/></g>`;
+}
+function shuttleSVG() {
+  return `<defs><linearGradient id="shb" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#c3cbdd"/></linearGradient>
+    <linearGradient id="shf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6d8"/><stop offset=".4" stop-color="#f2c46d"/><stop offset="1" stop-color="#e4572e" stop-opacity="0"/></linearGradient></defs>
+    <path class="flame" d="M44 176 Q60 250 76 176 Z" fill="url(#shf)"/>
+    <path d="M28 150 L8 186 L30 180 Z" fill="#f2c46d"/><path d="M92 150 L112 186 L90 180 Z" fill="#f2c46d"/>
+    <path d="M60 8 C 92 40, 96 110, 90 178 L30 178 C 24 110, 28 40, 60 8 Z" fill="url(#shb)"/>
+    <path d="M60 8 C 72 20, 80 34, 84 48 L36 48 C 40 34, 48 20, 60 8 Z" fill="#26305a"/>
+    <circle cx="60" cy="86" r="15" fill="#26305a" stroke="#c3cbdd" stroke-width="3"/><circle cx="60" cy="86" r="9" fill="#8cc8ff" opacity=".6"/>
+    <rect x="44" y="120" width="32" height="40" rx="6" fill="none" stroke="#c3cbdd" stroke-width="2"/>
+    <text x="60" y="146" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="12" fill="#26305a">LM</text>
+    <rect x="34" y="176" width="52" height="8" rx="3" fill="#5d6888"/>`;
+}
 
 /* ================= logos ================= */
+function tile(w) {
+  if (w.logo && w.mask) return `<span class="tile" style="background:${w.tile}"><i class="mask" style="-webkit-mask-image:url(assets/logos/${w.logo});mask-image:url(assets/logos/${w.logo})"></i></span>`;
+  if (w.logo) return `<span class="tile" style="background:${w.tile || "#fff"}"><img src="assets/logos/${w.logo}" alt="${esc(w.en.name)} logo" loading="lazy"></span>`;
+  const m = w.mark.length > 8 ? w.mark.replace(" ", "<br>") : esc(w.mark);
+  return `<span class="tile mark" style="--tc:${w.color};font-size:${w.mark.length > 8 ? 9 : w.mark.length > 3 ? 12 : 16}px" aria-hidden="true">${m}</span>`;
+}
 const logoCache = {};
-async function logoURL(file, color) {
-  if (!file) return null;
-  if (!file.endsWith(".svg") || !color) return "assets/logos/" + file;
-  const key = file + color; if (logoCache[key]) return logoCache[key];
-  try {
-    const txt = await (await fetch("assets/logos/" + file)).text();
-    const colored = txt.replace("<svg ", `<svg fill="${color}" `);
-    return (logoCache[key] = URL.createObjectURL(new Blob([colored], { type: "image/svg+xml" })));
-  } catch (e) { return "assets/logos/" + file; }
+async function logoURL(w) {
+  if (!w.logo) return null;
+  if (!w.mask) return "assets/logos/" + w.logo;
+  if (logoCache[w.id]) return logoCache[w.id];
+  try { const txt = await (await fetch("assets/logos/" + w.logo)).text(); return (logoCache[w.id] = URL.createObjectURL(new Blob([txt.replace("<svg ", `<svg fill="#ffffff" `)], { type: "image/svg+xml" }))); }
+  catch (e) { return "assets/logos/" + w.logo; }
 }
-function insigniaHTML(w) { const n = w.mark.length; return `<span class="insignia" style="--c:${w.color};font-size:${n > 8 ? 9 : n > 5 ? 11 : n > 3 ? 13 : 16}px">${esc(w.mark)}</span>`; }
-async function logoHTML(w, cls = "") {
-  const url = await logoURL(w.logo, w.logoColor);
-  return url ? `<img src="${url}" alt="${esc(w[lang].name)} logo" class="${cls}">` : insigniaHTML(w);
-}
-// Canvas used for the 3D hologram above each world.
+// A clean, readable sign above each world in 3D (no glow).
 async function logoCanvas(w) {
   const cv = document.createElement("canvas"); cv.width = 512; cv.height = 256; const g = cv.getContext("2d");
-  g.clearRect(0, 0, 512, 256);
-  const url = await logoURL(w.logo, w.logoColor || (w.logo && w.logo.endsWith(".svg") ? null : null));
+  const rr = (x, y, ww, hh, r) => { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + ww, y, x + ww, y + hh, r); g.arcTo(x + ww, y + hh, x, y + hh, r); g.arcTo(x, y + hh, x, y, r); g.arcTo(x, y, x + ww, y, r); g.closePath(); };
+  const W = 400, H = 200, X0 = 56, Y0 = 28;
+  rr(X0, Y0, W, H, 34); g.fillStyle = w.logo ? (w.tile || "#ffffff") : "#121a36"; g.fill();
+  g.lineWidth = 4; g.strokeStyle = "rgba(255,255,255,.35)"; g.stroke();
+  const url = await logoURL(w);
   if (url) {
     const img = new Image(); img.crossOrigin = "anonymous"; img.src = url;
-    try { await img.decode(); } catch (e) { return null; }
-    const iw = img.naturalWidth || 240, ih = img.naturalHeight || 240, s = Math.min(380 / iw, 200 / ih);
-    const dw = iw * s, dh = ih * s;
-    g.shadowColor = w.color; g.shadowBlur = 24;
-    g.drawImage(img, (512 - dw) / 2, (256 - dh) / 2, dw, dh);
+    try { await img.decode(); } catch (e) { return cv; }
+    const iw = img.naturalWidth || 240, ih = img.naturalHeight || 240, s = Math.min((W - 60) / iw, (H - 50) / ih);
+    g.drawImage(img, X0 + (W - iw * s) / 2, Y0 + (H - ih * s) / 2, iw * s, ih * s);
     return cv;
   }
-  try { await document.fonts.load('700 64px "Chakra Petch"'); } catch (e) {}
-  // insignia: hexagon frame + mark
-  g.strokeStyle = w.color; g.lineWidth = 6; g.shadowColor = w.color; g.shadowBlur = 20;
-  g.beginPath(); for (let k = 0; k < 6; k++) { const a = Math.PI / 3 * k + Math.PI / 6, x = 256 + Math.cos(a) * 118 * 1.7, y = 128 + Math.sin(a) * 118 * .95; k ? g.lineTo(x, y) : g.moveTo(x, y); } g.closePath(); g.stroke();
-  g.fillStyle = "#ffffff"; g.textAlign = "center"; g.textBaseline = "middle";
-  const fs = w.mark.length > 8 ? 46 : w.mark.length > 4 ? 64 : 92; g.font = `700 ${fs}px "Chakra Petch", sans-serif`;
-  g.fillText(w.mark, 256, 132);
+  try { await document.fonts.load('800 64px "Archivo"'); } catch (e) {}
+  g.fillStyle = w.color; g.textAlign = "center"; g.textBaseline = "middle";
+  const fs = w.mark.length > 8 ? 44 : w.mark.length > 4 ? 64 : 92; g.font = `800 ${fs}px Archivo, Arial, sans-serif`;
+  g.fillText(w.mark, 256, 130);
   return cv;
 }
 
 /* ================= i18n ================= */
 function applyLang() {
+  const T = t();
   document.documentElement.lang = lang;
-  $$("[data-i18n]").forEach(el => { const v = t()[el.dataset.i18n]; if (typeof v === "string") el.textContent = v; });
+  $$("[data-t]").forEach(el => { const v = T[el.dataset.t]; if (typeof v === "string") el.textContent = v; });
+  $$("[data-t-html]").forEach(el => { el.innerHTML = T[el.dataset.tHtml]; });
   $$("[data-lang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
-  $("#arrivalKicker").textContent = `${WORLDS.length} ${t().worlds} · ${SECTORS.length} sectors`.replace("sectors", lang === "fr" ? "secteurs" : "sectors");
-  $("#nextBtn").textContent = t().next + " →";
-  renderPlan(); renderLinks(); renderLabels(); buildBrief();
+  $$(".cv").forEach(a => a.href = T.resumeHref);
+  $("#nextBtn").textContent = T.next + " →";
+  renderPlan(); renderLabels();
   if (current >= 0 && !$("#panel").hidden) renderPanel(current, false);
   if (activeLink) showStory();
+  if (!$("#sheet").hidden) openTab(tab, true);
+  if (!$("#brief").hidden) buildBrief();
+  if (!launched) say(bubbleI);
 }
-$$("[data-lang]").forEach(b => b.addEventListener("click", () => { lang = b.dataset.lang; store.set("lang", lang); applyLang(); audio.blip(1200); }));
+$$("[data-lang]").forEach(b => b.addEventListener("click", () => { lang = b.dataset.lang; store.set("lang", lang); applyLang(); }));
 
-/* ================= intro ================= */
-function bootLines() {
-  const el = $("#boot"); if (reduce) return;
-  const lines = ["> link: cotonou 6.37N → paris 48.86N ...... ok", "> loading missions [15] ..................... ok", "> warp drive ................................ ready"];
-  let i = 0, j = 0;
-  const tick = () => { if (i >= lines.length) return; j++; el.textContent = lines.slice(0, i).join("\n") + (i ? "\n" : "") + lines[i].slice(0, j); if (j >= lines[i].length) { i++; j = 0; setTimeout(tick, 160); } else setTimeout(tick, 12); };
-  setTimeout(tick, 300);
+/* ================= welcome: I introduce myself ================= */
+let bubbleI = 0, typing;
+function say(i, txt) {
+  const el = $("#bubbleText"); txt = txt || t().bubble[i % t().bubble.length];
+  clearInterval(typing);
+  if (reduce) { el.textContent = txt; return; }
+  let k = 0; el.textContent = "";
+  typing = setInterval(() => { el.textContent = txt.slice(0, ++k); if (k >= txt.length) clearInterval(typing); }, 24);
 }
-let holdT0 = 0, holdRaf = 0, launched = false;
-const RING = 439.8;
+$("#astro").innerHTML = astroSVG("a");
+$("#shuttle").innerHTML = shuttleSVG();
+$("#guideAstro").innerHTML = astroSVG("g", false);
+$("#astro").addEventListener("click", () => say(++bubbleI));
+const bubbleTimer = setInterval(() => { if (!launched && document.visibilityState === "visible") say(++bubbleI); else if (launched) clearInterval(bubbleTimer); }, 6500);
+
+const RING = 351.9; let holdT0 = 0, holdRaf = 0;
 function holdFrame(now) {
-  const p = Math.min(1, (now - holdT0) / 1500);
+  const p = Math.min(1, (now - holdT0) / 1300);
   $("#launchRing").style.strokeDashoffset = RING * (1 - p);
-  const n = 3 - Math.floor(p * 3); $("#launchLabel").innerHTML = `<span class="count">${Math.max(1, n)}</span>`;
+  $("#launchLabel").innerHTML = `<span class="count">${Math.max(1, 3 - Math.floor(p * 3))}</span>`;
   if (p >= 1) return launch();
   holdRaf = requestAnimationFrame(holdFrame);
 }
-function holdStart(e) { if (launched) return; e && e.preventDefault(); audio.init(); $("#launchBtn").classList.add("holding"); holdT0 = performance.now(); holdRaf = requestAnimationFrame(holdFrame); }
-function holdEnd() {
-  if (launched) return; cancelAnimationFrame(holdRaf); $("#launchBtn").classList.remove("holding");
-  $("#launchRing").style.strokeDashoffset = RING; $("#launchLabel").textContent = t().hold;
-}
+function holdStart(e) { if (launched) return; e.preventDefault(); $("#launchBtn").classList.add("holding"); holdT0 = performance.now(); holdRaf = requestAnimationFrame(holdFrame); }
+function holdEnd() { if (launched) return; cancelAnimationFrame(holdRaf); $("#launchBtn").classList.remove("holding"); $("#launchRing").style.strokeDashoffset = RING; $("#launchLabel").textContent = t().board; }
 const lb = $("#launchBtn");
 lb.addEventListener("pointerdown", holdStart);
 ["pointerup", "pointerleave", "pointercancel"].forEach(ev => lb.addEventListener(ev, holdEnd));
 lb.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); launch(); } });
 lb.addEventListener("contextmenu", e => e.preventDefault());
 
+function flash() { const f = $("#flash"); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go"); }
 function launch() {
   if (launched) return; launched = true; cancelAnimationFrame(holdRaf);
-  const f = $("#flash"); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go");
-  audio.whoosh(2.2);
-  $("#intro").classList.add("leave"); setTimeout(() => $("#intro").hidden = true, 800);
-  if (!galaxy) return showBrief(true);
-  galaxy.intro(() => { showHUD(); $("#arrival").hidden = false; store.set("launched", true); });
+  $("#launchLabel").textContent = "✓";
+  say(0, t().boarding);
+  const pad = $(".pad"), wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+  (async () => {
+    pad.classList.add("boarding"); await wait(750);
+    pad.classList.add("rumble"); await wait(450);
+    pad.classList.add("liftoff"); $("#welcome").classList.add("leave"); await wait(900);
+    document.body.classList.remove("welcome"); $("#welcome").hidden = true;
+    if (!galaxy) { location.hash = "brief"; return; }
+    flash();
+    galaxy.intro(() => { showHUD(); $("#arrival").hidden = false; guideSay(t().guideIdle); });
+  })();
 }
-function showHUD() { $("#hud").hidden = false; $("#telemetry").hidden = false; if (innerWidth > 1100) $("#plan").hidden = false; }
+function showHUD() { $("#hud").hidden = false; $("#guide").hidden = false; $("#labels").style.display = ""; if (innerWidth > 1100) $("#plan").hidden = false; else $("#planBtn").hidden = false; setTabUI("explore"); }
+function skipWelcome() { launched = true; document.body.classList.remove("welcome"); $("#welcome").hidden = true; if (galaxy) galaxy.skipIntro(); showHUD(); }
 
-/* ================= flight plan ================= */
+/* ================= guide (mini me, in the corner) ================= */
+let guideT;
+function guideSay(txt) { const b = $("#gbubble"); b.textContent = txt; b.classList.remove("on"); void b.offsetWidth; b.classList.add("on"); clearTimeout(guideT); guideT = setTimeout(() => b.classList.remove("on"), 5200); }
+
+/* ================= flight plan (by phase) ================= */
 function renderPlan() {
-  $("#planList").innerHTML = SECTORS.map(s => `<div class="sector"><span>${esc(s[lang])}</span>${WORLDS.map((w, i) => w.sector === s.id ? `<button data-go="${i}" style="--c:${w.color}" class="${seen.has(w.id) ? "seen" : ""}" ${i === current ? 'aria-current="true"' : ""}><i></i>${esc(w[lang].name.split(" · ")[0])}</button>` : "").join("")}</div>`).join("");
-  $$("#planList [data-go]").forEach(b => b.addEventListener("click", () => { go(+b.dataset.go); if (innerWidth <= 1100) $("#plan").classList.remove("open"), $("#plan").hidden = true; }));
+  const span = [2021, 2027.8], pct = v => ((v - span[0]) / (span[1] - span[0])) * 100, cur = current >= 0 ? WORLDS[current].phase : null;
+  $("#planList").innerHTML = PHASES.map(ph => { const [n, k] = t().phases[ph], [a, b] = RM[ph]; return `<div class="phase${ph === cur ? " on" : ""}"><h4>${esc(n)}<small>${esc(k)}</small></h4><div class="pbar"><i style="left:${pct(a)}%;width:${pct(b) - pct(a)}%"></i></div>
+    ${WORLDS.map((w, i) => w.phase === ph ? `<button data-go="${i}" style="--c:${w.color}" class="${seen.has(w.id) ? "seen" : ""}" ${i === current ? 'aria-current="true"' : ""}><i></i>${esc(w[lang].name.split(" · ")[0])}</button>` : "").join("")}</div>`; }).join("");
+  $$("#planList [data-go]").forEach(b => b.addEventListener("click", () => { go(+b.dataset.go); if (innerWidth <= 1100) { $("#plan").classList.remove("open"); $("#plan").hidden = true; } }));
 }
 $("#planBtn").addEventListener("click", () => { const p = $("#plan"); const open = p.hidden; p.hidden = !open; p.classList.toggle("open", open); });
 
-/* ================= labels ================= */
+/* ================= labels over the 3D worlds ================= */
 let labelEls = [];
 function renderLabels() {
   const box = $("#labels"); box.innerHTML = "";
-  labelEls = WORLDS.map((w, i) => {
-    const b = document.createElement("button"); b.className = "wlabel"; b.innerHTML = `${esc(w[lang].name.split(" · ")[0])}<small>${esc(w[lang].role.split(" · ")[0])}</small>`;
-    b.addEventListener("click", () => go(i)); box.appendChild(b); return b;
-  });
+  labelEls = WORLDS.map((w, i) => { const b = document.createElement("button"); b.className = "wlabel"; b.innerHTML = `${esc(w[lang].name.split(" · ")[0])}<small>${esc(w[lang].role.split(" · ")[0])}</small>`; b.addEventListener("click", () => go(i)); box.appendChild(b); return b; });
 }
 function placeLabels() {
-  if (!galaxy || $("#hud").hidden) { $("#labels").style.display = "none"; return; }
+  if (!galaxy || $("#hud").hidden || !$("#sheet").hidden) { $("#labels").style.display = "none"; return; }
   $("#labels").style.display = "";
-  const mobileFocus = innerWidth <= 760 && current >= 0 && !$("#panel").hidden;
-  const placed = [];
+  const mobileFocus = innerWidth <= 760 && current >= 0 && !$("#panel").hidden, placed = [];
   const order = WORLDS.map((_, i) => i).sort((a, b) => (b === current) - (a === current) || b - a);
-  const proj = WORLDS.map((_, i) => galaxy.project(i));
   order.forEach(i => {
-    const el = labelEls[i], p = proj[i];
-    let show = p.visible && p.x > -50 && p.x < innerWidth + 50 && p.y > 40 && p.y < innerHeight && !(mobileFocus && i !== current);
-    if (show) { const box = { x: p.x - 60, y: p.y, w: 120, h: 30 }; if (placed.some(b => Math.abs(b.x - box.x) < box.w && Math.abs(b.y - box.y) < box.h)) show = false; else placed.push(box); }
+    const el = labelEls[i], p = galaxy.project(i);
+    let show = p.visible && p.x > -50 && p.x < innerWidth + 50 && p.y > 70 && p.y < innerHeight && !(mobileFocus && i !== current);
+    if (show) { const bx = { x: p.x - 60, y: p.y }; if (placed.some(b => Math.abs(b.x - bx.x) < 120 && Math.abs(b.y - bx.y) < 34)) show = false; else placed.push(bx); }
     el.style.display = show ? "" : "none";
-    if (show) { el.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, 0)`; el.style.opacity = current >= 0 && i !== current ? (p.dist < 120 ? .55 : .3) : 1; }
+    if (show) { el.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, 0)`; el.style.opacity = current >= 0 && i !== current ? .45 : 1; }
     el.classList.toggle("on", i === current);
     el.classList.toggle("lit", !!activeLink && activeLink.worlds.includes(WORLDS[i].id));
     el.classList.toggle("dim", !!activeLink && !activeLink.worlds.includes(WORLDS[i].id));
   });
-  const w = current >= 0 ? WORLDS[current] : null;
-  $("#telemetry").innerHTML = w
-    ? `target <b>${esc(w[lang].name)}</b><br>${esc(w[lang].place)} · ${lang === "fr" ? "escale" : "stop"} ${current + 1}/${WORLDS.length}`
-    : `${lang === "fr" ? "vue" : "view"} <b>galaxy</b><br>${WORLDS.length} ${t().worlds} · ${seen.size} ${lang === "fr" ? "visités" : "charted"}`;
 }
 
 /* ================= world panel ================= */
-async function renderPanel(i, animate = true) {
-  const w = WORLDS[i], c = w[lang], st = t().status[w.status];
-  const sector = SECTORS.find(s => s.id === w.sector)[lang];
+function renderPanel(i, animate = true) {
+  const w = WORLDS[i], c = w[lang], T = t();
   const linksHere = LINKS.filter(l => l.worlds.includes(w.id));
-  const logo = await logoHTML(w);
-  const word = w.wordmark ? `<img class="wordmark" src="assets/logos/${w.wordmark}" alt="${esc(c.name)}">` : "";
-  const body = `
-    <div class="phead"><div class="plogo">${logo}</div><div class="pmeta"><span class="chip ${w.status}"><span class="dot"></span>${esc(st)}</span><span class="mono">${esc(sector)}</span></div></div>
-    <h2 class="ptitle" id="ptitle">${esc(c.name)}</h2>
-    <p class="prole">${esc(c.role)}</p>
+  $("#pbody").innerHTML = `
+    <div class="phead">${tile(w)}<div class="pmeta"><span class="chip ${w.status}">${esc(T.status[w.status])}</span><span class="mono">${esc(T.phases[w.phase][0])}</span></div></div>
+    <h2 class="ptitle">${esc(c.name)}</h2><p class="prole">${esc(c.role)}</p>
     <span class="pwhen">${redacted(c.period)} · ${esc(c.place)}</span>
-    ${word}
+    ${w.wordmark ? `<img class="wordmark" src="assets/logos/${w.wordmark}" alt="LBT, la boutique tech">` : ""}
     <p class="plede">${esc(c.lede)}</p>
-    ${c.cipher ? `<span class="mono">${esc(t().decodeHint)}</span><ul class="cipher">${c.cipher.map((l, k) => `<li tabindex="0" data-k="${k}">${esc(l.replace(/\[\[|\]\]/g, "").replace(/\S/g, () => GL[(Math.random() * GL.length) | 0]))}</li>`).join("")}</ul>`
-      : `<span class="mono">${esc(t().log)}</span><ul class="plog">${c.log.map(l => `<li>${esc(l)}</li>`).join("")}</ul>`}
-    ${w.gallery ? `<div class="gallery">${w.gallery.map(g => `<img src="${g}" alt="SimuFlow screenshot" loading="lazy">`).join("")}</div>` : ""}
-    ${w.links ? `<div class="plinks">${w.links.map((l, k) => `<a class="btn small ${k ? "" : "primary"}" href="${l.href}" target="_blank" rel="noopener">${esc(l[lang])} ↗</a>`).join("")}</div>` : ""}
-    ${w.stack ? `<div class="stack">${w.stack.map(s => `<img src="assets/logos/${s}.svg" alt="${s}" title="${s}">`).join("")}</div>` : ""}
-    <p class="pproves">${esc(c.proves)}</p>
-    ${linksHere.length ? `<span class="mono">${esc(t().partOf)}</span><div class="tags">${linksHere.map(l => `<button class="tag" data-link="${l.id}">${esc(l[lang].name)}</button>`).join("")}</div>` : ""}`;
-  $("#pbody").innerHTML = body; $("#pbody").scrollTop = 0;
-  if (animate) { decodeTo($("#ptitle"), c.name, 650); const p = $("#panel"); p.classList.remove("swap"); void p.offsetWidth; p.classList.add("swap"); }
-  $("#stopN").textContent = `${t().stop} ${i + 1} ${t().of} ${WORLDS.length}`;
+    ${c.case ? `<div class="case">${c.case.map((v, k) => `<div class="cs${k}"><b>${esc(T.caseL[k])}</b><p>${esc(v)}</p></div>`).join("")}</div>` : ""}
+    ${c.cipher ? `<span class="mono">${esc(T.decodeHint)}</span><ul class="cipher">${c.cipher.map((l, k) => `<li tabindex="0" data-k="${k}">${"▒".repeat(Math.min(40, l.length))}</li>`).join("")}</ul>`
+      : `<details class="log"${c.case ? "" : " open"}><summary>${esc(T.log)}</summary><ul class="plog">${c.log.map(l => `<li>${esc(l)}</li>`).join("")}</ul></details>`}
+    ${w.gallery ? `<div class="gallery">${w.gallery.map(g => `<img src="${g}" alt="SimuFlow screen" loading="lazy">`).join("")}</div>` : ""}
+    ${w.links ? `<div class="plinks">${w.links.map((l, k) => `<a class="btn sm ${k ? "" : "primary"}" href="${l.href}" target="_blank" rel="noopener">${esc(l[lang])} ↗</a>`).join("")}</div>` : ""}
+    ${w.stack ? `<div class="stack">${w.stack.map(s => `<span><img src="assets/logos/${s}.svg" alt="">${s}</span>`).join("")}</div>` : ""}
+    <p class="lesson">${esc(c.proves)}</p>
+    ${linksHere.length ? `<span class="mono">${esc(T.skillsHere)}</span><div class="tags">${linksHere.map(l => `<button class="tag" data-link="${l.id}">${esc(l[lang].name)}</button>`).join("")}</div>` : ""}`;
+  $("#pbody").scrollTop = 0;
+  if (animate) { const p = $("#panel"); p.classList.remove("swap"); void p.offsetWidth; p.classList.add("swap"); }
+  $("#stopN").textContent = `${T.stop} ${i + 1} ${T.of} ${WORLDS.length}`;
   $("#prevBtn").disabled = i === 0;
-  $("#nextBtn").textContent = i === WORLDS.length - 1 ? (t().contact + " →") : (t().next + " →");
+  $("#nextBtn").textContent = i === WORLDS.length - 1 ? `${T.tContact} →` : `${T.next} →`;
   $$("#pbody [data-link]").forEach(b => b.addEventListener("click", () => setLink(b.dataset.link)));
   if (c.cipher) $$("#pbody .cipher li").forEach(li => {
-    const go = () => { if (li.classList.contains("done")) return; li.classList.add("done"); const src = c.cipher[+li.dataset.k]; const plain = src.replace(/\[\[(.*?)\]\]/g, (_, x) => "\u0001".repeat(x.length)); audio.blip(660);
-      const start = performance.now(); const step = now => { const k = Math.min(1, (now - start) / 600); let out = ""; for (let q = 0; q < plain.length; q++) { const ch = plain[q]; out += ch === "\u0001" ? ch : (ch === " " || q / plain.length < k) ? ch : GL[(Math.random() * GL.length) | 0]; }
-        li.innerHTML = esc(out).replace(/\u0001+/g, m => `<span class="redact">${"█".repeat(m.length)}</span>`); if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); };
-    li.addEventListener("click", go); li.addEventListener("pointerenter", go); li.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+    const open = () => { if (li.classList.contains("done")) return; li.classList.add("done"); const src = c.cipher[+li.dataset.k], plain = src.replace(/\[\[(.*?)\]\]/g, "$1"), G = "▒░▓#%&*+=";
+      if (reduce) { li.innerHTML = redacted(src); return; }
+      const t0 = performance.now(); const step = now => { const k = Math.min(1, (now - t0) / 700); li.textContent = [...plain].map((ch, q) => ch === " " || q / plain.length < k ? ch : G[(Math.random() * G.length) | 0]).join(""); if (k < 1) requestAnimationFrame(step); else li.innerHTML = redacted(src); }; requestAnimationFrame(step); };
+    li.addEventListener("click", open); li.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
   });
 }
 function go(i) {
   if (i < 0 || i >= WORLDS.length) return;
-  $("#arrival").hidden = true; $("#linksPanel").hidden = true;
-  const first = $("#panel").hidden;
+  if (!$("#sheet").hidden) closeSheet(true);
+  $("#arrival").hidden = true; $("#linkStory").hidden = true;
+  const prevPhase = current >= 0 ? WORLDS[current].phase : null;
   current = i; seen.add(WORLDS[i].id); store.set("seen", [...seen]);
-  audio.whoosh(1.1);
   if (galaxy) galaxy.focus(i);
-  renderPanel(i, true); $("#panel").hidden = false;
-  if (first) $("#pclose").focus({ preventScroll: true });
+  renderPanel(i, true); $("#panel").hidden = false; document.body.classList.add("panel-open");
   renderPlan();
+  const ph = WORLDS[i].phase;
+  if (ph !== prevPhase) guideSay(t().guide[ph]);
   history.replaceState(null, "", "#w-" + WORLDS[i].id);
 }
-function closePanel() { $("#panel").hidden = true; current = -1; tour = false; if (galaxy) galaxy.overview(); renderPlan(); history.replaceState(null, "", "#galaxy"); }
+function closePanel() { $("#panel").hidden = true; document.body.classList.remove("panel-open"); current = -1; tour = false; if (galaxy) galaxy.overview(); renderPlan(); history.replaceState(null, "", "#explore"); }
 $("#pclose").addEventListener("click", closePanel);
 $("#nextBtn").addEventListener("click", () => current >= WORLDS.length - 1 ? (location.hash = "contact") : go(current + 1));
 $("#prevBtn").addEventListener("click", () => go(current - 1));
 $("#tourBtn").addEventListener("click", () => { tour = true; go(0); });
-$("#freeBtn").addEventListener("click", () => { $("#arrival").hidden = true; });
-$("#brand").addEventListener("click", () => { setLink(null); closePanel(); });
-$("#soundBtn").addEventListener("click", () => audio.toggle());
+$("#freeBtn").addEventListener("click", () => { $("#arrival").hidden = true; guideSay(t().guideIdle); });
+$("#home").addEventListener("click", () => { setLink(null); closePanel(); location.hash = "explore"; });
 
-/* ================= skill links ================= */
-function renderLinks() {
-  $("#linksList").innerHTML = LINKS.map(l => `<button class="lbtn" data-l="${l.id}" aria-pressed="${activeLink && activeLink.id === l.id}">${esc(l[lang].name)}</button>`).join("");
-  $$("#linksList [data-l]").forEach(b => b.addEventListener("click", () => setLink(b.dataset.l)));
-}
+/* ================= skill links lit in the galaxy ================= */
 function showStory() {
   const l = activeLink, s = $("#linkStory");
-  s.innerHTML = `<span class="mono">${esc(t().links)} · ${l.worlds.length} ${t().worlds}</span><h4>${esc(l[lang].name)}</h4><p>${esc(l[lang].text)}</p><div class="tags">${l.worlds.map(id => { const i = WORLDS.findIndex(w => w.id === id); return `<button class="tag" data-go="${i}">${esc(WORLDS[i][lang].name.split(" · ")[0])}</button>`; }).join("")}<button class="tag" data-clear>${esc(t().clear)}</button></div>`;
+  s.innerHTML = `<button class="x" data-clear aria-label="${esc(t().clear)}">✕</button><span class="mono">${l.worlds.length} ${lang === "fr" ? "mondes reliés" : "linked worlds"}</span><h4>${esc(l[lang].name)}</h4><p>${esc(l[lang].text)}</p><div class="tags">${l.worlds.map(id => `<button class="tag" data-go="${idx(id)}">${esc(byId(id)[lang].name.split(" · ")[0])}</button>`).join("")}</div>`;
   s.hidden = false;
   $$("#linkStory [data-go]").forEach(b => b.addEventListener("click", () => { $("#linkStory").hidden = true; go(+b.dataset.go); }));
   $("#linkStory [data-clear]").addEventListener("click", () => setLink(null));
@@ -262,94 +388,166 @@ function setLink(id) {
   const l = LINKS.find(x => x.id === id);
   activeLink = (!l || (activeLink && activeLink.id === id)) ? null : l;
   if (galaxy) galaxy.showLink(activeLink ? activeLink.worlds : null);
-  renderLinks();
-  if (activeLink) { $("#panel").hidden = true; current = -1; if (galaxy) galaxy.overview(); showStory(); audio.blip(520); if (innerWidth <= 760) $("#linksPanel").hidden = true; }
+  if (activeLink) { $("#panel").hidden = true; document.body.classList.remove("panel-open"); current = -1; if (galaxy) galaxy.overview(); $("#arrival").hidden = true; showStory(); }
   else $("#linkStory").hidden = true;
 }
-$("#linksBtn").addEventListener("click", () => { const p = $("#linksPanel"); p.hidden = !p.hidden; if (!p.hidden) { $("#panel").hidden = true; $("#arrival").hidden = true; } });
 
-/* ================= brief ================= */
-async function buildBrief() {
-  const T = t(), byId = id => WORLDS.find(w => w.id === id);
-  const row = async (id, text) => { const w = byId(id), c = w[lang]; return `<div class="xp"><div class="xl">${await logoHTML(w)}</div><span class="when">${redacted(c.period)}</span><div><h3>${esc(c.role)} <span>· ${esc(c.name)}</span></h3><p>${esc(text || c.lede)}</p></div></div>`; };
-  const xp = await Promise.all(["konica", "optimall", "dreamxr", "impact", "socar"].map(id => row(id)));
-  const build = await Promise.all(["simuflow", "lbt", "workshop"].map(id => row(id)));
-  const field = await Promise.all(["intermarche", "alyce", "fiveguys"].map(id => row(id)));
-  const skills = lang === "fr"
-    ? ["Gestion de projet", "Scrum & Kanban", "ITSM / ITIL", "Modélisation de workflows (draw.io, BPMN)", "Conduite du changement", "Jira · ClickUp · Notion", "Prototypage", "React · TypeScript · Python · SQL", "IA générative", "Français (natif)", "Anglais (pro)"]
-    : ["Project management", "Scrum & Kanban", "ITSM / ITIL", "Workflow modelling (draw.io, BPMN)", "Change management", "Jira · ClickUp · Notion", "Prototyping", "React · TypeScript · Python · SQL", "Generative AI", "French (native)", "English (professional)"];
-  const edu = byId("academy")[lang].log;
-  $("#briefBody").innerHTML = `
-    <div class="ov-top"><span class="mono">// ${esc(T.briefTitle)}</span><div class="crow"><div class="lang" role="group" aria-label="Language"><button data-lang2="en" aria-pressed="${lang === "en"}">EN</button><button data-lang2="fr" aria-pressed="${lang === "fr"}">FR</button></div><a class="btn small" href="#galaxy">${esc(T.explore)}</a></div></div>
-    <p id="webglNote" class="mono" hidden>${esc(T.webgl)}</p>
-    <header class="bhead"><h1>Loick Mian</h1><p class="role">${esc(T.briefRole)}</p><p>${esc(T.briefIntro)}</p>
-      <div class="crow"><code>loickmian@gmail.com</code><button class="btn small copy-email">${esc(T.copy)}</button><a class="btn small" href="https://www.linkedin.com/in/loick-mian-843382281" target="_blank" rel="noopener">LinkedIn</a><a class="btn small gold" href="${T.resumeHref}" target="_blank" rel="noopener">${esc(T.resume)}</a><a class="btn small" href="#contact">${esc(T.contact)}</a></div></header>
-    <div class="bsec"><h2>${esc(T.secXp)}</h2>${xp.join("")}</div>
-    <div class="bsec"><h2>${esc(T.secBuild)}</h2>${build.join("")}</div>
-    <div class="bsec"><h2>${esc(T.secField)}</h2>${field.join("")}</div>
-    <div class="bsec"><h2>${esc(T.secSkills)}</h2><div class="skills">${skills.map(s => `<span>${esc(s)}</span>`).join("")}</div></div>
-    <div class="bsec"><h2>${esc(T.secEdu)}</h2><ul class="plog">${edu.map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>`;
-  $$("[data-lang2]").forEach(b => b.addEventListener("click", () => { lang = b.dataset.lang2; store.set("lang", lang); applyLang(); }));
+/* ================= tabs (sheets over the galaxy) ================= */
+function setTabUI(name) { tab = name; $$("#tabs a").forEach(a => a.toggleAttribute("aria-current", a.dataset.tab === name)); $$("#tabs a").forEach(a => { if (a.dataset.tab === name) a.setAttribute("aria-current", "page"); }); }
+function eyebrow(n, label) { return `<p class="eyebrow"><b>0${n}</b>${esc(label)}</p>`; }
+const SHEETS = {
+  about() { const T = t(); return `${eyebrow(1, T.aboutEy)}<h2>${esc(T.aboutTitle)}</h2>
+    <div class="grid2"><div class="card">
+      <svg class="route-map" viewBox="0 0 360 220" aria-hidden="true"><defs><linearGradient id="arcG" x1="0" x2="1"><stop offset="0" stop-color="#f2c46d"/><stop offset="1" stop-color="#8cc8ff"/></linearGradient></defs>
+        <path id="arcPath" d="M60 176 C 120 30, 250 20, 300 60" fill="none" stroke="url(#arcG)" stroke-width="2" stroke-dasharray="4 6"/>
+        <circle cx="60" cy="176" r="6" fill="#f2c46d"/><circle cx="300" cy="60" r="6" fill="#8cc8ff"/>
+        <circle r="4" fill="#fff"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#arcPath"/></animateMotion></circle>
+        <text x="60" y="204" text-anchor="middle">COTONOU</text><text x="300" y="36" text-anchor="middle">PARIS</text></svg>
+      <div class="coords"><span>6.37°N 2.43°E</span><span>→</span><span>48.86°N 2.35°E</span></div><p>${esc(T.aboutCard)}</p></div>
+      <div><p class="big">${esc(T.aboutLede)}</p><ul class="blist">${T.aboutLog.map(l => `<li>${esc(l)}</li>`).join("")}</ul></div></div>
+    <div class="role-box"><p>${esc(T.roleBox)}</p><span>${esc(T.roleSub)}</span></div>
+    <div class="three">${T.principles.map((p, i) => `<div class="card"><span class="n">0${i + 1}</span><h3>${esc(p[0])}</h3><p>${esc(p[1])}</p></div>`).join("")}</div>`; },
+  method() { const T = t(); return `${eyebrow(2, T.methodEy)}<h2>${esc(T.methodTitle)}</h2><p class="sub">${esc(T.methodSub)}</p>
+    <div class="pillars">${T.pillars.map(p => `<div class="pillar" style="--c:${p.c}"><span class="mono">${esc(p.k)}</span><h3>${esc(p.h)}</h3><p>${esc(p.p)}</p><p class="ex">${esc(p.ex)}</p></div>`).join("")}</div>
+    <ol class="pipeline">${T.pipeline.map((p, i) => `<li><span class="pn">${i + 1}</span><h3>${esc(p[0])}</h3><p>${esc(p[1])}</p></li>`).join("")}</ol>`; },
+  skills() { const T = t(); return `${eyebrow(3, T.skillsEy)}<h2>${esc(T.skillsTitle)}</h2>
+    <div class="helm-grid"><div class="wheel-box"><svg class="wheel" id="wheel" viewBox="-160 -160 320 320" role="img" aria-label="Skills wheel"></svg><div class="pointer"></div></div>
+      <div><div class="skill-tabs" role="tablist">${LINKS.map((l, i) => `<button role="tab" data-skill="${i}" aria-selected="${i === skill}">${esc(l[lang].name)}</button>`).join("")}</div><div class="card skill-card" id="skillCard"></div></div></div>
+    <div class="matrix">${T.matrix.map(([c, n, items]) => `<div class="card" style="--c:${c}"><h3><i></i>${esc(n)}</h3><div class="chips">${items.map(s => `<span>${esc(s)}</span>`).join("")}</div></div>`).join("")}</div>`; },
+  impact() { const T = t(), span = [2021, 2027.8], pct = v => ((v - span[0]) / (span[1] - span[0])) * 100; return `${eyebrow(4, T.impactEy)}<h2>${esc(T.impactTitle)}</h2>
+    <div class="stat-grid">${T.stats.map(s => `<div class="stat"><b>${s[0] ? `<small>${s[0]}</small>` : ""}<span class="n" data-n="${s[1]}" style="display:inline;margin:0;font:inherit;color:inherit">${s[1]}</span><sup>${s[2]}</sup></b><span>${esc(s[3])}</span><em>${esc(s[4])}</em></div>`).join("")}</div>
+    <div class="card roadmap"><h3>${esc(T.roadmap)}</h3><div class="rm" style="margin-top:14px">${PHASES.map(ph => { const [a, b] = RM[ph]; return `<span>${esc(T.phases[ph][0])}</span><div class="bar"><i style="left:${pct(a)}%;width:${pct(b) - pct(a)}%"></i></div>`; }).join("")}</div>
+      <div class="rm-axis"><span>2021</span><span>2023</span><span>2025</span><span>2027</span></div><p class="rm-status">${T.rmStatus}</p></div>`; },
+  contact() { const T = t(); return `<div class="contact-head"><div>${eyebrow(5, T.contactEy)}<h2>${esc(T.contactTitle)}</h2><p class="sub">${esc(T.contactSub)}</p>
+      <div class="row" style="margin-top:22px"><button class="btn primary" id="toForm">${esc(T.letsBuild)}</button><a class="btn" href="https://www.linkedin.com/in/loick-mian-843382281" target="_blank" rel="noopener">${esc(T.letsLink)} ↗</a></div></div>
+      <div class="endguide" aria-hidden="true"><div class="bubble on">${esc(T.endLine)}</div><svg class="astro" viewBox="0 0 160 230">${astroSVG("e")}</svg></div></div>
+    <div class="contact-grid"><form class="card cform" id="cform" novalidate><h3>${esc(T.formTitle)}</h3>
+        <div class="field"><label for="cName">${esc(T.name)}</label><input id="cName" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="cEmail">${esc(T.email)}</label><input id="cEmail" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="cMsg">${esc(T.message)}</label><textarea id="cMsg" name="message" required></textarea></div>
+        <label class="check"><input type="checkbox" name="newsletter"><span>${esc(T.optin)}</span></label>
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn gold" type="submit">${esc(T.send)}</button><p class="formmsg" id="cOut" role="status"></p></form>
+      <div class="cside"><form class="card" id="nform" novalidate><h3>${esc(T.newsTitle)}</h3><p>${esc(T.newsText)}</p><div class="nrow"><input id="nEmail" type="email" autocomplete="email" required aria-label="${esc(T.email)}" placeholder="you@company.com"><button class="btn gold" type="submit">${esc(T.subscribe)}</button></div><p class="formmsg" id="nOut" role="status"></p></form>
+        <div class="card direct"><span class="mono">${esc(T.direct)}</span><code>loickmian@gmail.com</code><div class="row"><button class="btn sm copy-email">${esc(T.copy)}</button><a class="btn sm" href="https://www.linkedin.com/in/loick-mian-843382281" target="_blank" rel="noopener">LinkedIn</a><a class="btn sm" href="https://github.com/mloick" target="_blank" rel="noopener">GitHub</a></div></div></div></div>`; }
+};
+function openTab(name, silent) {
+  if (name === "explore" || !SHEETS[name]) { closeSheet(); return; }
+  $("#arrival").hidden = true;
+  $("#sheetBody").innerHTML = SHEETS[name]();
+  $("#sheet").hidden = false; document.body.classList.add("sheet-open");
+  if (!silent) $("#sheet .sheet-in").scrollTop = 0;
+  setTabUI(name);
+  if (name === "skills") { buildWheel(); showSkill(skill, true); $$("#sheetBody [data-skill]").forEach(b => b.addEventListener("click", () => { helmTouched = true; showSkill(+b.dataset.skill); })); }
+  if (name === "impact") $$("#sheetBody .stat .n").forEach(countUp);
+  if (name === "contact") bindForms();
   bindCopy();
 }
-function showBrief(noGL) { $("#brief").hidden = false; $("#brief").scrollTop = 0; if (noGL) { const n = $("#webglNote"); if (n) n.hidden = false; } }
+function closeSheet(keepHash) { $("#sheet").hidden = true; document.body.classList.remove("sheet-open"); setTabUI("explore"); if (!keepHash && location.hash && !location.hash.startsWith("#w-") && location.hash !== "#explore") history.replaceState(null, "", "#explore"); }
+$("#sheetClose").addEventListener("click", () => { closeSheet(); });
+function countUp(el) {
+  const n = +el.dataset.n; if (reduce || n < 3) return;
+  const t0 = performance.now(); const step = now => { const k = Math.min(1, (now - t0) / 1100); el.textContent = Math.round(n * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step);
+}
 
-/* ================= contact & newsletter ================= */
+/* the helm: six skills on a ship's wheel */
+let skill = 0, turned = 0, helmTouched = false;
+function buildWheel() {
+  const spokes = LINKS.map((l, i) => { const a = i * Math.PI / 3, x = Math.sin(a), y = -Math.cos(a);
+    return `<g class="spoke" data-skill="${i}"><line x1="${x * 30}" y1="${y * 30}" x2="${x * 124}" y2="${y * 124}" stroke="#2c3768" stroke-width="9" stroke-linecap="round"/><circle class="hd" cx="${x * 138}" cy="${y * 138}" r="18"/><text class="num" x="${x * 138}" y="${y * 138 + 4.5}" text-anchor="middle" style="transform-box:fill-box;transform-origin:center">0${i + 1}</text></g>`; }).join("");
+  const ticks = Array.from({ length: 36 }, (_, i) => { const a = i * Math.PI / 18; return `<line x1="${Math.sin(a) * 100}" y1="${-Math.cos(a) * 100}" x2="${Math.sin(a) * 106}" y2="${-Math.cos(a) * 106}" stroke="rgba(242,196,109,.35)"/>`; }).join("");
+  $("#wheel").innerHTML = `<g class="rot" id="wheelRot" style="transform:rotate(${-turned * 60}deg)"><circle r="112" fill="none" stroke="#2c3768" stroke-width="14"/><circle r="112" fill="none" stroke="rgba(242,196,109,.5)"/>${ticks}${spokes}<circle r="34" fill="#0d1330" stroke="#f2c46d" stroke-width="1.5"/><text id="hubTxt" y="5" text-anchor="middle" font-family="Archivo,Arial" font-size="15" font-weight="800" fill="#f2c46d" style="transform-box:fill-box;transform-origin:center">LM</text></g>`;
+  $$("#wheel .spoke").forEach(g => g.addEventListener("click", () => { helmTouched = true; showSkill(+g.dataset.skill); }));
+}
+function showSkill(i, silent) {
+  if (!$("#wheel")) return;
+  let d = ((i - skill) % 6 + 6) % 6; if (d > 3) d -= 6; turned += d; skill = i;
+  const rot = -turned * 60;
+  $("#wheelRot").style.transform = `rotate(${rot}deg)`;
+  $$("#wheel .num, #hubTxt").forEach(n => n.style.transform = `rotate(${-rot}deg)`);
+  $$("#wheel .spoke").forEach(g => g.classList.toggle("on", +g.dataset.skill === i));
+  $$("#sheetBody [role=tab]").forEach(b => b.setAttribute("aria-selected", String(+b.dataset.skill === i)));
+  const L = LINKS[i], T = t();
+  $("#skillCard").innerHTML = `<span class="mono">${esc(T.spoke)} 0${i + 1} / 06</span><h3>${esc(L[lang].name)}</h3><p>${esc(L[lang].text)}</p>
+    <p class="mono" style="margin-top:18px">${esc(T.usedAt)}</p><div class="where">${L.worlds.map(id => `<button data-go="${idx(id)}">${tile(byId(id))}${esc(byId(id)[lang].name.split(" · ")[0])}</button>`).join("")}</div>
+    <button class="btn sm gold" style="margin-top:18px" id="lightBtn">${esc(T.light)} ✦</button>`;
+  $$("#skillCard [data-go]").forEach(b => b.addEventListener("click", () => go(+b.dataset.go)));
+  $("#lightBtn").addEventListener("click", () => { closeSheet(); setLink(L.id); });
+  if (!silent) { const c = $("#skillCard"); c.style.animation = "none"; void c.offsetWidth; c.style.animation = "swap .45s"; }
+}
+setInterval(() => { if (!helmTouched && !reduce && tab === "skills" && !$("#sheet").hidden) showSkill((skill + 1) % 6); }, 5000);
+
+/* ================= 30-second brief ================= */
+function buildBrief() {
+  const T = t();
+  const row = id => { const w = byId(id), c = w[lang]; return `<div class="xp">${tile(w)}<span class="when">${redacted(c.period)}</span><div><h4>${esc(c.role)} <span>· ${esc(c.name)}</span></h4><p>${esc(c.case ? c.case[2] : c.lede)}</p></div></div>`; };
+  $("#briefBody").innerHTML = `<p class="eyebrow"><b>30s</b>${esc(T.briefTitle)}</p>
+    <p class="mono" id="webglNote" hidden style="margin-bottom:14px">${esc(T.webgl)}</p>
+    <header class="bhead"><h2>Loick Mian</h2><p class="role">${esc(T.briefRole)}</p><p>${esc(T.briefIntro)}</p>
+      <div class="row" style="margin-top:16px"><a class="btn gold sm" href="${T.resumeHref}" target="_blank" rel="noopener">${esc(T.resume)} (PDF)</a><button class="btn sm copy-email">${esc(T.copy)}</button><a class="btn sm" href="https://www.linkedin.com/in/loick-mian-843382281" target="_blank" rel="noopener">LinkedIn</a><a class="btn sm" href="#contact">${esc(T.tContact)}</a>${launched ? "" : `<a class="btn sm primary" href="#explore">${esc(T.explore)}</a>`}</div></header>
+    <div class="bsec"><h3>${esc(T.secXp)}</h3>${["konica", "optimall", "dreamxr", "impact", "socar"].map(row).join("")}</div>
+    <div class="bsec"><h3>${esc(T.secBuild)}</h3>${["simuflow", "lbt", "workshop"].map(row).join("")}</div>
+    <div class="bsec"><h3>${esc(T.secField)}</h3>${["intermarche", "alyce", "fiveguys"].map(row).join("")}</div>
+    <div class="bsec"><h3>${esc(T.secSkills)}</h3><div class="chips">${T.briefSkills.map(s => `<span>${esc(s)}</span>`).join("")}</div></div>
+    <div class="bsec"><h3>${esc(T.secEdu)}</h3><ul class="blist">${byId("academy")[lang].log.map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>`;
+  bindCopy();
+}
+$("#briefClose").addEventListener("click", () => { $("#brief").hidden = true; history.replaceState(null, "", launched ? "#explore" : location.pathname + location.search); });
+
+/* ================= contact & newsletter (Web3Forms) ================= */
 async function send(payload, out, okText) {
   out.className = "formmsg"; out.textContent = t().sending;
-  if (!WEB3FORMS_KEY) { out.textContent = t().notReady; return false; }
   try {
-    const r = await fetch("https://api.web3forms.com/submit", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ access_key: WEB3FORMS_KEY, from_name: "Portfolio · Mission Control", ...payload }) });
+    const r = await fetch("https://api.web3forms.com/submit", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ access_key: WEB3FORMS_KEY, from_name: "Portfolio · Loick Mian", ...payload }) });
     const j = await r.json(); if (!j.success) throw new Error(j.message);
-    out.className = "formmsg ok"; out.textContent = okText; audio.blip(990); return true;
+    out.className = "formmsg ok"; out.textContent = okText; return true;
   } catch (e) { out.className = "formmsg err"; out.textContent = t().failed; return false; }
 }
-$("#cform").addEventListener("submit", async e => {
-  e.preventDefault(); const f = e.target;
-  if (f.botcheck.checked) return;
-  if (!f.reportValidity()) return;
-  const ok = await send({ subject: `New message from ${f.name.value} (portfolio)`, name: f.name.value, email: f.email.value, message: f.message.value, newsletter: f.newsletter.checked ? "yes" : "no", language: lang }, $("#cMsgOut"), t().sent);
-  if (ok) f.reset();
-});
-$("#nform").addEventListener("submit", async e => {
-  e.preventDefault(); const f = e.target; if (!f.reportValidity()) return;
-  const ok = await send({ subject: "New newsletter subscriber (portfolio)", email: $("#nEmail").value, message: `Newsletter signup: ${$("#nEmail").value} (${lang})` }, $("#nMsgOut"), t().subscribed);
-  if (ok) f.reset();
-});
+function bindForms() {
+  $("#toForm").addEventListener("click", () => { $("#cName").focus(); $("#cform").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }); });
+  $("#cform").addEventListener("submit", async e => {
+    e.preventDefault(); const f = e.target; if (f.botcheck.checked || !f.reportValidity()) return;
+    if (await send({ subject: `New message from ${f.name.value} (portfolio)`, name: f.name.value, email: f.email.value, message: f.message.value, newsletter: f.newsletter.checked ? "yes" : "no", language: lang }, $("#cOut"), t().sent)) f.reset();
+  });
+  $("#nform").addEventListener("submit", async e => {
+    e.preventDefault(); const f = e.target; if (!f.reportValidity()) return;
+    if (await send({ subject: "New newsletter subscriber (portfolio)", email: $("#nEmail").value, message: `Newsletter signup: ${$("#nEmail").value} (${lang})` }, $("#nOut"), t().subscribed)) f.reset();
+  });
+}
 function bindCopy() {
   $$(".copy-email").forEach(b => { if (b.dataset.bound) return; b.dataset.bound = 1; b.addEventListener("click", async () => {
-    try { await navigator.clipboard.writeText("loickmian@gmail.com"); b.textContent = t().copied; } catch (e) { const c = b.parentElement.querySelector("code") || document.querySelector(".crow code"); const r = document.createRange(); r.selectNodeContents(c); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
-    setTimeout(() => b.textContent = t().copy, 2000); }); });
+    try { await navigator.clipboard.writeText("loickmian@gmail.com"); b.textContent = t().copied; } catch (e) { b.textContent = "loickmian@gmail.com"; }
+    setTimeout(() => b.textContent = t().copy, 2200); }); });
 }
 
 /* ================= routing ================= */
 function route() {
   const h = location.hash.slice(1);
-  $("#brief").hidden = h !== "brief";
-  $("#contact").hidden = h !== "contact";
-  if (h === "brief") { showBrief(!galaxy); return; }
-  if (h === "contact") { $("#contactKicker").textContent = current === WORLDS.length - 1 || tour ? "// " + t().end : "// Contact"; return; }
-  if (h === "galaxy" || h.startsWith("w-")) {
-    if (!launched) { launched = true; $("#intro").hidden = true; if (galaxy) galaxy.skipIntro(); showHUD(); }
-    if (h.startsWith("w-")) { const i = WORLDS.findIndex(w => "w-" + w.id === h); if (i >= 0 && i !== current) go(i); }
-  }
+  if (h === "brief") { buildBrief(); $("#brief").hidden = false; $("#brief .sheet-in").scrollTop = 0; if (!galaxy) $("#webglNote").hidden = false; return; }
+  $("#brief").hidden = true;
+  if (!h) return;
+  if (!launched) skipWelcome();
+  if (SHEETS[h]) return openTab(h);
+  if (h === "explore") return closeSheet(true);
+  if (h.startsWith("w-")) { const i = WORLDS.findIndex(w => "w-" + w.id === h); if (i >= 0 && i !== current) go(i); }
 }
 addEventListener("hashchange", route);
 addEventListener("keydown", e => {
   if (e.target.matches("input, textarea")) return;
-  if (e.key === "Escape") { if (!$("#brief").hidden || !$("#contact").hidden) location.hash = launched ? "galaxy" : ""; else if (!$("#panel").hidden) closePanel(); else if (activeLink) setLink(null); }
-  if (!$("#panel").hidden && current >= 0) { if (e.key === "ArrowRight") $("#nextBtn").click(); if (e.key === "ArrowLeft" && current > 0) go(current - 1); }
+  if (e.key === "Escape") { if (!$("#brief").hidden) $("#briefClose").click(); else if (!$("#sheet").hidden) closeSheet(); else if (!$("#panel").hidden) closePanel(); else if (activeLink) setLink(null); }
+  if (!$("#panel").hidden && $("#sheet").hidden && current >= 0) { if (e.key === "ArrowRight") $("#nextBtn").click(); if (e.key === "ArrowLeft" && current > 0) go(current - 1); }
 });
 addEventListener("pointermove", e => galaxy && galaxy.setMouse(e.clientX / innerWidth * 2 - 1, e.clientY / innerHeight * 2 - 1));
-$("#gl").addEventListener("click", e => { if (!galaxy || $("#hud").hidden) return; const i = galaxy.pick(e.clientX, e.clientY); if (i >= 0) go(i); });
+$("#gl").addEventListener("click", e => { if (!galaxy || $("#hud").hidden || !$("#sheet").hidden) return; const i = galaxy.pick(e.clientX, e.clientY); if (i >= 0) go(i); });
 addEventListener("resize", () => galaxy && galaxy.resize());
 
 /* ================= boot ================= */
 async function boot() {
-  applyLang(); bindCopy(); bootLines();
+  document.body.classList.add("welcome");
+  applyLang(); say(0);
   try {
     const { createGalaxy } = await import("./scene.js");
-    galaxy = createGalaxy($("#gl"), WORLDS, { reduce, maxDt: location.search.includes("test") ? .5 : .05, logoCanvas, onFrame: placeLabels, onWarp: () => { const f = $("#flash"); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go"); } });
+    galaxy = createGalaxy($("#gl"), WORLDS, { reduce, calm: true, maxDt: location.search.includes("test") ? .5 : .05, logoCanvas, onFrame: placeLabels, onWarp: flash });
   } catch (e) { console.error(e); galaxy = null; }
   if (location.hash) route();
 }

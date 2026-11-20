@@ -28,7 +28,8 @@ export function createGalaxy(canvas, worlds, opts = {}) {
 
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth * (mobile ? .5 : .75), innerHeight * (mobile ? .5 : .75)), .95, .5, .32);
+  const BLOOM = opts.calm ? [.55, .4, .85] : [.95, .5, .32];
+  const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth * (mobile ? .5 : .75), innerHeight * (mobile ? .5 : .75)), BLOOM[0], BLOOM[1], BLOOM[2]);
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
@@ -151,15 +152,16 @@ export function createGalaxy(canvas, worlds, opts = {}) {
   }
   function hologram(tex, color) {
     return new THREE.ShaderMaterial({
-      uniforms: { uTex: { value: tex }, uTime: { value: 0 }, uColor: { value: new THREE.Color(color) }, uOn: { value: .55 } },
+      uniforms: { uTex: { value: tex }, uTime: { value: 0 }, uColor: { value: new THREE.Color(color) }, uOn: { value: .55 }, uCalm: { value: opts.calm ? 1 : 0 } },
       vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
-      fragmentShader: `uniform sampler2D uTex; uniform float uTime; uniform vec3 uColor; uniform float uOn; varying vec2 vUv;
+      fragmentShader: `uniform sampler2D uTex; uniform float uTime; uniform vec3 uColor; uniform float uOn; uniform float uCalm; varying vec2 vUv;
         void main(){ vec2 uv = vUv; float g = step(.985, fract(uTime*.7 + uv.y*.1)) * .02; uv.x += g*sin(uv.y*80.);
           vec4 t = texture2D(uTex, uv); float scan = .7 + .3*sin(uv.y*220. - uTime*6.);
           float flick = .85 + .15*sin(uTime*23.)*sin(uTime*7.);
           vec3 c = mix(t.rgb, uColor, .25) * scan * flick * 1.5;
-          gl_FragColor = vec4(c, t.a * uOn * (.85 + .15*scan)); }`,
-      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide
+          gl_FragColor = vec4(c, t.a * uOn * (.85 + .15*scan));
+          if (uCalm > .5) gl_FragColor = vec4(texture2D(uTex, vUv).rgb * .82, texture2D(uTex, vUv).a * .96); }`,
+      transparent: true, depthWrite: false, blending: opts.calm ? THREE.NormalBlending : THREE.AdditiveBlending, side: THREE.DoubleSide
     });
   }
 
@@ -221,7 +223,7 @@ export function createGalaxy(canvas, worlds, opts = {}) {
 
     // logo hologram above the world
     const holo = new THREE.Group(); holo.position.y = size * 2.3 + 2; g.add(holo);
-    const cone = new THREE.Mesh(new THREE.ConeGeometry(size*1.1, size*2.3 + 2 - size, 32, 1, true), new THREE.MeshBasicMaterial({ color: w.color, transparent: true, opacity: .07, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(size*1.1, size*2.3 + 2 - size, 32, 1, true), new THREE.MeshBasicMaterial({ color: w.color, transparent: true, opacity: opts.calm ? .025 : .07, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
     cone.position.y = -(size*2.3 + 2 - size)/2; cone.rotation.x = Math.PI; holo.add(cone);
     const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), hologram(null, w.color));
     holo.add(plane); plane.visible = false;
@@ -278,7 +280,7 @@ export function createGalaxy(canvas, worlds, opts = {}) {
 
   /* ---------- UFOs ---------- */
   const ufos = [];
-  for (let k = 0; k < (mobile ? 2 : 4); k++) {
+  for (let k = 0; k < (opts.calm ? 0 : mobile ? 2 : 4); k++) {
     const u = new THREE.Group();
     const disc = new THREE.Mesh(new THREE.SphereGeometry(2.2, 32, 16), new THREE.MeshStandardMaterial({ color: 0x9aa3b5, metalness: .9, roughness: .25, emissive: 0x111111 })); disc.scale.y = .22;
     const dome = new THREE.Mesh(new THREE.SphereGeometry(.9, 24, 12, 0, TAU, 0, Math.PI/2), new THREE.MeshBasicMaterial({ color: 0x8dffb0, transparent: true, opacity: .8 })); dome.position.y = .3;
@@ -418,7 +420,7 @@ export function createGalaxy(canvas, worlds, opts = {}) {
       streakGeo.attributes.position.needsUpdate = true;
     }
     camera.fov = 55 + warpPower * 32; camera.updateProjectionMatrix();
-    bloom.strength = .95 + warpPower * 1.1;
+    bloom.strength = BLOOM[0] + warpPower * 1.1;
 
     // camera
     if (cam.t < 1) {
