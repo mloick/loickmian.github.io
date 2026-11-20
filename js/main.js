@@ -24,15 +24,24 @@ const X = {
     heroLead: "I'm Loick Mian, Digital Project Manager & Builder. My job is to solve real problems with solutions people actually use: a clearer process, a tool, an app, an AI workflow. From the first sketch to adoption.",
     board: "Board", boardTitle: "Board the ship", boardHint: "Hold the button. I'll show you around.",
     briefLink: "In a hurry? The 30-second brief",
-    bubble: ["Hi, I'm Loick. Welcome to my universe!", "I'll be your guide. Hop in the ship when you're ready.", "Fun fact: I designed and built this whole site.", "Hold the yellow button and we're off."],
+    bubble: ["Hi, I'm Loick. Welcome to my universe!", "I'll be your guide. Hop in the ship when you're ready.", "Fun fact: I designed and built this whole site.", "Hold the yellow button and we're off.", "Click on me to learn more about me."],
     boarding: "Buckle up!",
     tExplore: "Explore", tAbout: "About", tMethod: "Method", tSkills: "Skills", tImpact: "Impact", tContact: "Contact",
-    flightPlan: "Flight plan",
+    flightPlan: "Flight plan", home: "Home", backHome: "Back to the home screen", meetMe: "Click me to learn more about me",
+    side: { studies: "Student job · alongside my studies", msc: "Student job · alongside my MSc year 1 at YNOV" }, sideGroup: "Student jobs, alongside my studies",
+    kpiTitle: "In numbers", goal: "Goal", seeMission: "See the mission",
+    triadEy: "Where I work", triadTitle: "Business × Tech × AI. My role sits where they meet.",
+    triad: [
+      { k: "biz", n: "Business", q: "What's really at stake?", p: "A delay, a cost, a team running out of steam. I frame the need with the people who live it, and we agree on what success looks like.", ex: "Opti-Mall · SOCAR · LBT" },
+      { k: "tech", n: "Tech", q: "What's the simplest solution that works?", p: "With a software development background, I write specs developers trust, and I can build the first version myself: web, mobile, back end.", ex: "SimuFlow · IMPACT PLUS · Konica Minolta" },
+      { k: "ai", n: "AI", q: "Where does AI remove real work?", p: "I use AI like an engineer: coding agents run with clear specs, curated context, small iterations, review and tests. And I build it into products where it saves time.", ex: "Claude Code · on-device text recognition in SimuFlow" },
+      { k: "core", n: "Solutions people use", q: "The overlap is where I work.", p: "A tool only counts once people adopt it. Training, feedback and change management are part of every plan I write.", ex: "85% adoption at IMPACT PLUS" }
+    ],
     arrivalKicker: "15 stops · 4 phases", arrivalTitle: "Welcome aboard. Here's my universe.",
     arrivalText: "Each world is a job, a mission or something I built. The guided tour goes from where I started to what I'm building now. The tabs above stay open to you at any time.",
     tour: "Start the guided tour", free: "Explore freely",
     phases: { basecamp: ["Basecamp", "2021 – 2026"], command: ["First commands", "2022 – 2025"], mission: ["Current mission", "2026 – today"], frontier: ["New frontiers", "Now → 2027"] },
-    guide: { basecamp: "This is where it all started: code, and real jobs alongside it.", command: "My first projects as a project manager.", mission: "This is where I am today.", frontier: "And this is what I'm building next." },
+    guide: { basecamp: "Where it all started: my studies, with student jobs alongside.", command: "My first projects as a project manager.", mission: "This is where I am today.", frontier: "And this is what I'm building next." },
     guideIdle: "Click any world, or let me take you on the tour.",
     next: "Next stop", stop: "Stop", of: "of", end: "That's the tour. Shall we talk?",
     caseL: ["Problem", "What I did", "Result"], log: "The details", skillsHere: "Skills at work here", clear: "Clear",
@@ -67,7 +76,7 @@ const X = {
     ],
     // impact
     impactEy: "Impact", impactTitle: "Results, in numbers.",
-    stats: [["+", "60", "%", "faster case processing after digitising internal processes", "IMPACT PLUS"], ["~", "100", "%", "of processes digitised, in a few weeks", "Opti-Mall"], ["−", "50", "%", "site trips, thanks to remote project management", "Opti-Mall"], ["", "85", "%", "adoption of the new tools, 30+ colleagues trained", "IMPACT PLUS"], ["−", "20", "%", "sprint blockers, 3 teams in one rhythm", "DreamXR"], ["+", "35", "%", "engagement after the digital marketing rollout", "SOCAR Benin"], ["", "1", "", "product shipped solo, on iOS, Android and web", "SimuFlow"], ["÷", "2", "", "workflow set-up time: the goal SimuFlow is built for", "Goal"]],
+    stats: [["+", "60", "%", "faster case processing after digitising internal processes", "IMPACT PLUS", "impact"], ["~", "100", "%", "of processes digitised, in a few weeks", "Opti-Mall", "optimall"], ["−", "50", "%", "site trips, thanks to remote project management", "Opti-Mall", "optimall"], ["", "85", "%", "adoption of the new tools, 30+ colleagues trained", "IMPACT PLUS", "impact"], ["−", "20", "%", "sprint blockers, 3 teams in one rhythm", "DreamXR", "dreamxr"], ["+", "35", "%", "engagement after the digital marketing rollout", "SOCAR Benin", "socar"], ["", "1", "", "product shipped solo, on iOS, Android and web", "SimuFlow", "simuflow"], ["÷", "2", "", "workflow set-up time: the goal SimuFlow is built for", "Goal", "simuflow"]],
     roadmap: "Roadmap", rmStatus: "Status: <b>on track</b>. Next milestone: a permanent role from October 2027.",
     // contact
     contactEy: "Contact", contactTitle: "Your team could be the next stop.",
@@ -81,7 +90,7 @@ const X = {
     // brief
     briefTitle: "The 30-second brief", briefRole: "Digital Project Manager & Builder · AI & Innovation",
     briefIntro: "Project manager with a software development background. I take projects from framing to adoption, and I can build the prototype myself. ITSM project manager (work-study) at Konica Minolta, MSc student at YNOV Campus Paris, builder of SimuFlow, founder of LBT. Open to permanent roles from October 2027.",
-    secXp: "Experience", secBuild: "Builder & founder", secField: "Field experience", secSkills: "Key skills", secEdu: "Education & certifications", explore: "Explore the universe",
+    secXp: "Experience", secBuild: "Builder & founder", secField: "Student jobs, alongside my studies", secSkills: "Key skills", secEdu: "Education & certifications", explore: "Explore the universe",
     briefSkills: ["Project management", "Scrum & Kanban · PSPO", "ITSM / ITIL", "Workflow modelling (draw.io, BPMN)", "Change management", "HTML · CSS · JavaScript · TypeScript", "React · React Native · Flutter", "Python · Django · SQL · Supabase", "AI engineering (Claude Code)", "French (native)", "English (professional)"],
     resumeHref: "assets/cv/Loick_MIAN_Resume_EN.pdf", webgl: "Your browser can't display the 3D universe, so here is the brief."
   },
@@ -91,15 +100,24 @@ const X = {
     heroLead: "Je suis Loick Mian, chef de projet digital et builder. Mon métier : résoudre de vrais problèmes avec des solutions que les gens utilisent vraiment. Un processus plus clair, un outil, une application, un workflow IA. Du premier croquis jusqu'à l'adoption.",
     board: "Embarquer", boardTitle: "Montez à bord", boardHint: "Maintenez le bouton, je vous fais visiter.",
     briefLink: "Pressé ? Le résumé en 30 secondes",
-    bubble: ["Bonjour, moi c'est Loick. Bienvenue dans mon univers !", "Je serai votre guide. Montez à bord quand vous êtes prêt.", "Petit secret : j'ai conçu et codé ce site de A à Z.", "Maintenez le bouton jaune, et c'est parti."],
+    bubble: ["Bonjour, moi c'est Loick. Bienvenue dans mon univers !", "Je serai votre guide. Montez à bord quand vous êtes prêt.", "Petit secret : j'ai conçu et codé ce site de A à Z.", "Maintenez le bouton jaune, et c'est parti.", "Cliquez sur moi pour en savoir plus."],
     boarding: "Attachez vos ceintures !",
     tExplore: "Explorer", tAbout: "Profil", tMethod: "Méthode", tSkills: "Compétences", tImpact: "Impact", tContact: "Contact",
-    flightPlan: "Plan de vol",
+    flightPlan: "Plan de vol", home: "Accueil", backHome: "Retour à l'accueil", meetMe: "Cliquez sur moi pour en savoir plus",
+    side: { studies: "Job étudiant · en parallèle de mes études", msc: "Job étudiant · en parallèle de mon M1 à YNOV" }, sideGroup: "Jobs étudiants, en parallèle des études",
+    kpiTitle: "En chiffres", goal: "Objectif", seeMission: "Voir la mission",
+    triadEy: "Mon terrain de jeu", triadTitle: "Business × Tech × IA. Mon rôle se situe à l'intersection.",
+    triad: [
+      { k: "biz", n: "Business", q: "Quel est le vrai enjeu ?", p: "Un délai, un coût, une équipe qui s'essouffle. Je cadre le besoin avec ceux qui le vivent, et on définit ensemble ce qu'est la réussite.", ex: "Opti-Mall · SOCAR · LBT" },
+      { k: "tech", n: "Tech", q: "Quelle est la solution la plus simple qui fonctionne ?", p: "Avec ma formation de développeur, j'écris des specs fiables pour les équipes techniques, et je sais construire la première version moi-même : web, mobile, back-end.", ex: "SimuFlow · IMPACT PLUS · Konica Minolta" },
+      { k: "ai", n: "IA", q: "Où l'IA supprime-t-elle du vrai travail ?", p: "J'utilise l'IA en ingénieur : des agents de code pilotés avec des specs claires, un contexte maîtrisé, de petites itérations, de la relecture et des tests. Et je l'intègre aux produits là où elle fait gagner du temps.", ex: "Claude Code · reconnaissance de texte embarquée dans SimuFlow" },
+      { k: "core", n: "Des solutions utilisées", q: "C'est à l'intersection que je travaille.", p: "Un outil ne compte que si les gens l'adoptent. Formation, retours et conduite du changement font partie de chaque plan que j'écris.", ex: "85 % d'adoption chez IMPACT PLUS" }
+    ],
     arrivalKicker: "15 escales · 4 phases", arrivalTitle: "Bienvenue à bord. Voici mon univers.",
     arrivalText: "Chaque monde est un poste, une mission ou un projet que j'ai construit. La visite guidée part de mes débuts et va jusqu'à ce que je construis aujourd'hui. Les onglets en haut restent accessibles à tout moment.",
     tour: "Lancer la visite guidée", free: "Explorer librement",
     phases: { basecamp: ["Camp de base", "2021 – 2026"], command: ["Premières missions", "2022 – 2025"], mission: ["Mission en cours", "2026 – auj."], frontier: ["Nouveaux horizons", "Auj. → 2027"] },
-    guide: { basecamp: "Tout a commencé ici : le code, et de vrais jobs à côté.", command: "Mes premiers projets en tant que chef de projet.", mission: "Voici où j'en suis aujourd'hui.", frontier: "Et voici ce que je construis pour la suite." },
+    guide: { basecamp: "Tout a commencé ici : mes études, avec des jobs étudiants en parallèle.", command: "Mes premiers projets en tant que chef de projet.", mission: "Voici où j'en suis aujourd'hui.", frontier: "Et voici ce que je construis pour la suite." },
     guideIdle: "Cliquez sur un monde, ou laissez-moi vous faire la visite.",
     next: "Escale suivante", stop: "Escale", of: "sur", end: "Fin de la visite. On en parle ?",
     caseL: ["Le problème", "Ce que j'ai fait", "Le résultat"], log: "Le détail", skillsHere: "Compétences mobilisées", clear: "Effacer",
@@ -130,7 +148,7 @@ const X = {
       ["#eef1f8", "Langues", ["Français (langue maternelle)", "Anglais (professionnel)"]]
     ],
     impactEy: "Impact", impactTitle: "Des résultats, chiffrés.",
-    stats: [["+", "60", "%", "de rapidité dans le traitement des dossiers, après numérisation des processus", "IMPACT PLUS"], ["~", "100", "%", "des processus numérisés, en quelques semaines", "Opti-Mall"], ["−", "50", "%", "de déplacements sur site grâce au pilotage à distance", "Opti-Mall"], ["", "85", "%", "d'adoption des nouveaux outils, plus de 30 collaborateurs formés", "IMPACT PLUS"], ["−", "20", "%", "de blocages de sprint, 3 équipes au même rythme", "DreamXR"], ["+", "35", "%", "d'engagement après le déploiement du plan marketing digital", "SOCAR Bénin"], ["", "1", "", "produit livré en solo, sur iOS, Android et web", "SimuFlow"], ["÷", "2", "", "le temps de mise en place d'un workflow : l'objectif de SimuFlow", "Objectif"]],
+    stats: [["+", "60", "%", "de rapidité dans le traitement des dossiers, après numérisation des processus", "IMPACT PLUS", "impact"], ["~", "100", "%", "des processus numérisés, en quelques semaines", "Opti-Mall", "optimall"], ["−", "50", "%", "de déplacements sur site grâce au pilotage à distance", "Opti-Mall", "optimall"], ["", "85", "%", "d'adoption des nouveaux outils, plus de 30 collaborateurs formés", "IMPACT PLUS", "impact"], ["−", "20", "%", "de blocages de sprint, 3 équipes au même rythme", "DreamXR", "dreamxr"], ["+", "35", "%", "d'engagement après le déploiement du plan marketing digital", "SOCAR Bénin", "socar"], ["", "1", "", "produit livré en solo, sur iOS, Android et web", "SimuFlow", "simuflow"], ["÷", "2", "", "le temps de mise en place d'un workflow : l'objectif de SimuFlow", "Objectif", "simuflow"]],
     roadmap: "Feuille de route", rmStatus: "Statut : <b>dans les temps</b>. Prochain jalon : un CDI à partir d'octobre 2027.",
     contactEy: "Contact", contactTitle: "Et si votre équipe était la prochaine escale ?",
     contactSub: "Un CDI à partir d'octobre 2027, un projet, une question ou simplement un bonjour : votre message arrive directement dans ma boîte mail.",
@@ -142,7 +160,7 @@ const X = {
     endLine: "Voilà mon univers jusqu'ici. On construit la suite ensemble ?",
     briefTitle: "Le résumé en 30 secondes", briefRole: "Chef de projet digital & builder · IA & innovation",
     briefIntro: "Chef de projet avec une formation de développeur. Je mène un projet du cadrage jusqu'à l'adoption, et je sais construire le prototype moi-même. Chef de projet ITSM en alternance chez Konica Minolta, en mastère à YNOV Campus Paris, créateur de SimuFlow, fondateur de LBT. Disponible en CDI à partir d'octobre 2027.",
-    secXp: "Expériences", secBuild: "Projets & entrepreneuriat", secField: "Expérience terrain", secSkills: "Compétences clés", secEdu: "Formation & certifications", explore: "Explorer l'univers",
+    secXp: "Expériences", secBuild: "Projets & entrepreneuriat", secField: "Jobs étudiants, en parallèle des études", secSkills: "Compétences clés", secEdu: "Formation & certifications", explore: "Explorer l'univers",
     briefSkills: ["Gestion de projet", "Scrum & Kanban · PSPO", "ITSM / ITIL", "Modélisation de workflows (draw.io, BPMN)", "Conduite du changement", "HTML · CSS · JavaScript · TypeScript", "React · React Native · Flutter", "Python · Django · SQL · Supabase", "Ingénierie IA (Claude Code)", "Français (langue maternelle)", "Anglais (professionnel)"],
     resumeHref: "assets/cv/Loick_MIAN_CV_FR.pdf", webgl: "Votre navigateur ne peut pas afficher l'univers 3D, voici donc le résumé."
   }
@@ -164,10 +182,10 @@ function astroSVG(p, flag = true) {
     <circle cx="72" cy="121" r="2.6" fill="#8cc8ff" class="ex-light"/><circle cx="80" cy="121" r="2.6" fill="#f2c46d"/><circle cx="88" cy="121" r="2.6" fill="#6fe3a8" class="ex-light"/>
     <line x1="55" y1="100" x2="42" y2="146" stroke="#e6eaf3" stroke-width="16" stroke-linecap="round"/><circle cx="41" cy="150" r="8.5" fill="#5d6888"/>
     <rect x="60" y="85" width="40" height="9" rx="4.5" fill="#c3cbdd"/>
-    <line x1="102" y1="38" x2="110" y2="18" stroke="#c3cbdd" stroke-width="2.5"/><circle cx="110" cy="17" r="3.5" fill="#f2c46d"/>
+    <line x1="102" y1="38" x2="110" y2="18" stroke="#c3cbdd" stroke-width="2.5"/><circle class="ex-antenna" cx="110" cy="17" r="3.5" fill="#f2c46d"/>
     <circle cx="80" cy="58" r="32" fill="url(#${p}s)" stroke="#c3cbdd" stroke-width="1.5"/>
     <rect x="56" y="41" width="48" height="36" rx="17" fill="url(#${p}v)"/>
-    <ellipse cx="68" cy="51" rx="7" ry="3" fill="#fff" opacity=".55" transform="rotate(-24 68 51)"/>
+    <ellipse class="ex-glint" cx="68" cy="51" rx="7" ry="3" fill="#fff" opacity=".55" transform="rotate(-24 68 51)"/>
     <g class="ex-arm-wave"><line x1="105" y1="100" x2="126" y2="66" stroke="#e6eaf3" stroke-width="16" stroke-linecap="round"/><circle cx="128" cy="62" r="8.5" fill="#5d6888"/></g>`;
 }
 function shuttleSVG() {
@@ -228,6 +246,7 @@ function applyLang() {
   $$("[data-t-html]").forEach(el => { el.innerHTML = T[el.dataset.tHtml]; });
   $$("[data-lang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
   $$(".cv").forEach(a => a.href = T.resumeHref);
+  ["#astro", "#guideAstro"].forEach(s => $(s).setAttribute("aria-label", T.meetMe));
   $("#nextBtn").textContent = T.next + " →";
   renderPlan(); renderLabels();
   if (current >= 0 && !$("#panel").hidden) renderPanel(current, false);
@@ -242,6 +261,7 @@ $$("[data-lang]").forEach(b => b.addEventListener("click", () => { lang = b.data
 let bubbleI = 0, typing;
 function say(i, txt) {
   const el = $("#bubbleText"); txt = txt || t().bubble[i % t().bubble.length];
+  el.dataset.txt = txt;
   clearInterval(typing);
   if (reduce) { el.textContent = txt; return; }
   let k = 0; el.textContent = "";
@@ -250,8 +270,16 @@ function say(i, txt) {
 $("#astro").innerHTML = astroSVG("a");
 $("#shuttle").innerHTML = shuttleSVG();
 $("#guideAstro").innerHTML = astroSVG("g", false);
-$("#astro").addEventListener("click", () => say(++bubbleI));
-const bubbleTimer = setInterval(() => { if (!launched && document.visibilityState === "visible") say(++bubbleI); else if (launched) clearInterval(bubbleTimer); }, 6500);
+function meetMe(el) { if (!el.dataset.hb) { el.dataset.hb = 1; el.addEventListener("animationend", e => { if (e.animationName === "hop") el.classList.remove("hop"); }); } el.classList.remove("hop"); void el.getBoundingClientRect(); el.classList.add("hop"); setTimeout(() => location.hash = "about", reduce ? 0 : 380); }
+$("#astro").addEventListener("click", () => meetMe($("#astro")));
+$("#astro").addEventListener("pointerenter", () => { if (!launched && $("#bubbleText").dataset.txt !== t().meetMe) say(0, t().meetMe); });
+$("#astro").setAttribute("role", "button"); $("#astro").setAttribute("tabindex", "0");
+$("#astro").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); meetMe($("#astro")); } });
+$("#guideAstro").addEventListener("click", () => meetMe($("#guideAstro")));
+$("#guideAstro").addEventListener("pointerenter", () => { if ($("#gbubble").textContent !== t().meetMe || !$("#gbubble").classList.contains("on")) guideSay(t().meetMe); });
+$("#guideAstro").setAttribute("role", "button"); $("#guideAstro").setAttribute("tabindex", "0");
+$("#guideAstro").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); meetMe($("#guideAstro")); } });
+setInterval(() => { if (!launched && document.visibilityState === "visible" && $("#sheet").hidden && $("#brief").hidden) say(++bubbleI); }, 6500);
 
 const RING = 351.9; let holdT0 = 0, holdRaf = 0;
 function holdFrame(now) {
@@ -285,7 +313,18 @@ function launch() {
     galaxy.intro(() => { showHUD(); $("#arrival").hidden = false; guideSay(t().guideIdle); });
   })();
 }
-function showHUD() { $("#hud").hidden = false; $("#guide").hidden = false; $("#labels").style.display = ""; if (innerWidth > 1100) $("#plan").hidden = false; else $("#planBtn").hidden = false; setTabUI("explore"); }
+function backHome() {
+  ["#sheet", "#brief", "#panel", "#linkStory", "#arrival", "#hud", "#plan", "#planBtn", "#guide"].forEach(s => $(s).hidden = true);
+  document.body.classList.remove("sheet-open", "panel-open", "plan-open"); $("#plan").classList.remove("open");
+  if (activeLink) { activeLink = null; if (galaxy) galaxy.showLink(null); }
+  current = -1; tour = false; launched = false; $("#labels").style.display = "none";
+  const pad = $(".pad"); pad.classList.remove("boarding", "rumble", "liftoff");
+  $("#welcome").classList.remove("leave"); $("#welcome").hidden = false; document.body.classList.add("welcome");
+  holdEnd(); if (galaxy) galaxy.welcome();
+  history.replaceState(null, "", location.pathname + location.search);
+  bubbleI = 0; say(0); $("#launchBtn").focus({ preventScroll: true });
+}
+function showHUD() { $("#hud").hidden = false; $("#guide").hidden = false; $("#labels").style.display = ""; if (innerWidth > 1100 && store.get("planOpen", true)) $("#plan").hidden = false; else $("#planBtn").hidden = false; setTabUI("explore"); }
 function skipWelcome() { launched = true; document.body.classList.remove("welcome"); $("#welcome").hidden = true; if (galaxy) galaxy.skipIntro(); showHUD(); }
 
 /* ================= guide (mini me, in the corner) ================= */
@@ -295,11 +334,16 @@ function guideSay(txt) { const b = $("#gbubble"); b.textContent = txt; b.classLi
 /* ================= flight plan (by phase) ================= */
 function renderPlan() {
   const span = [2021, 2027.8], pct = v => ((v - span[0]) / (span[1] - span[0])) * 100, cur = current >= 0 ? WORLDS[current].phase : null;
-  $("#planList").innerHTML = PHASES.map(ph => { const [n, k] = t().phases[ph], [a, b] = RM[ph]; return `<div class="phase${ph === cur ? " on" : ""}"><h4>${esc(n)}<small>${esc(k)}</small></h4><div class="pbar"><i style="left:${pct(a)}%;width:${pct(b) - pct(a)}%"></i></div>
-    ${WORLDS.map((w, i) => w.phase === ph ? `<button data-go="${i}" style="--c:${w.color}" class="${seen.has(w.id) ? "seen" : ""}" ${i === current ? 'aria-current="true"' : ""}><i></i>${esc(w[lang].name.split(" · ")[0])}</button>` : "").join("")}</div>`; }).join("");
-  $$("#planList [data-go]").forEach(b => b.addEventListener("click", () => { go(+b.dataset.go); if (innerWidth <= 1100) { $("#plan").classList.remove("open"); $("#plan").hidden = true; } }));
+  const btn = (w, i) => `<button data-go="${i}" style="--c:${w.color}" class="${seen.has(w.id) ? "seen" : ""}" ${i === current ? 'aria-current="true"' : ""}><i></i>${esc(w[lang].name.split(" · ")[0])}</button>`;
+  $("#planList").innerHTML = `<div class="plan-head"><b>${esc(t().flightPlan)}</b><button class="x" id="planClose" aria-label="${esc(t().clear)}">✕</button></div>` + PHASES.map(ph => { const [n, k] = t().phases[ph], [a, b] = RM[ph];
+    const main = WORLDS.map((w, i) => w.phase === ph && !w.side ? btn(w, i) : "").join(""), side = WORLDS.map((w, i) => w.phase === ph && w.side ? btn(w, i) : "").join("");
+    return `<div class="phase${ph === cur ? " on" : ""}"><h4>${esc(n)}<small>${esc(k)}</small></h4><div class="pbar"><i style="left:${pct(a)}%;width:${pct(b) - pct(a)}%"></i></div>${main}${side ? `<div class="side-group"><span>${esc(t().sideGroup)}</span>${side}</div>` : ""}</div>`; }).join("");
+  $$("#planList [data-go]").forEach(b => b.addEventListener("click", () => { go(+b.dataset.go); if (innerWidth <= 1100) closePlan(); }));
+  $("#planClose").addEventListener("click", () => { closePlan(); if (innerWidth > 1100) store.set("planOpen", false); });
 }
-$("#planBtn").addEventListener("click", () => { const p = $("#plan"); const open = p.hidden; p.hidden = !open; p.classList.toggle("open", open); });
+function closePlan() { $("#plan").classList.remove("open"); $("#plan").hidden = true; document.body.classList.remove("plan-open"); if (!$("#hud").hidden) $("#planBtn").hidden = false; }
+function openPlan() { const p = $("#plan"); p.hidden = false; p.classList.add("open"); document.body.classList.add("plan-open"); $("#planBtn").hidden = true; if (innerWidth > 1100) store.set("planOpen", true); }
+$("#planBtn").addEventListener("click", () => $("#plan").hidden ? openPlan() : closePlan());
 
 /* ================= labels over the 3D worlds ================= */
 let labelEls = [];
@@ -311,10 +355,12 @@ function placeLabels() {
   if (!galaxy || $("#hud").hidden || !$("#sheet").hidden) { $("#labels").style.display = "none"; return; }
   $("#labels").style.display = "";
   const mobileFocus = innerWidth <= 760 && current >= 0 && !$("#panel").hidden, placed = [];
+  const covers = ["#plan", "#panel", "#arrival", "#linkStory"].map(s => $(s)).filter(e => !e.hidden).map(e => e.getBoundingClientRect()).filter(r => r.width);
   const order = WORLDS.map((_, i) => i).sort((a, b) => (b === current) - (a === current) || b - a);
   order.forEach(i => {
     const el = labelEls[i], p = galaxy.project(i);
     let show = p.visible && p.x > -50 && p.x < innerWidth + 50 && p.y > 70 && p.y < innerHeight && !(mobileFocus && i !== current);
+    if (show && covers.some(r => p.x > r.left - 70 && p.x < r.right + 70 && p.y > r.top - 40 && p.y < r.bottom)) show = false;
     if (show) { const bx = { x: p.x - 60, y: p.y }; if (placed.some(b => Math.abs(b.x - bx.x) < 120 && Math.abs(b.y - bx.y) < 34)) show = false; else placed.push(bx); }
     el.style.display = show ? "" : "none";
     if (show) { el.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, 0)`; el.style.opacity = current >= 0 && i !== current ? .45 : 1; }
@@ -332,8 +378,10 @@ function renderPanel(i, animate = true) {
     <div class="phead">${tile(w)}<div class="pmeta"><span class="chip ${w.status}">${esc(T.status[w.status])}</span><span class="mono">${esc(T.phases[w.phase][0])}</span></div></div>
     <h2 class="ptitle">${esc(c.name)}</h2><p class="prole">${esc(c.role)}</p>
     <span class="pwhen">${redacted(c.period)} · ${esc(c.place)}</span>
+    ${w.side ? `<p class="sidejob"><i>∥</i>${esc(T.side[w.side])}</p>` : ""}
     ${w.wordmark ? `<img class="wordmark" src="assets/logos/${w.wordmark}" alt="LBT, la boutique tech">` : ""}
     <p class="plede">${esc(c.lede)}</p>
+    ${w.kpi ? `<div class="kpis" aria-label="${esc(T.kpiTitle)}">${w.kpi.map(k => `<div class="kpi${k[5] ? " goal" : ""}"><b>${k[0] ? `<small>${k[0]}</small>` : ""}<span class="n" data-n="${k[1]}">${k[1]}</span><sup>${k[2]}</sup></b><span>${esc(lang === "fr" ? k[4] : k[3])}</span>${k[5] ? `<em>${esc(T.goal)}</em>` : ""}</div>`).join("")}</div>` : ""}
     ${c.case ? `<div class="case">${c.case.map((v, k) => `<div class="cs${k}"><b>${esc(T.caseL[k])}</b><p>${esc(v)}</p></div>`).join("")}</div>` : ""}
     ${c.cipher ? `<span class="mono">${esc(T.decodeHint)}</span><ul class="cipher">${c.cipher.map((l, k) => `<li tabindex="0" data-k="${k}">${"▒".repeat(Math.min(40, l.length))}</li>`).join("")}</ul>`
       : `<details class="log"${c.case ? "" : " open"}><summary>${esc(T.log)}</summary><ul class="plog">${c.log.map(l => `<li>${esc(l)}</li>`).join("")}</ul></details>`}
@@ -343,7 +391,7 @@ function renderPanel(i, animate = true) {
     <p class="lesson">${esc(c.proves)}</p>
     ${linksHere.length ? `<span class="mono">${esc(T.skillsHere)}</span><div class="tags">${linksHere.map(l => `<button class="tag" data-link="${l.id}">${esc(l[lang].name)}</button>`).join("")}</div>` : ""}`;
   $("#pbody").scrollTop = 0;
-  if (animate) { const p = $("#panel"); p.classList.remove("swap"); void p.offsetWidth; p.classList.add("swap"); }
+  if (animate) { const p = $("#panel"); p.classList.remove("swap"); void p.offsetWidth; p.classList.add("swap"); $$("#pbody .kpi .n").forEach(countUp); }
   $("#stopN").textContent = `${T.stop} ${i + 1} ${T.of} ${WORLDS.length}`;
   $("#prevBtn").disabled = i === 0;
   $("#nextBtn").textContent = i === WORLDS.length - 1 ? `${T.tContact} →` : `${T.next} →`;
@@ -374,7 +422,7 @@ $("#nextBtn").addEventListener("click", () => current >= WORLDS.length - 1 ? (lo
 $("#prevBtn").addEventListener("click", () => go(current - 1));
 $("#tourBtn").addEventListener("click", () => { tour = true; go(0); });
 $("#freeBtn").addEventListener("click", () => { $("#arrival").hidden = true; guideSay(t().guideIdle); });
-$("#home").addEventListener("click", () => { setLink(null); closePanel(); location.hash = "explore"; });
+$("#home").addEventListener("click", backHome); $("#homeBtn").addEventListener("click", backHome);
 
 /* ================= skill links lit in the galaxy ================= */
 function showStory() {
@@ -408,14 +456,15 @@ const SHEETS = {
     <div class="role-box"><p>${esc(T.roleBox)}</p><span>${esc(T.roleSub)}</span></div>
     <div class="three">${T.principles.map((p, i) => `<div class="card"><span class="n">0${i + 1}</span><h3>${esc(p[0])}</h3><p>${esc(p[1])}</p></div>`).join("")}</div>`; },
   method() { const T = t(); return `${eyebrow(2, T.methodEy)}<h2>${esc(T.methodTitle)}</h2><p class="sub">${esc(T.methodSub)}</p>
-    <div class="pillars">${T.pillars.map(p => `<div class="pillar" style="--c:${p.c}"><span class="mono">${esc(p.k)}</span><h3>${esc(p.h)}</h3><p>${esc(p.p)}</p><p class="ex">${esc(p.ex)}</p></div>`).join("")}</div>
+    <p class="mono triad-k">${esc(T.triadTitle)}</p>
+    <div class="triad-wrap"><div class="triad" id="triad">${triadSVG()}</div><div id="triadInfo"></div></div>
     <ol class="pipeline">${T.pipeline.map((p, i) => `<li><span class="pn">${i + 1}</span><h3>${esc(p[0])}</h3><p>${esc(p[1])}</p></li>`).join("")}</ol>`; },
   skills() { const T = t(); return `${eyebrow(3, T.skillsEy)}<h2>${esc(T.skillsTitle)}</h2>
     <div class="helm-grid"><div class="wheel-box"><svg class="wheel" id="wheel" viewBox="-160 -160 320 320" role="img" aria-label="Skills wheel"></svg><div class="pointer"></div></div>
       <div><div class="skill-tabs" role="tablist">${LINKS.map((l, i) => `<button role="tab" data-skill="${i}" aria-selected="${i === skill}">${esc(l[lang].name)}</button>`).join("")}</div><div class="card skill-card" id="skillCard"></div></div></div>
     <div class="matrix">${T.matrix.map(([c, n, items]) => `<div class="card" style="--c:${c}"><h3><i></i>${esc(n)}</h3><div class="chips">${items.map(s => `<span>${esc(s)}</span>`).join("")}</div></div>`).join("")}</div>`; },
   impact() { const T = t(), span = [2021, 2027.8], pct = v => ((v - span[0]) / (span[1] - span[0])) * 100; return `${eyebrow(4, T.impactEy)}<h2>${esc(T.impactTitle)}</h2>
-    <div class="stat-grid">${T.stats.map(s => `<div class="stat"><b>${s[0] ? `<small>${s[0]}</small>` : ""}<span class="n" data-n="${s[1]}" style="display:inline;margin:0;font:inherit;color:inherit">${s[1]}</span><sup>${s[2]}</sup></b><span>${esc(s[3])}</span><em>${esc(s[4])}</em></div>`).join("")}</div>
+    <div class="stat-grid">${T.stats.map(s => `<button class="stat" data-go="${s[5]}"><b>${s[0] ? `<small>${s[0]}</small>` : ""}<span class="n" data-n="${s[1]}" style="display:inline;margin:0;font:inherit;color:inherit">${s[1]}</span><sup>${s[2]}</sup></b><span>${esc(s[3])}</span><em>${esc(s[4])} <i>${esc(T.seeMission)} →</i></em></button>`).join("")}</div>
     <div class="card roadmap"><h3>${esc(T.roadmap)}</h3><div class="rm" style="margin-top:14px">${PHASES.map(ph => { const [a, b] = RM[ph]; return `<span>${esc(T.phases[ph][0])}</span><div class="bar"><i style="left:${pct(a)}%;width:${pct(b) - pct(a)}%"></i></div>`; }).join("")}</div>
       <div class="rm-axis"><span>2021</span><span>2023</span><span>2025</span><span>2027</span></div><p class="rm-status">${T.rmStatus}</p></div>`; },
   contact() { const T = t(); return `<div class="contact-head"><div>${eyebrow(5, T.contactEy)}<h2>${esc(T.contactTitle)}</h2><p class="sub">${esc(T.contactSub)}</p>
@@ -431,6 +480,21 @@ const SHEETS = {
       <div class="cside"><form class="card" id="nform" novalidate><h3>${esc(T.newsTitle)}</h3><p>${esc(T.newsText)}</p><div class="nrow"><input id="nEmail" type="email" autocomplete="email" required aria-label="${esc(T.email)}" placeholder="you@company.com"><button class="btn gold" type="submit">${esc(T.subscribe)}</button></div><p class="formmsg" id="nOut" role="status"></p></form>
         <div class="card direct"><span class="mono">${esc(T.direct)}</span><code>loickmian@gmail.com</code><div class="row"><button class="btn sm copy-email">${esc(T.copy)}</button><a class="btn sm" href="https://www.linkedin.com/in/loick-mian-843382281" target="_blank" rel="noopener">LinkedIn</a><a class="btn sm" href="https://github.com/mloick" target="_blank" rel="noopener">GitHub</a></div></div></div></div>`; }
 };
+/* business × tech × AI: three circles, my role in the middle */
+function triadSVG() { const T = t(); return `<svg viewBox="0 0 360 330" role="img" aria-label="${esc(T.triad.map(x => x.n).join(" × "))}">
+  <circle class="tc biz" data-k="biz" cx="180" cy="112" r="92"/><circle class="tc tech" data-k="tech" cx="122" cy="212" r="92"/><circle class="tc ai" data-k="ai" cx="238" cy="212" r="92"/>
+  <circle class="tc core" data-k="core" cx="180" cy="180" r="30"/>
+  <text x="180" y="60" class="tl">${esc(T.triad[0].n)}</text><text x="86" y="252" class="tl">${esc(T.triad[1].n)}</text><text x="274" y="252" class="tl">${esc(T.triad[2].n)}</text>
+  <text x="180" y="185" class="tl core-t">LM</text></svg>`; }
+let triadK = "core", triadTouched = false;
+function showTriad(k) {
+  if (!$("#triadInfo")) return; triadK = k; const T = t(), d = T.triad.find(x => x.k === k);
+  $$("#triad .tc").forEach(c => c.classList.toggle("on", c.dataset.k === k));
+  $("#triadInfo").innerHTML = `<div class="ti ${k}"><span class="mono">${esc(d.n)}</span><h3>${esc(d.q)}</h3><p>${esc(d.p)}</p><p class="ex">${esc(d.ex)}</p></div>
+    <div class="ti-tabs">${T.triad.map(x => `<button data-tk="${x.k}" aria-pressed="${x.k === k}">${esc(x.n)}</button>`).join("")}</div>`;
+  $$("#triadInfo [data-tk]").forEach(b => b.addEventListener("click", () => { triadTouched = true; showTriad(b.dataset.tk); }));
+}
+setInterval(() => { if (!triadTouched && !reduce && tab === "method" && !$("#sheet").hidden) { const ks = ["biz", "tech", "ai", "core"]; showTriad(ks[(ks.indexOf(triadK) + 1) % 4]); } }, 4200);
 function openTab(name, silent) {
   if (name === "explore" || !SHEETS[name]) { closeSheet(); return; }
   $("#arrival").hidden = true;
@@ -439,11 +503,14 @@ function openTab(name, silent) {
   if (!silent) $("#sheet .sheet-in").scrollTop = 0;
   setTabUI(name);
   if (name === "skills") { buildWheel(); showSkill(skill, true); $$("#sheetBody [data-skill]").forEach(b => b.addEventListener("click", () => { helmTouched = true; showSkill(+b.dataset.skill); })); }
-  if (name === "impact") $$("#sheetBody .stat .n").forEach(countUp);
+  if (name === "impact") { $$("#sheetBody .stat .n").forEach(countUp); $$("#sheetBody .stat[data-go]").forEach(b => b.addEventListener("click", () => { if (!launched) skipWelcome(); go(idx(b.dataset.go)); })); }
+  if (name === "method") { showTriad(triadK); $$("#triad .tc").forEach(c => { c.addEventListener("click", () => { triadTouched = true; showTriad(c.dataset.k); }); c.addEventListener("mouseenter", () => { if (matchMedia("(hover:hover)").matches) { triadTouched = true; showTriad(c.dataset.k); } }); }); }
   if (name === "contact") bindForms();
   bindCopy();
 }
-function closeSheet(keepHash) { $("#sheet").hidden = true; document.body.classList.remove("sheet-open"); setTabUI("explore"); if (!keepHash && location.hash && !location.hash.startsWith("#w-") && location.hash !== "#explore") history.replaceState(null, "", "#explore"); }
+function closeSheet(keepHash) { $("#sheet").hidden = true; document.body.classList.remove("sheet-open"); setTabUI("explore");
+  if (!launched) { history.replaceState(null, "", location.pathname + location.search); return; }
+  if (!keepHash && location.hash && !location.hash.startsWith("#w-") && location.hash !== "#explore") history.replaceState(null, "", "#explore"); }
 $("#sheetClose").addEventListener("click", () => { closeSheet(); });
 function countUp(el) {
   const n = +el.dataset.n; if (reduce || n < 3) return;
@@ -492,7 +559,7 @@ function buildBrief() {
     <div class="bsec"><h3>${esc(T.secEdu)}</h3><ul class="blist">${byId("academy")[lang].log.map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>`;
   bindCopy();
 }
-$("#briefClose").addEventListener("click", () => { $("#brief").hidden = true; history.replaceState(null, "", launched ? "#explore" : location.pathname + location.search); });
+$("#briefClose").addEventListener("click", () => { $("#brief").hidden = true; document.body.classList.remove("brief-open"); history.replaceState(null, "", launched ? "#explore" : location.pathname + location.search); });
 
 /* ================= contact & newsletter (Web3Forms) ================= */
 async function send(payload, out, okText) {
@@ -523,11 +590,11 @@ function bindCopy() {
 /* ================= routing ================= */
 function route() {
   const h = location.hash.slice(1);
-  if (h === "brief") { buildBrief(); $("#brief").hidden = false; $("#brief .sheet-in").scrollTop = 0; if (!galaxy) $("#webglNote").hidden = false; return; }
-  $("#brief").hidden = true;
+  if (h === "brief") { buildBrief(); if (!$("#sheet").hidden) closeSheet(true); document.body.classList.add("brief-open"); $("#brief").hidden = false; $("#brief .sheet-in").scrollTop = 0; if (!galaxy) $("#webglNote").hidden = false; return; }
+  $("#brief").hidden = true; document.body.classList.remove("brief-open");
   if (!h) return;
-  if (!launched) skipWelcome();
   if (SHEETS[h]) return openTab(h);
+  if (!launched) skipWelcome();
   if (h === "explore") return closeSheet(true);
   if (h.startsWith("w-")) { const i = WORLDS.findIndex(w => "w-" + w.id === h); if (i >= 0 && i !== current) go(i); }
 }
@@ -540,6 +607,16 @@ addEventListener("keydown", e => {
 addEventListener("pointermove", e => galaxy && galaxy.setMouse(e.clientX / innerWidth * 2 - 1, e.clientY / innerHeight * 2 - 1));
 $("#gl").addEventListener("click", e => { if (!galaxy || $("#hud").hidden || !$("#sheet").hidden) return; const i = galaxy.pick(e.clientX, e.clientY); if (i >= 0) go(i); });
 addEventListener("resize", () => galaxy && galaxy.resize());
+/* a faint star trail behind the cursor */
+if (!reduce && matchMedia("(hover:hover) and (pointer:fine)").matches) {
+  let lastT = 0, n = 0;
+  addEventListener("pointermove", e => {
+    const now = performance.now(); if (now - lastT < 34) return; lastT = now;
+    const d = document.createElement("i"); d.className = "trail" + (++n % 3 ? "" : " b");
+    d.style.left = e.clientX + "px"; d.style.top = e.clientY + "px";
+    d.addEventListener("animationend", () => d.parentNode && d.parentNode.removeChild(d)); document.body.appendChild(d);
+  }, { passive: true });
+}
 
 /* ================= boot ================= */
 async function boot() {

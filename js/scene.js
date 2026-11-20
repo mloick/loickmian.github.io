@@ -370,6 +370,7 @@ export function createGalaxy(canvas, worlds, opts = {}) {
     },
     skipIntro() { warpTarget = 0; warpPower = 0; camera.position.copy(OVERVIEW.pos); camLook.copy(OVERVIEW.look); cam.t = 1; cam.to.copy(OVERVIEW.pos); cam.lookTo.copy(OVERVIEW.look); mode = "overview"; if (shipState.at < 0) { shipState.at = 0; ship.position.copy(shipAnchor(0, 0)); } },
     overview() { focus = -1; mode = "overview"; moveCam(OVERVIEW.pos, OVERVIEW.look, 2.2, 10); },
+    welcome() { focus = -1; mode = "intro"; warpTarget = 0; moveCam(new THREE.Vector3(0, 60, 900), new THREE.Vector3(0, 0, 0), reduce ? .01 : 2.4, 0); },
     focus(i, onArrive) {
       const from = shipState.at;
       focus = i; mode = "focus";

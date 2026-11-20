@@ -141,7 +141,7 @@ export const WORLDS = [
       log: ["Mastère Manager de projet digital & IoT, YNOV Campus Paris (2025 – 2027), en alternance.", "Bachelor en informatique, EPITECH Bénin (2021 – 2024).", "Certifications : PSPO et Scrum Fundamentals (Scrum.org), Google Project Management, PMI Kickoff."],
       proves: "Je parle le langage des développeurs comme celui des métiers." } },
 
-  { id: "kungfu", phase: "basecamp", sector: "field", kind: "rock", color: "#c9774f", size: 2.2, logo: null, mark: "KFB", status: "done",
+  { id: "kungfu", phase: "basecamp", sector: "field", kind: "rock", color: "#c9774f", size: 2.2, logo: null, mark: "KFB", side: "studies", status: "done",
     en: { name: "Kung Fu Burger", role: "Crew member", period: "Aug 2021 – Jun 2022", place: "Benin",
       lede: "My first job, alongside my first year at EPITECH.",
       log: ["Worked every station: till, kitchen and front of house.", "Kept the pace through the rush.", "Kept the place clean and organised."],
@@ -151,7 +151,7 @@ export const WORLDS = [
       log: ["Caisse, cuisine, salle : j'ai tenu tous les postes.", "Garder le rythme pendant les coups de feu.", "Un espace toujours propre et rangé."],
       proves: "C'est là que j'ai appris à changer de casquette en quelques secondes." } },
 
-  { id: "superu", phase: "basecamp", sector: "field", kind: "rock", color: "#4f86d8", size: 2.4, logo: null, mark: "U", status: "done",
+  { id: "superu", phase: "basecamp", sector: "field", kind: "rock", color: "#4f86d8", size: 2.4, logo: null, mark: "U", side: "studies", status: "done",
     en: { name: "Super U", role: "Cashier", period: "Aug 2022 – Jun 2023", place: "Erevan",
       lede: "A year on the till, alongside my studies.",
       log: ["Fast, accurate checkout, vouchers included.", "Welcomed and advised customers, and kept the regulars coming back.", "Handled complaints calmly."],
@@ -161,7 +161,7 @@ export const WORLDS = [
       log: ["Encaissements rapides et sans erreur, bons d'achat compris.", "Accueil, conseil et fidélisation des clients réguliers.", "Gestion des réclamations avec calme."],
       proves: "La confiance se gagne client par client." } },
 
-  { id: "alyce", phase: "basecamp", sector: "field", kind: "rock", color: "#f2a93b", size: 2.3, logo: "alyce.png", tile: "#0b2438", mark: "ALYCE", status: "done",
+  { id: "alyce", phase: "basecamp", sector: "field", kind: "rock", color: "#f2a93b", size: 2.3, logo: "alyce.png", tile: "#0b2438", mark: "ALYCE", side: "msc", status: "done",
     en: { name: "ALYCE", role: "Telephone survey interviewer", period: "Sep – Dec 2025", place: "France",
       lede: "Hundreds of calls, a strict script, and data that had to be exactly right.",
       log: ["Collected and entered survey answers in real time.", "Followed the protocol and GDPR rules on every call.", "Kept people on the line who owed me nothing."],
@@ -171,7 +171,7 @@ export const WORLDS = [
       log: ["Recueil et saisie des réponses en temps réel.", "Protocole et RGPD respectés à chaque appel.", "Savoir garder en ligne des gens qui ne me devaient rien."],
       proves: "La rigueur sur la donnée et l'art de cerner vite un interlocuteur. Deux réflexes que je mobilise dans chaque atelier de recueil des besoins." } },
 
-  { id: "fiveguys", phase: "basecamp", sector: "field", kind: "rock", color: "#d63a3a", size: 2.4, logo: null, mark: "5G", status: "done",
+  { id: "fiveguys", phase: "basecamp", sector: "field", kind: "rock", color: "#d63a3a", size: 2.4, logo: null, mark: "5G", side: "msc", status: "done",
     en: { name: "Five Guys", role: "Crew member", period: "Mar – May 2026", place: "Disneyland Paris",
       lede: "One of the busiest restaurants in the region, every single day.",
       log: ["High-volume service.", "Stock and station restocking.", "Strict hygiene and food-safety standards."],
@@ -181,7 +181,7 @@ export const WORLDS = [
       log: ["Service à très fort débit.", "Gestion des stocks et réassort des postes.", "Normes d'hygiène et de sécurité alimentaire strictes."],
       proves: "Garder son sang-froid quand tout s'accélère." } },
 
-  { id: "intermarche", phase: "basecamp", sector: "field", kind: "rock", color: "#e30613", size: 2.8, logo: "intermarche.svg", logoColor: "#ffffff", tile: "#e30613", mask: true, mark: "IM", status: "done",
+  { id: "intermarche", phase: "basecamp", sector: "field", kind: "rock", color: "#e30613", size: 2.8, logo: "intermarche.svg", logoColor: "#ffffff", tile: "#e30613", mask: true, mark: "IM", side: "msc", status: "done",
     en: { name: "Intermarché Express", role: "Sales associate", period: "Jun – Aug 2026", place: "Paris Flandres",
       lede: "A busy city-centre supermarket, where shelves empty as fast as you fill them.",
       log: ["Checkout: fast, accurate payments in cash, card and cheque.", "Shelving and facing, with constant restocking.", "Received and checked deliveries, handled stock-outs.", "Advised customers on the shop floor."],
@@ -191,7 +191,7 @@ export const WORLDS = [
       log: ["Encaissements rapides et fiables (espèces, carte, chèque).", "Mise en rayon, facing et réassort en continu.", "Réception et contrôle des livraisons, gestion des ruptures.", "Conseil client en magasin."],
       proves: "Piloter une activité en temps réel : les stocks, les flux et l'équipe en même temps. De la gestion de service, version grande surface." } },
 
-  { id: "socar", phase: "command", sector: "first", kind: "planet", color: "#ffb36b", size: 3.0, logo: null, mark: "SOCAR", status: "done",
+  { id: "socar", phase: "command", sector: "first", kind: "planet", color: "#ffb36b", size: 3.0, logo: null, mark: "SOCAR", kpi: [["+","35","%","engagement after the rollout","d'engagement après le déploiement"]], status: "done",
     en: { name: "SOCAR Benin", role: "Assistant Digital Marketing Project Manager", period: "Aug – Dec 2022", place: "Cotonou",
       lede: "My first project role: taking a brand's marketing online.",
       case: ["A brand that was barely present online.", "Rolled out social, search and email campaigns and reworked the online catalogue.", "+35% engagement."],
@@ -203,7 +203,7 @@ export const WORLDS = [
       log: ["Déploiement du plan marketing digital : réseaux sociaux, SEA, e-mailing.", "Optimisation du catalogue e-commerce et production de contenus pour chaque canal."],
       proves: "Un projet n'existe vraiment que lorsqu'il trouve son public." } },
 
-  { id: "impact", phase: "command", sector: "first", kind: "planet", color: "#7f9cf5", size: 3.6, logo: "impact.png", tile: "#1f65ad", mark: "IMPACT+", status: "done",
+  { id: "impact", phase: "command", sector: "first", kind: "planet", color: "#7f9cf5", size: 3.6, logo: "impact.png", tile: "#1f65ad", mark: "IMPACT+", kpi: [["+","60","%","faster case processing","de rapidité de traitement des dossiers"],["","85","%","adoption of the new tools","d'adoption des nouveaux outils"],["","30","+","colleagues trained","collaborateurs formés"]], status: "done",
     en: { name: "IMPACT PLUS", role: "Digital Project Manager & IT Lead", period: "Nov 2023 – Jun 2024", place: "Cotonou",
       lede: "A consulting firm modernising how it works, with me running both the projects and the IT.",
       case: ["Case files moved on paper and through scattered tools.", "Mapped the processes, wrote the specs, digitised them and trained 30+ people.", "60% faster case processing, 85% adoption."],
@@ -215,7 +215,7 @@ export const WORLDS = [
       log: ["Pilotage de plus de 5 projets de digitalisation des processus internes et rédaction des spécifications fonctionnelles.", "Gestion de l'IT en parallèle : parc informatique, support N2/N3, résolution d'incidents.", "Plus de 30 collaborateurs formés, plus de 85 % d'adoption.", "Traitement des dossiers 60 % plus rapide."],
       proves: "Un changement ne tient que si les équipes se l'approprient. Je l'intègre au plan dès le départ." } },
 
-  { id: "dreamxr", phase: "command", sector: "first", kind: "planet", color: "#b48cff", size: 3.2, logo: "dreamxr.png", tile: "#152e56", mark: "XR", status: "done",
+  { id: "dreamxr", phase: "command", sector: "first", kind: "planet", color: "#b48cff", size: 3.2, logo: "dreamxr.png", tile: "#152e56", mark: "XR", kpi: [["−","20","%","sprint blockers over two cycles","de blocages de sprint en deux cycles"],["","3","","teams moving in one rhythm","équipes au même rythme"]], status: "done",
     en: { name: "DreamXR", role: "Assistant Project Manager", period: "Jan – Apr 2025", place: "Cotonou",
       lede: "Augmented and virtual reality projects, with three teams to keep in sync.",
       case: ["Three teams (dev, 3D/UX, QA) moving at different speeds.", "Set up Scrum on Jira and ClickUp: rituals, tracking and reporting.", "20% fewer sprint blockers, and room to run several projects at once."],
@@ -227,7 +227,7 @@ export const WORLDS = [
       log: ["Coordination de 3 équipes (dev, design 3D/UX, QA) en Scrum, sur Jira et ClickUp.", "20 % de blocages de sprint en moins sur deux cycles.", "Rapports d'avancement, demandes de changement et comptes rendus de rétrospective.", "Une fois l'agilité bien installée, le studio a pu mener plusieurs marchés et projets en parallèle."],
       proves: "L'agilité n'est pas une cérémonie : c'est une discipline d'équipe, sprint après sprint." } },
 
-  { id: "optimall", phase: "command", sector: "first", kind: "planet", color: "#b06fd8", size: 3.0, logo: "optimall.png", tile: "#ffffff", mark: "OM", status: "done",
+  { id: "optimall", phase: "command", sector: "first", kind: "planet", color: "#b06fd8", size: 3.0, logo: "optimall.png", tile: "#ffffff", mark: "OM", kpi: [["~","100","%","of processes digitised, in a few weeks","des processus numérisés, en quelques semaines"],["−","50","%","site trips, thanks to remote project management","de déplacements sur site, grâce au pilotage à distance"]], status: "done",
     en: { name: "Opti-Mall", role: "Digital Project Manager · Business Development", period: "Oct – Nov 2025", place: "Paris",
       lede: "A retail business that still ran entirely on paper.",
       case: ["An organisation 100% on paper, with constant trips to site.", "A digitisation roadmap and a shared Notion workspace to run projects remotely.", "~100% of processes digitised in a few weeks, ~50% fewer site trips."],
@@ -251,7 +251,7 @@ export const WORLDS = [
       log: ["Modélisation des workflows ITSM (incidents, demandes, changements) sous draw.io, validés avec les équipes métiers.", "Préparation des ateliers de validation : documentation des processus et supports en français et en anglais.", "Suivi de l'avancement, des risques et des actions avec le responsable IT Service Management & Process.", "Développement d'un simulateur interactif pour rejouer chaque processus avant paramétrage. C'est devenu SimuFlow."],
       proves: "L'esprit processus, la patience face aux grandes organisations, et le réflexe de construire l'outil qui manque." } },
 
-  { id: "simuflow", phase: "frontier", sector: "lab", kind: "flow", color: "#2fb5ff", size: 4.0, logo: "simuflow.svg", tile: "#ffffff", mark: "SF", status: "live",
+  { id: "simuflow", phase: "frontier", sector: "lab", kind: "flow", color: "#2fb5ff", size: 4.0, logo: "simuflow.svg", tile: "#ffffff", mark: "SF", kpi: [["÷","2","","workflow set-up time: the goal it is built for","le temps de mise en place d'un workflow : l'objectif visé",1],["","3","","platforms: iOS, Android and web","plateformes : iOS, Android et web"]], status: "live",
     en: { name: "SimuFlow", role: "Product, design & code, solo", period: "Since Oct 2026 · v1.0", place: "iOS · Android · Web",
       lede: "Test a business workflow before your users do. Import a diagram or photograph a table, see what's broken, then replay it step by step.",
       case: ["Workflows are designed on paper and break once they go live.", "A product that imports any diagram, finds the flaws and replays every case.", "Live on iOS, Android and web. Goal: cut workflow set-up time by half or more."],
