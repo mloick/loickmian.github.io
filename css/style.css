@@ -515,3 +515,4 @@ body.welcome #veil{background:linear-gradient(90deg,rgba(4,6,15,.95) 0%,rgba(4,6
   body.welcome #veil{background:linear-gradient(rgba(4,6,15,.94),rgba(4,6,15,.86) 62%,rgba(4,6,15,.4))}
 }
 @media (max-width:760px){#launchBtn{font-size:9.5px}}
+h1,h2,.ptitle{word-spacing:.1em}
