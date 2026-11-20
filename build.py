@@ -1,8 +1,12 @@
-"""Wrap src/page.html into a full index.html for GitHub Pages."""
+"""Wrap each page fragment in src/ into a full HTML file for GitHub Pages."""
 from pathlib import Path
-src = Path(__file__).with_name("src") / "page.html"
-head, body = src.read_text().split("<!--/head-->", 1)
-out = f"""<!doctype html>
+
+root = Path(__file__).parent
+PAGES = {"page.html": "index.html", "expedition.html": "expedition.html"}
+
+for src, dst in PAGES.items():
+    head, body = (root / "src" / src).read_text().split("<!--/head-->", 1)
+    out = f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -14,5 +18,5 @@ out = f"""<!doctype html>
 </body>
 </html>
 """
-Path(__file__).with_name("index.html").write_text(out)
-print("index.html written,", len(out), "bytes")
+    (root / dst).write_text(out)
+    print(dst, "written,", len(out), "bytes")
