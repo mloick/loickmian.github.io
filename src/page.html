@@ -1,0 +1,88 @@
+<title>Loick Mian · Digital Project Manager & Builder</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Loick Mian, Digital Project Manager & Builder. I solve problems with solutions people actually use: process, product, tech and AI. Explore my universe, in English or French.">
+<meta name="theme-color" content="#04060f">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="assets/logos/lbt-symbol.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<!--/head-->
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="veil" aria-hidden="true"></div>
+<div id="flash" aria-hidden="true"></div>
+<div id="labels"></div>
+
+<!-- ============ 1 · Welcome: I introduce myself, then you board ============ -->
+<section id="welcome" aria-labelledby="wTitle">
+  <header class="wtop">
+    <a class="logo" href="#" aria-label="Loick Mian"><span class="lm">LM</span><span>Loick Mian</span></a>
+    <div class="row"><div class="lang" role="group" aria-label="Language"><button data-lang="en">EN</button><button data-lang="fr">FR</button></div><a class="btn sm gold cv" href="assets/cv/Loick_MIAN_Resume_EN.pdf" target="_blank" rel="noopener" data-t="resume">Résumé</a></div>
+  </header>
+  <div class="wbody">
+    <div class="wtxt">
+      <p class="kicker" data-t="welcome">Welcome to my universe</p>
+      <h1 id="wTitle" data-t-html="heroTitle">From an idea to <em>the real thing.</em></h1>
+      <p class="lead" data-t="heroLead"></p>
+      <div class="board">
+        <div class="launch">
+          <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="trk" cx="60" cy="60" r="56"/><circle class="prg" id="launchRing" cx="60" cy="60" r="56"/></svg>
+          <button id="launchBtn" aria-describedby="boardHint"><span id="launchLabel" data-t="board">Board</span></button>
+        </div>
+        <div class="board-txt"><b data-t="boardTitle">Board the ship</b><span id="boardHint" data-t="boardHint">Hold the button, I'll show you around.</span></div>
+      </div>
+      <p class="quick"><a href="#brief" data-t="briefLink">In a hurry? The 30-second brief</a></p>
+    </div>
+  </div>
+  <div class="ground" aria-hidden="true"><div class="planet"></div></div>
+  <div class="pad" aria-hidden="true">
+    <div class="bubble on" id="bubble"><span id="bubbleText"></span></div>
+    <svg class="astro" id="astro" viewBox="0 0 160 230"></svg>
+    <svg class="shuttle" id="shuttle" viewBox="0 0 120 220"></svg>
+  </div>
+</section>
+
+<!-- ============ 2 · Inside the universe ============ -->
+<header id="hud" hidden>
+  <button class="logo" id="home" aria-label="Home"><span class="lm">LM</span><span class="nm">Loick Mian</span></button>
+  <nav class="tabs" id="tabs" aria-label="Sections">
+    <a href="#explore" data-tab="explore" data-t="tExplore">Explore</a>
+    <a href="#about" data-tab="about" data-t="tAbout">About</a>
+    <a href="#method" data-tab="method" data-t="tMethod">Method</a>
+    <a href="#skills" data-tab="skills" data-t="tSkills">Skills</a>
+    <a href="#impact" data-tab="impact" data-t="tImpact">Impact</a>
+    <a href="#contact" data-tab="contact" data-t="tContact">Contact</a>
+  </nav>
+  <div class="row">
+    <button class="btn sm homebtn" id="homeBtn"><span aria-hidden="true">⌂</span><span class="hl" data-t="home">Home</span></button>
+    <div class="lang" role="group" aria-label="Language"><button data-lang="en">EN</button><button data-lang="fr">FR</button></div>
+    <a class="btn sm gold cv" href="assets/cv/Loick_MIAN_Resume_EN.pdf" target="_blank" rel="noopener" data-t="resume">Résumé</a>
+  </div>
+</header>
+
+<nav id="plan" class="glass" hidden aria-label="Flight plan"><div id="planList"></div></nav>
+<button id="planBtn" class="btn sm" hidden data-t="flightPlan">Flight plan</button>
+
+<aside id="panel" class="glass" hidden aria-live="polite">
+  <button class="x" id="pclose" aria-label="Close">✕</button>
+  <div class="pbody" id="pbody"></div>
+  <div class="pfoot"><button class="btn sm" id="prevBtn" aria-label="Previous">←</button><span class="mono" id="stopN"></span><button class="btn sm primary" id="nextBtn"></button></div>
+</aside>
+
+<div id="guide" hidden><svg class="astro mini" viewBox="0 0 160 230" id="guideAstro"></svg><div class="gbubble" id="gbubble" role="status"></div></div>
+<div id="arrival" class="glass" hidden>
+  <p class="mono" data-t="arrivalKicker"></p>
+  <h2 data-t="arrivalTitle"></h2>
+  <p data-t="arrivalText"></p>
+  <div class="row"><button class="btn primary" id="tourBtn" data-t="tour">Start the guided tour</button><button class="btn" id="freeBtn" data-t="free">Explore freely</button></div>
+</div>
+<div id="linkStory" class="glass" hidden role="status"></div>
+
+<!-- tab sheets -->
+<section class="sheet" id="sheet" hidden aria-modal="false"><div class="sheet-in"><button class="x" id="sheetClose" aria-label="Close">✕</button><div id="sheetBody"></div></div></section>
+<section class="sheet" id="brief" hidden aria-label="30-second brief"><div class="sheet-in"><button class="x" id="briefClose" aria-label="Close">✕</button><div id="briefBody"></div></div></section>
+
+<noscript><div style="position:fixed;inset:0;z-index:99;background:#04060f;color:#eef1f8;padding:40px 20px;font:16px/1.6 sans-serif"><h1>Loick Mian</h1><p>Digital Project Manager &amp; Builder. ITSM Project Manager (work-study) at Konica Minolta, builder of SimuFlow, founder of LBT.</p><p>loickmian@gmail.com · <a href="https://www.linkedin.com/in/loick-mian-843382281" style="color:#8cc8ff">LinkedIn</a> · <a href="assets/cv/Loick_MIAN_Resume_EN.pdf" style="color:#8cc8ff">Résumé (PDF)</a></p></div></noscript>
+<script type="module" src="js/main.js"></script>

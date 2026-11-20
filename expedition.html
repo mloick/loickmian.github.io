@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Loick Mian · The Expedition</title>
+<meta name="description" content="Loick Mian, Digital Project Manager & Builder. Follow the expedition: the jobs, missions and products that shaped a project manager who builds. English and French.">
+<meta name="theme-color" content="#050815">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="assets/logos/lbt-symbol.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="css/expedition.css">
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<header class="nav" id="nav">
+  <a class="logo" href="#top" aria-label="Loick Mian, back to top"><span class="lm">LM</span><span class="nm">Loick Mian</span></a>
+  <nav class="links" aria-label="Sections">
+    <a href="#about" data-t="navAbout">About</a>
+    <a href="#method" data-t="navMethod">Method</a>
+    <a href="#expedition" data-t="navExp">Expedition</a>
+    <a href="#helm" data-t="navHelm">The helm</a>
+    <a href="#ph-frontier" data-t="navLab">Builds</a>
+    <a href="#contact" data-t="navContact">Contact</a>
+  </nav>
+  <div class="nav-r">
+    <div class="lang" role="group" aria-label="Language"><button data-lang="en" aria-pressed="true">EN</button><button data-lang="fr" aria-pressed="false">FR</button></div>
+    <a class="btn gold sm" id="cvBtn" href="assets/cv/Loick_MIAN_Resume_EN.pdf" target="_blank" rel="noopener" data-t="resume">Résumé</a>
+  </div>
+  <div class="prog" aria-hidden="true"><i id="progBar"></i></div>
+</header>
+
+<main id="top">
+  <!-- 1 · Hero: the explorer introduces himself -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-txt">
+      <p class="kicker reveal" data-t="welcome">Welcome to my universe</p>
+      <h1 id="heroTitle" class="reveal" data-t-html="heroTitle">I lead projects from the first sketch to <em>launch.</em></h1>
+      <p class="lead reveal" data-t="heroLead"></p>
+      <div class="cta reveal">
+        <a class="btn primary" href="#about" data-t="begin">Begin the expedition</a>
+        <button class="btn ghost" id="briefBtn" data-t="briefBtn">30-second brief</button>
+      </div>
+      <ul class="facts reveal">
+        <li><i class="dot live"></i><span data-t="fact1"></span></li>
+        <li><i class="dot"></i><span data-t="fact2"></span></li>
+      </ul>
+    </div>
+    <div class="hero-scene" aria-hidden="true"></div>
+    <div class="moon" aria-hidden="true"></div>
+    <div class="ground" aria-hidden="true"><div class="planet"><div class="crater k1"></div><div class="crater k2"></div><div class="crater k3"></div></div></div>
+    <div class="explorer-wrap" id="explorerWrap">
+      <div class="bubble" id="bubble" role="status"><span id="bubbleText"></span></div>
+      <svg class="explorer" id="explorer" viewBox="0 0 160 230" role="img" aria-label="Loick, your guide"></svg>
+    </div>
+    <a class="scroll-cue" href="#about" aria-label="Scroll"><span></span></a>
+  </section>
+
+  <!-- 2 · About me -->
+  <section class="sec about" id="about" aria-labelledby="aboutTitle">
+    <div class="wrap">
+      <p class="eyebrow reveal"><span>01</span><span data-t="aboutKicker">Who's leading this expedition</span></p>
+      <div class="about-grid">
+        <div class="about-card reveal">
+          <svg class="route-map" viewBox="0 0 360 220" aria-hidden="true">
+            <defs><linearGradient id="arcG" x1="0" x2="1"><stop offset="0" stop-color="#f2c46d"/><stop offset="1" stop-color="#8cc8ff"/></linearGradient></defs>
+            <path id="arcPath" d="M60 176 C 120 30, 250 20, 300 60" fill="none" stroke="url(#arcG)" stroke-width="1.6" stroke-dasharray="4 6"/>
+            <circle cx="60" cy="176" r="5" fill="#f2c46d"/><circle cx="60" cy="176" r="12" fill="none" stroke="#f2c46d" stroke-opacity=".35"/>
+            <circle cx="300" cy="60" r="5" fill="#8cc8ff"/><circle cx="300" cy="60" r="12" fill="none" stroke="#8cc8ff" stroke-opacity=".35"/>
+            <circle r="3.5" fill="#fff"><animateMotion dur="6s" repeatCount="indefinite" rotate="auto"><mpath href="#arcPath"/></animateMotion></circle>
+            <text x="60" y="204" text-anchor="middle">COTONOU</text><text x="300" y="36" text-anchor="middle">PARIS</text>
+          </svg>
+          <div class="coords"><span>6.37°N 2.43°E</span><span>→</span><span>48.86°N 2.35°E</span></div>
+          <p class="mono small" data-t="aboutCard"></p>
+        </div>
+        <div class="about-txt">
+          <h2 id="aboutTitle" class="reveal" data-t-html="aboutTitle"></h2>
+          <p class="big reveal" data-t="aboutLede"></p>
+          <ul class="log reveal" id="aboutLog"></ul>
+        </div>
+      </div>
+      <div class="principles" id="principles"></div>
+    </div>
+  </section>
+
+  <!-- 3 · Method: business × tech × AI -->
+  <section class="sec method" id="method" aria-labelledby="methodTitle">
+    <div class="wrap">
+      <p class="eyebrow reveal"><span>02</span><span data-t="methodKicker">How I work</span></p>
+      <h2 id="methodTitle" class="reveal" data-t-html="methodTitle"></h2>
+      <p class="sub reveal" data-t="methodSub"></p>
+      <div class="method-grid">
+        <div class="triad reveal" id="triad"></div>
+        <div class="triad-info" id="triadInfo" aria-live="polite"></div>
+      </div>
+      <ol class="pipeline" id="pipeline"></ol>
+    </div>
+  </section>
+
+  <!-- 4 · Numbers -->
+  <section class="sec stats" aria-labelledby="statsTitle">
+    <div class="wrap">
+      <p class="eyebrow reveal"><span>03</span><span id="statsTitle" data-t="statsKicker">The expedition in numbers</span></p>
+      <div class="stat-grid" id="stats"></div>
+    </div>
+  </section>
+
+  <!-- 4 · The expedition -->
+  <section class="sec expedition" id="expedition" aria-labelledby="expTitle">
+    <div class="wrap">
+      <p class="eyebrow reveal"><span>04</span><span data-t="expKicker">The expedition · 2021 → today</span></p>
+      <h2 id="expTitle" class="reveal" data-t-html="expTitle"></h2>
+      <p class="sub reveal" data-t="expSub"></p>
+      <div class="exp-layout">
+        <aside class="roadmap" id="roadmap" aria-label="Roadmap"></aside>
+        <div class="trail" id="trail">
+          <div class="trail-line" aria-hidden="true"><i id="trailFill"></i><div class="walker" id="walker"><svg viewBox="0 0 160 230"></svg><div class="wbubble" id="wbubble"></div></div></div>
+          <div id="phases"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · The helm -->
+  <section class="sec helm" id="helm" aria-labelledby="helmTitle">
+    <div class="wrap">
+      <p class="eyebrow reveal"><span>05</span><span data-t="helmKicker">The helm · how I steer a project</span></p>
+      <h2 id="helmTitle" class="reveal" data-t-html="helmTitle"></h2>
+      <div class="helm-grid">
+        <div class="wheel-box reveal">
+          <svg class="wheel" id="wheel" viewBox="-160 -160 320 320" role="img" aria-label="Ship's wheel of skills"></svg>
+          <div class="pointer" aria-hidden="true"></div>
+        </div>
+        <div class="helm-panel">
+          <div class="skill-tabs" id="skillTabs" role="tablist"></div>
+          <div class="skill-card" id="skillCard" role="tabpanel" aria-live="polite"></div>
+        </div>
+      </div>
+      <div class="toolkit reveal">
+        <p class="mono small" data-t="toolkit">Toolkit</p>
+        <div class="tools" id="tools"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · Next destination -->
+  <section class="sec contact" id="contact" aria-labelledby="contactTitle">
+    <div class="wrap">
+      <div class="contact-head">
+        <div>
+          <p class="eyebrow reveal"><span>06</span><span data-t="contactKicker">Next destination</span></p>
+          <h2 id="contactTitle" class="reveal" data-t-html="contactTitle"></h2>
+          <p class="sub reveal" data-t="contactSub"></p>
+          <div class="cta reveal" style="margin-top:26px"><a class="btn primary" href="#cform" data-t="letsBuild">Let's build</a><a class="btn ghost" href="https://www.linkedin.com/in/loick-mian-843382281" target="_blank" rel="noopener" data-t="letsLink">Let's link</a></div>
+        </div>
+        <div class="guide-end reveal" aria-hidden="true"><div class="bubble on done" id="endBubble"><span data-t="endLine"></span></div><svg class="explorer" id="endExplorer" viewBox="0 0 160 230"></svg></div>
+      </div>
+      <div class="cgrid">
+        <form class="card cform reveal" id="cform" novalidate>
+          <h3 data-t="formTitle">Send a message</h3>
+          <div class="field"><label for="cName" data-t="name">Name</label><input id="cName" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="cEmail" data-t="email">Email</label><input id="cEmail" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="cMsg" data-t="message">Message</label><textarea id="cMsg" name="message" rows="5" required></textarea></div>
+          <label class="check"><input type="checkbox" name="newsletter"><span data-t="optin"></span></label>
+          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn primary" type="submit" data-t="send">Send</button>
+          <p class="formmsg" id="cOut" role="status"></p>
+        </form>
+        <div class="cside">
+          <form class="card reveal" id="nform" novalidate>
+            <h3 data-t="newsTitle">Newsletter</h3>
+            <p data-t="newsText"></p>
+            <div class="row"><label class="sr" for="nEmail" data-t="email">Email</label><input id="nEmail" type="email" autocomplete="email" required placeholder="you@company.com"><button class="btn gold" type="submit" data-t="subscribe">Subscribe</button></div>
+            <p class="formmsg" id="nOut" role="status"></p>
+          </form>
+          <div class="card reveal direct">
+            <p class="mono small" data-t="direct">Direct line</p>
+            <code>loickmian@gmail.com</code>
+            <div class="row wrapr"><button class="btn sm copy-email" data-t="copy">Copy email</button><a class="btn sm" href="https://www.linkedin.com/in/loick-mian-843382281" target="_blank" rel="noopener">LinkedIn</a><a class="btn sm" href="https://github.com/mloick" target="_blank" rel="noopener">GitHub</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot"><span>© 2026 Loick Mian</span><span data-t="footNote">Designed and built by me, with AI as a co-pilot.</span></footer>
+
+<section class="overlay" id="brief" hidden aria-label="30-second brief"><div class="ov-wrap" id="briefBody"></div></section>
+
+<noscript><div style="position:fixed;inset:0;z-index:99;background:#050815;color:#eef1f8;padding:40px 20px;font:16px/1.6 sans-serif"><h1>Loick Mian</h1><p>Digital Project Manager &amp; Builder. ITSM Project Manager (apprenticeship) at Konica Minolta, builder of SimuFlow, founder of LBT.</p><p>loickmian@gmail.com · <a href="https://www.linkedin.com/in/loick-mian-843382281" style="color:#8cc8ff">LinkedIn</a> · <a href="assets/cv/Loick_MIAN_Resume_EN.pdf" style="color:#8cc8ff">Résumé (PDF)</a></p></div></noscript>
+<script type="module" src="js/expedition.js"></script>
+</body>
+</html>
