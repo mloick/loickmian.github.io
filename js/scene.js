@@ -99,9 +99,9 @@ export function createGalaxy(canvas, worlds, opts = {}) {
     galaxy.add(new THREE.Points(geo, mat));
     // core
     const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffcf8a, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: .95 }));
-    core.scale.set(60, 60, 1); core.material.opacity = .7; scene.userData.cores = [core, core2]; galaxy.add(core);
+    core.scale.set(60, 60, 1); core.material.opacity = .7; galaxy.add(core);
     const core2 = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xfff3dd, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
-    core2.scale.set(16, 16, 1); galaxy.add(core2);
+    core2.scale.set(16, 16, 1); galaxy.add(core2); scene.userData.cores = [core, core2];
   }
   /* nebulae */
   {

@@ -9,7 +9,7 @@ export const UI = {
     hold: "Hold to launch",
     holding: "Ignition…",
     briefLink: "Mission brief · 30 seconds",
-    arrivalTitle: "16 worlds. One trajectory.",
+    arrivalTitle: "15 worlds. One trajectory.",
     arrivalText: "Every world is a job, a mission or something I built. The tour starts at the edge of the galaxy and ends at its core, where my most ambitious projects are.",
     tour: "Start the guided tour",
     free: "Free flight",
@@ -67,7 +67,7 @@ export const UI = {
     hold: "Maintenez pour décoller",
     holding: "Allumage…",
     briefLink: "Briefing de mission · 30 secondes",
-    arrivalTitle: "16 mondes. Une trajectoire.",
+    arrivalTitle: "15 mondes. Une trajectoire.",
     arrivalText: "Chaque monde est un job, une mission ou un projet que j'ai construit. La visite part du bord de la galaxie et finit au cœur, là où sont mes projets les plus ambitieux.",
     tour: "Lancer la visite guidée",
     free: "Vol libre",
@@ -151,17 +151,7 @@ export const WORLDS = [
       log: ["Encaissement rapide et précis, bons d'achat compris.", "Accueil, orientation et fidélisation des clients.", "Gestion des réclamations et des situations délicates."],
       proves: "La confiance se gagne client après client." } },
 
-  { id: "kadinnov", sector: "field", kind: "rock", color: "#9c8f7a", size: 2.0, logo: null, mark: "KI", status: "done",
-    en: { name: "Kad'Innov", role: "Order picker", period: "Nov 2023 – Jun 2024", place: "Benin",
-      lede: "Logistics, in parallel with my consulting role at IMPACT PLUS.",
-      log: ["Received, checked and stored goods.", "Managed stock and restocked the shelves.", "Worked to strict safety rules and deadlines."],
-      proves: "Two jobs at once, both done properly." },
-    fr: { name: "Kad'Innov", role: "Préparateur de commandes", period: "Nov. 2023 – juin 2024", place: "Bénin",
-      lede: "De la logistique, en parallèle de ma mission de conseil chez IMPACT PLUS.",
-      log: ["Réception, contrôle et rangement des marchandises.", "Gestion du stock et réassort des rayons.", "Respect strict des règles de sécurité et des délais."],
-      proves: "Deux postes en même temps, tous les deux bien tenus." } },
-
-  { id: "alyce", sector: "field", kind: "rock", color: "#8fa6c9", size: 2.3, logo: null, mark: "ALYCE", status: "done",
+  { id: "alyce", sector: "field", kind: "rock", color: "#f2a93b", size: 2.3, logo: "alyce.png", mark: "ALYCE", status: "done",
     en: { name: "ALYCE", role: "Telephone interviewer", period: "Sep – Dec 2025", place: "France",
       lede: "Hundreds of calls, a strict script, and data that had to be exactly right.",
       log: ["Collected and entered survey data in real time.", "Followed the procedure and the GDPR confidentiality rules on every call.", "Kept people on the line who didn't owe me a minute of their time."],
@@ -201,7 +191,7 @@ export const WORLDS = [
       log: ["Déploiement du plan marketing digital (réseaux sociaux, SEA, e-mailing) : +35 % d'engagement.", "Optimisation du catalogue e-commerce et contenus pour chaque canal."],
       proves: "Un projet vit ou meurt avec son public." } },
 
-  { id: "impact", sector: "first", kind: "planet", color: "#7f9cf5", size: 3.6, logo: null, mark: "IMPACT+", status: "done",
+  { id: "impact", sector: "first", kind: "planet", color: "#7f9cf5", size: 3.6, logo: "impact.png", mark: "IMPACT+", status: "done",
     en: { name: "IMPACT PLUS", role: "Digital PM & IT Lead", period: "Nov 2023 – Jun 2024", place: "Cotonou",
       lede: "A consulting firm modernising how it works inside, with me running both the projects and the IT.",
       log: ["Led 5+ projects to digitise internal processes and wrote the functional specifications.", "Ran the IT side too: equipment, level 2/3 support, incident resolution.", "Trained 30+ colleagues. Adoption went above 85%."],
@@ -211,7 +201,7 @@ export const WORLDS = [
       log: ["Pilotage de 5+ projets de digitalisation des processus internes, rédaction des spécifications.", "Supervision IT : parc, support N2/N3, résolution des incidents.", "30+ collaborateurs formés, plus de 85 % d'adoption."],
       proves: "Le changement ne marche que si les gens l'adoptent. Je le prévois dès le premier jour." } },
 
-  { id: "dreamxr", sector: "first", kind: "planet", color: "#b48cff", size: 3.2, logo: null, mark: "XR", status: "done",
+  { id: "dreamxr", sector: "first", kind: "planet", color: "#b48cff", size: 3.2, logo: "dreamxr.png", mark: "XR", status: "done",
     en: { name: "DreamXR", role: "Assistant Project Manager", period: "Jan – Apr 2025", place: "Cotonou",
       lede: "Augmented and virtual reality projects, with three teams to keep in the same rhythm.",
       log: ["Coordinated 3 teams (dev, 3D/UX design, QA) in Scrum with Jira and ClickUp.", "Cut sprint blockers by 20% over two cycles.", "Wrote status reports, change requests and retrospective notes."],
@@ -221,7 +211,7 @@ export const WORLDS = [
       log: ["Coordination de 3 équipes (dev, design 3D/UX, QA) en Scrum avec Jira et ClickUp.", "Blocages de sprint réduits de 20 % sur deux cycles.", "Rapports de statut, demandes de changement et comptes rendus de rétro."],
       proves: "L'agilité, c'est une habitude qu'on entretient avec l'équipe, à chaque sprint." } },
 
-  { id: "optimall", sector: "first", kind: "planet", color: "#6fd3ff", size: 3.0, logo: null, mark: "OM", status: "done",
+  { id: "optimall", sector: "first", kind: "planet", color: "#b06fd8", size: 3.0, logo: "optimall.png", mark: "OM", status: "done",
     en: { name: "Opti-Mall", role: "Digital PM · Business Development", period: "Oct – Nov 2025", place: "Paris",
       lede: "A retail business that ran 100% on paper.",
       log: ["Assessed how the organisation worked and wrote a digitisation roadmap.", "Designed and rolled out a shared Notion workspace for tasks and projects.", "Trained the team and supported them through adoption."],
@@ -312,7 +302,7 @@ export const LINKS = [
   { id: "trust", worlds: ["superu", "intermarche", "alyce", "lbt"],
     en: { name: "Earn trust, one customer at a time", text: "Every checkout is a small promise kept. LBT is the same idea at the scale of a brand: be the seller people can trust." },
     fr: { name: "Gagner la confiance, client après client", text: "Chaque passage en caisse est une petite promesse tenue. LBT, c'est la même idée à l'échelle d'une marque : être le vendeur à qui on fait confiance." } },
-  { id: "initiative", worlds: ["kadinnov", "workshop", "simuflow", "keepit", "lbt"],
+  { id: "initiative", worlds: ["konica", "workshop", "simuflow", "keepit", "lbt"],
     en: { name: "Start things nobody asked for", text: "Nobody asked me to build a simulator, a CRM or a brand. Each time I saw a gap, and I started." },
     fr: { name: "Lancer ce que personne n'a demandé", text: "Personne ne m'a demandé de construire un simulateur, un CRM ou une marque. À chaque fois, j'ai vu un manque et je me suis lancé." } }
 ];

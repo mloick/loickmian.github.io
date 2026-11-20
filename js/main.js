@@ -117,7 +117,7 @@ $$("[data-lang]").forEach(b => b.addEventListener("click", () => { lang = b.data
 /* ================= intro ================= */
 function bootLines() {
   const el = $("#boot"); if (reduce) return;
-  const lines = ["> link: cotonou 6.37N → paris 48.86N ...... ok", "> loading missions [16] ..................... ok", "> warp drive ................................ ready"];
+  const lines = ["> link: cotonou 6.37N → paris 48.86N ...... ok", "> loading missions [15] ..................... ok", "> warp drive ................................ ready"];
   let i = 0, j = 0;
   const tick = () => { if (i >= lines.length) return; j++; el.textContent = lines.slice(0, i).join("\n") + (i ? "\n" : "") + lines[i].slice(0, j); if (j >= lines[i].length) { i++; j = 0; setTimeout(tick, 160); } else setTimeout(tick, 12); };
   setTimeout(tick, 300);
