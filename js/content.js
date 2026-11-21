@@ -134,11 +134,11 @@ export const WORLDS = [
   { id: "academy", phase: "basecamp", sector: "academy", kind: "ringed", color: "#e6e1d3", size: 3.4, logo: null, mark: "EDU", status: "building",
     en: { name: "Education", role: "EPITECH · YNOV · certifications", period: "2021 – 2027", place: "Cotonou · Paris",
       lede: "A software engineering base first, then project management on top of it.",
-      log: ["MSc Digital Project Management & IoT, YNOV Campus Paris (2025 – 2027), work-study.", "Bachelor in Computer Science, EPITECH Benin (2021 – 2024).", "Certified PSPO and Scrum Fundamentals (Scrum.org), Google Project Management, PMI Kickoff."],
+      log: ["MSc Software, Mobile & IoT Development (Expert level, Bac+5), YNOV Campus Paris (2025 – 2027), work-study.", "Bachelor in Computer Science, EPITECH Benin (2021 – 2024).", "Certified PSPO and Scrum Fundamentals (Scrum.org), Google Project Management, PMI Kickoff."],
       proves: "I speak the developers' language, and the business's." },
     fr: { name: "Formation", role: "EPITECH · YNOV · certifications", period: "2021 – 2027", place: "Cotonou · Paris",
       lede: "D'abord une vraie base en développement logiciel, puis la gestion de projet par-dessus.",
-      log: ["Mastère Manager de projet digital & IoT, YNOV Campus Paris (2025 – 2027), en alternance.", "Bachelor en informatique, EPITECH Bénin (2021 – 2024).", "Certifications : PSPO et Scrum Fundamentals (Scrum.org), Google Project Management, PMI Kickoff."],
+      log: ["Mastère Expert en développement logiciel, mobile & IoT (Bac+5), YNOV Campus Paris (2025 – 2027), en alternance.", "Bachelor en informatique, EPITECH Bénin (2021 – 2024).", "Certifications : PSPO et Scrum Fundamentals (Scrum.org), Google Project Management, PMI Kickoff."],
       proves: "Je parle le langage des développeurs comme celui des métiers." } },
 
   { id: "kungfu", phase: "basecamp", sector: "field", kind: "rock", color: "#c9774f", size: 2.2, logo: null, mark: "KFB", side: "studies", status: "done",

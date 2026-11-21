@@ -522,3 +522,11 @@ h1,h2,.ptitle{word-spacing:.1em}
 
 #gl{touch-action:none}
 #gl.grabbing,html #gl.grabbing{cursor:grabbing!important}
+
+/* quick access for a recruiter in a hurry: profile, CV, contact, LinkedIn, right on the welcome screen */
+.fast{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.fast a{padding:7px 12px;border:1px solid var(--line2);border-radius:999px;font:600 13px var(--body);text-decoration:none;color:var(--ink);background:rgba(8,18,40,.6);transition:border-color .2s,background .2s}
+.fast a:hover{border-color:var(--gold);background:rgba(103,232,249,.08)}
+.fast a.cv{border-color:rgba(103,232,249,.6);color:var(--gold)}
+@media (max-width:420px){.wtop .cv{display:inline-flex}}
+@media (max-width:900px){.fast{margin-top:12px}.fast a{padding:8px 12px}}
