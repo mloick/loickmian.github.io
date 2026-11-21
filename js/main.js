@@ -38,7 +38,7 @@ const X = {
       { k: "core", n: "Solutions people use", q: "The overlap is where I work.", p: "A tool only counts once people adopt it. Training, feedback and change management are part of every plan I write.", ex: "85% adoption at IMPACT PLUS" }
     ],
     arrivalKicker: "15 stops · 4 phases", arrivalTitle: "Welcome aboard. Here's my universe.",
-    arrivalText: "Each world is a job, a mission or something I built. The guided tour goes from where I started to what I'm building now. The tabs above stay open to you at any time.",
+    arrivalText: "Each world is a job, a mission or something I built. The guided tour goes from where I started to what I'm building now. Drag to turn the galaxy, scroll to zoom. The tabs above stay open to you at any time.",
     tour: "Start the guided tour", free: "Explore freely",
     phases: { basecamp: ["Basecamp", "2021 – 2026"], command: ["First commands", "2022 – 2025"], mission: ["Current mission", "2026 – today"], frontier: ["New frontiers", "Now → 2027"] },
     guide: { basecamp: "Where it all started: my studies, with student jobs alongside.", command: "My first projects as a project manager.", mission: "This is where I am today.", frontier: "And this is what I'm building next." },
@@ -114,7 +114,7 @@ const X = {
       { k: "core", n: "Des solutions utilisées", q: "C'est à l'intersection que je travaille.", p: "Un outil ne compte que si les gens l'adoptent. Formation, retours et conduite du changement font partie de chaque plan que j'écris.", ex: "85 % d'adoption chez IMPACT PLUS" }
     ],
     arrivalKicker: "15 escales · 4 phases", arrivalTitle: "Bienvenue à bord. Voici mon univers.",
-    arrivalText: "Chaque monde est un poste, une mission ou un projet que j'ai construit. La visite guidée part de mes débuts et va jusqu'à ce que je construis aujourd'hui. Les onglets en haut restent accessibles à tout moment.",
+    arrivalText: "Chaque monde est un poste, une mission ou un projet que j'ai construit. La visite guidée part de mes débuts et va jusqu'à ce que je construis aujourd'hui. Faites glisser pour tourner la galaxie, molette pour zoomer. Les onglets en haut restent accessibles à tout moment.",
     tour: "Lancer la visite guidée", free: "Explorer librement",
     phases: { basecamp: ["Camp de base", "2021 – 2026"], command: ["Premières missions", "2022 – 2025"], mission: ["Mission en cours", "2026 – auj."], frontier: ["Nouveaux horizons", "Auj. → 2027"] },
     guide: { basecamp: "Tout a commencé ici : mes études, avec des jobs étudiants en parallèle.", command: "Mes premiers projets en tant que chef de projet.", mission: "Voici où j'en suis aujourd'hui.", frontier: "Et voici ce que je construis pour la suite." },
