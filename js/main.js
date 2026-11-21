@@ -58,19 +58,19 @@ const X = {
     methodEy: "Method", methodTitle: "How I take an idea all the way to delivery.",
     methodSub: "I don't just tick off a task list. I look for the real problem behind the request, pick the simplest solution that works, and stay until people use it.",
     pillars: [
-      { c: "#f2c46d", k: "The field", h: "Understand the real problem", p: "I go where the work happens, listen, and map how things really run before choosing any tool.", ex: "Opti-Mall · Konica Minolta · ALYCE" },
-      { c: "#8cc8ff", k: "Tech", h: "Build the right solution", p: "With a software development background, I write specs developers trust, and I can build the first version myself: web, mobile, back end.", ex: "SimuFlow · IMPACT PLUS · EPITECH" },
-      { c: "#a891ff", k: "AI", h: "Use AI like an engineer", p: "Not just a chatbot. I run coding agents with clear specs, curated context, small iterations, review and tests, and I put AI into products where it removes manual work.", ex: "Claude Code · on-device text recognition in SimuFlow" }
+      { c: "#67e8f9", k: "The field", h: "Understand the real problem", p: "I go where the work happens, listen, and map how things really run before choosing any tool.", ex: "Opti-Mall · Konica Minolta · ALYCE" },
+      { c: "#93c5fd", k: "Tech", h: "Build the right solution", p: "With a software development background, I write specs developers trust, and I can build the first version myself: web, mobile, back end.", ex: "SimuFlow · IMPACT PLUS · EPITECH" },
+      { c: "#a5b4fc", k: "AI", h: "Use AI like an engineer", p: "Not just a chatbot. I run coding agents with clear specs, curated context, small iterations, review and tests, and I put AI into products where it removes manual work.", ex: "Claude Code · on-device text recognition in SimuFlow" }
     ],
     pipeline: [["Understand", "Go on the ground, listen, map how the work really happens."], ["Frame", "Set the scope, the priorities and the success metrics."], ["Design", "Pick the right tech and AI, write specs people can build from."], ["Prototype", "Show a working version early and test it with real users."], ["Deliver", "Roll out, train, measure, then improve."]],
     // skills
     skillsEy: "Skills", skillsTitle: "Six skills at the helm. The full toolbox below.",
     spoke: "Skill", usedAt: "Where I used it", light: "Light it up in the galaxy",
     matrix: [
-      ["#f2c46d", "Project & product", ["Project management", "Scrum & Kanban", "PSPO (Product Owner)", "Roadmaps & planning", "Functional specifications", "Risk & stakeholder management", "Change management & training", "Jira · ClickUp · Notion"]],
-      ["#8cc8ff", "ITSM & process", ["ITIL practices", "Incident, request & change management", "Workflow modelling (draw.io, BPMN 2.0)", "SLA / OLA", "Process documentation", "Level 2/3 support"]],
+      ["#67e8f9", "Project & product", ["Project management", "Scrum & Kanban", "PSPO (Product Owner)", "Roadmaps & planning", "Functional specifications", "Risk & stakeholder management", "Change management & training", "Jira · ClickUp · Notion"]],
+      ["#93c5fd", "ITSM & process", ["ITIL practices", "Incident, request & change management", "Workflow modelling (draw.io, BPMN 2.0)", "SLA / OLA", "Process documentation", "Level 2/3 support"]],
       ["#6fe3a8", "Software development", ["HTML · CSS · JavaScript", "TypeScript", "React · React Native · Expo", "Flutter", "Python · Django", "SQL & databases", "Supabase", "REST APIs", "Git"]],
-      ["#a891ff", "AI engineering", ["Agentic coding (Claude Code)", "Prompt & context engineering", "Spec-driven development with AI", "AI-assisted prototyping", "AI inside products (on-device OCR)"]],
+      ["#a5b4fc", "AI engineering", ["Agentic coding (Claude Code)", "Prompt & context engineering", "Spec-driven development with AI", "AI-assisted prototyping", "AI inside products (on-device OCR)"]],
       ["#ff8f6b", "Design & tools", ["Figma", "Wireframes & prototypes", "Product demos"]],
       ["#eef1f8", "Languages", ["French (native)", "English (professional)"]]
     ],
@@ -132,18 +132,18 @@ const X = {
     methodEy: "Méthode", methodTitle: "Comment je mène une idée jusqu'à sa réalisation.",
     methodSub: "Je ne me contente pas d'exécuter une liste de tâches. Je cherche le vrai problème derrière la demande, je choisis la solution la plus simple qui fonctionne, et je reste jusqu'à ce qu'elle soit utilisée.",
     pillars: [
-      { c: "#f2c46d", k: "Le terrain", h: "Comprendre le vrai problème", p: "Je vais là où le travail se fait, j'écoute et je cartographie le fonctionnement réel avant de choisir le moindre outil.", ex: "Opti-Mall · Konica Minolta · ALYCE" },
-      { c: "#8cc8ff", k: "La tech", h: "Construire la bonne solution", p: "Avec ma formation de développeur, j'écris des specs fiables pour les équipes techniques, et je sais construire la première version moi-même : web, mobile, back-end.", ex: "SimuFlow · IMPACT PLUS · EPITECH" },
-      { c: "#a891ff", k: "L'IA", h: "Utiliser l'IA en ingénieur", p: "Pas seulement un chatbot. Je pilote des agents de code avec des specs claires, un contexte maîtrisé, de petites itérations, de la relecture et des tests, et j'intègre l'IA dans les produits là où elle supprime du travail manuel.", ex: "Claude Code · reconnaissance de texte embarquée dans SimuFlow" }
+      { c: "#67e8f9", k: "Le terrain", h: "Comprendre le vrai problème", p: "Je vais là où le travail se fait, j'écoute et je cartographie le fonctionnement réel avant de choisir le moindre outil.", ex: "Opti-Mall · Konica Minolta · ALYCE" },
+      { c: "#93c5fd", k: "La tech", h: "Construire la bonne solution", p: "Avec ma formation de développeur, j'écris des specs fiables pour les équipes techniques, et je sais construire la première version moi-même : web, mobile, back-end.", ex: "SimuFlow · IMPACT PLUS · EPITECH" },
+      { c: "#a5b4fc", k: "L'IA", h: "Utiliser l'IA en ingénieur", p: "Pas seulement un chatbot. Je pilote des agents de code avec des specs claires, un contexte maîtrisé, de petites itérations, de la relecture et des tests, et j'intègre l'IA dans les produits là où elle supprime du travail manuel.", ex: "Claude Code · reconnaissance de texte embarquée dans SimuFlow" }
     ],
     pipeline: [["Comprendre", "Aller sur le terrain, écouter, cartographier le travail réel."], ["Cadrer", "Fixer le périmètre, les priorités et les indicateurs de réussite."], ["Concevoir", "Choisir la tech et l'IA adaptées, rédiger des specs exploitables."], ["Prototyper", "Montrer vite une version qui marche, la tester avec de vrais utilisateurs."], ["Livrer", "Déployer, former, mesurer, puis améliorer."]],
     skillsEy: "Compétences", skillsTitle: "Six compétences à la barre. Et la boîte à outils complète.",
     spoke: "Compétence", usedAt: "Où je l'ai mise en pratique", light: "La voir dans la galaxie",
     matrix: [
-      ["#f2c46d", "Gestion de projet & produit", ["Gestion de projet", "Scrum & Kanban", "PSPO (Product Owner)", "Roadmap & planification", "Spécifications fonctionnelles", "Gestion des risques et des parties prenantes", "Conduite du changement & formation", "Jira · ClickUp · Notion"]],
-      ["#8cc8ff", "ITSM & processus", ["Pratiques ITIL", "Gestion des incidents, demandes et changements", "Modélisation de workflows (draw.io, BPMN 2.0)", "SLA / OLA", "Documentation des processus", "Support N2/N3"]],
+      ["#67e8f9", "Gestion de projet & produit", ["Gestion de projet", "Scrum & Kanban", "PSPO (Product Owner)", "Roadmap & planification", "Spécifications fonctionnelles", "Gestion des risques et des parties prenantes", "Conduite du changement & formation", "Jira · ClickUp · Notion"]],
+      ["#93c5fd", "ITSM & processus", ["Pratiques ITIL", "Gestion des incidents, demandes et changements", "Modélisation de workflows (draw.io, BPMN 2.0)", "SLA / OLA", "Documentation des processus", "Support N2/N3"]],
       ["#6fe3a8", "Développement logiciel", ["HTML · CSS · JavaScript", "TypeScript", "React · React Native · Expo", "Flutter", "Python · Django", "SQL & bases de données", "Supabase", "API REST", "Git"]],
-      ["#a891ff", "Ingénierie IA", ["Développement agentique (Claude Code)", "Prompt & context engineering", "Développement piloté par les specs avec l'IA", "Prototypage assisté par IA", "IA intégrée aux produits (OCR embarqué)"]],
+      ["#a5b4fc", "Ingénierie IA", ["Développement agentique (Claude Code)", "Prompt & context engineering", "Développement piloté par les specs avec l'IA", "Prototypage assisté par IA", "IA intégrée aux produits (OCR embarqué)"]],
       ["#ff8f6b", "Design & outils", ["Figma", "Maquettes & prototypes", "Démos produit"]],
       ["#eef1f8", "Langues", ["Français (langue maternelle)", "Anglais (professionnel)"]]
     ],
@@ -171,18 +171,18 @@ const RM = { basecamp: [2021, 2026.6], command: [2022.6, 2025.9], mission: [2026
 
 /* ================= drawings: me, and the ship ================= */
 function astroSVG(p, flag = true) {
-  return `<defs><linearGradient id="${p}v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1236"/><stop offset=".62" stop-color="#2a2d6b"/><stop offset=".63" stop-color="#f2c46d"/><stop offset="1" stop-color="#e48a5c"/></linearGradient>
+  return `<defs><linearGradient id="${p}v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1236"/><stop offset=".62" stop-color="#2a2d6b"/><stop offset=".63" stop-color="#67e8f9"/><stop offset="1" stop-color="#0891b2"/></linearGradient>
     <linearGradient id="${p}s" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#c9d0e2"/></linearGradient></defs>
-    ${flag ? `<line x1="38" y1="26" x2="38" y2="224" stroke="#cfd6e6" stroke-width="3" stroke-linecap="round"/><g class="ex-flag" style="transform-origin:38px 30px"><path d="M37 28 H-12 L-3 42 L-12 56 H37 Z" fill="#f2c46d"/><text x="12" y="47" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="14" fill="#1d1406">LM</text></g>` : ""}
+    ${flag ? `<line x1="38" y1="26" x2="38" y2="224" stroke="#cfd6e6" stroke-width="3" stroke-linecap="round"/><g class="ex-flag" style="transform-origin:38px 30px"><path d="M37 28 H-12 L-3 42 L-12 56 H37 Z" fill="#67e8f9"/><text x="12" y="47" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="14" fill="#04202a">LM</text></g>` : ""}
     <rect x="50" y="84" width="60" height="72" rx="13" fill="#9aa4bf"/>
     <rect x="58" y="158" width="19" height="50" rx="9" fill="url(#${p}s)"/><rect x="83" y="158" width="19" height="50" rx="9" fill="url(#${p}s)"/>
     <rect x="53" y="200" width="27" height="17" rx="7" fill="#5d6888"/><rect x="80" y="200" width="27" height="17" rx="7" fill="#5d6888"/>
     <rect x="52" y="88" width="56" height="84" rx="22" fill="url(#${p}s)"/><rect x="53" y="150" width="54" height="8" fill="#c3cbdd"/>
     <rect x="65" y="110" width="30" height="22" rx="5" fill="#26305a"/>
-    <circle cx="72" cy="121" r="2.6" fill="#8cc8ff" class="ex-light"/><circle cx="80" cy="121" r="2.6" fill="#f2c46d"/><circle cx="88" cy="121" r="2.6" fill="#6fe3a8" class="ex-light"/>
+    <circle cx="72" cy="121" r="2.6" fill="#93c5fd" class="ex-light"/><circle cx="80" cy="121" r="2.6" fill="#67e8f9"/><circle cx="88" cy="121" r="2.6" fill="#6fe3a8" class="ex-light"/>
     <line x1="55" y1="100" x2="42" y2="146" stroke="#e6eaf3" stroke-width="16" stroke-linecap="round"/><circle cx="41" cy="150" r="8.5" fill="#5d6888"/>
     <rect x="60" y="85" width="40" height="9" rx="4.5" fill="#c3cbdd"/>
-    <line x1="102" y1="38" x2="110" y2="18" stroke="#c3cbdd" stroke-width="2.5"/><circle class="ex-antenna" cx="110" cy="17" r="3.5" fill="#f2c46d"/>
+    <line x1="102" y1="38" x2="110" y2="18" stroke="#c3cbdd" stroke-width="2.5"/><circle class="ex-antenna" cx="110" cy="17" r="3.5" fill="#67e8f9"/>
     <circle cx="80" cy="58" r="32" fill="url(#${p}s)" stroke="#c3cbdd" stroke-width="1.5"/>
     <rect x="56" y="41" width="48" height="36" rx="17" fill="url(#${p}v)"/>
     <ellipse class="ex-glint" cx="68" cy="51" rx="7" ry="3" fill="#fff" opacity=".55" transform="rotate(-24 68 51)"/>
@@ -190,12 +190,12 @@ function astroSVG(p, flag = true) {
 }
 function shuttleSVG() {
   return `<defs><linearGradient id="shb" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#c3cbdd"/></linearGradient>
-    <linearGradient id="shf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6d8"/><stop offset=".4" stop-color="#f2c46d"/><stop offset="1" stop-color="#e4572e" stop-opacity="0"/></linearGradient></defs>
+    <linearGradient id="shf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ecfeff"/><stop offset=".4" stop-color="#67e8f9"/><stop offset="1" stop-color="#e4572e" stop-opacity="0"/></linearGradient></defs>
     <path class="flame" d="M44 176 Q60 250 76 176 Z" fill="url(#shf)"/>
-    <path d="M28 150 L8 186 L30 180 Z" fill="#f2c46d"/><path d="M92 150 L112 186 L90 180 Z" fill="#f2c46d"/>
+    <path d="M28 150 L8 186 L30 180 Z" fill="#67e8f9"/><path d="M92 150 L112 186 L90 180 Z" fill="#67e8f9"/>
     <path d="M60 8 C 92 40, 96 110, 90 178 L30 178 C 24 110, 28 40, 60 8 Z" fill="url(#shb)"/>
     <path d="M60 8 C 72 20, 80 34, 84 48 L36 48 C 40 34, 48 20, 60 8 Z" fill="#26305a"/>
-    <circle cx="60" cy="86" r="15" fill="#26305a" stroke="#c3cbdd" stroke-width="3"/><circle cx="60" cy="86" r="9" fill="#8cc8ff" opacity=".6"/>
+    <circle cx="60" cy="86" r="15" fill="#26305a" stroke="#c3cbdd" stroke-width="3"/><circle cx="60" cy="86" r="9" fill="#93c5fd" opacity=".6"/>
     <rect x="44" y="120" width="32" height="40" rx="6" fill="none" stroke="#c3cbdd" stroke-width="2"/>
     <text x="60" y="146" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="12" fill="#26305a">LM</text>
     <rect x="34" y="176" width="52" height="8" rx="3" fill="#5d6888"/>`;
@@ -446,9 +446,9 @@ function eyebrow(n, label) { return `<p class="eyebrow"><b>0${n}</b>${esc(label)
 const SHEETS = {
   about() { const T = t(); return `${eyebrow(1, T.aboutEy)}<h2>${esc(T.aboutTitle)}</h2>
     <div class="grid2"><div class="card">
-      <svg class="route-map" viewBox="0 0 360 220" aria-hidden="true"><defs><linearGradient id="arcG" x1="0" x2="1"><stop offset="0" stop-color="#f2c46d"/><stop offset="1" stop-color="#8cc8ff"/></linearGradient></defs>
+      <svg class="route-map" viewBox="0 0 360 220" aria-hidden="true"><defs><linearGradient id="arcG" x1="0" x2="1"><stop offset="0" stop-color="#67e8f9"/><stop offset="1" stop-color="#93c5fd"/></linearGradient></defs>
         <path id="arcPath" d="M60 176 C 120 30, 250 20, 300 60" fill="none" stroke="url(#arcG)" stroke-width="2" stroke-dasharray="4 6"/>
-        <circle cx="60" cy="176" r="6" fill="#f2c46d"/><circle cx="300" cy="60" r="6" fill="#8cc8ff"/>
+        <circle cx="60" cy="176" r="6" fill="#67e8f9"/><circle cx="300" cy="60" r="6" fill="#93c5fd"/>
         <circle r="4" fill="#fff"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#arcPath"/></animateMotion></circle>
         <text x="60" y="204" text-anchor="middle">COTONOU</text><text x="300" y="36" text-anchor="middle">PARIS</text></svg>
       <div class="coords"><span>6.37°N 2.43°E</span><span>→</span><span>48.86°N 2.35°E</span></div><p>${esc(T.aboutCard)}</p></div>
@@ -522,8 +522,8 @@ let skill = 0, turned = 0, helmTouched = false;
 function buildWheel() {
   const spokes = LINKS.map((l, i) => { const a = i * Math.PI / 3, x = Math.sin(a), y = -Math.cos(a);
     return `<g class="spoke" data-skill="${i}"><line x1="${x * 30}" y1="${y * 30}" x2="${x * 124}" y2="${y * 124}" stroke="#2c3768" stroke-width="9" stroke-linecap="round"/><circle class="hd" cx="${x * 138}" cy="${y * 138}" r="18"/><text class="num" x="${x * 138}" y="${y * 138 + 4.5}" text-anchor="middle" style="transform-box:fill-box;transform-origin:center">0${i + 1}</text></g>`; }).join("");
-  const ticks = Array.from({ length: 36 }, (_, i) => { const a = i * Math.PI / 18; return `<line x1="${Math.sin(a) * 100}" y1="${-Math.cos(a) * 100}" x2="${Math.sin(a) * 106}" y2="${-Math.cos(a) * 106}" stroke="rgba(242,196,109,.35)"/>`; }).join("");
-  $("#wheel").innerHTML = `<g class="rot" id="wheelRot" style="transform:rotate(${-turned * 60}deg)"><circle r="112" fill="none" stroke="#2c3768" stroke-width="14"/><circle r="112" fill="none" stroke="rgba(242,196,109,.5)"/>${ticks}${spokes}<circle r="34" fill="#0d1330" stroke="#f2c46d" stroke-width="1.5"/><text id="hubTxt" y="5" text-anchor="middle" font-family="Archivo,Arial" font-size="15" font-weight="800" fill="#f2c46d" style="transform-box:fill-box;transform-origin:center">LM</text></g>`;
+  const ticks = Array.from({ length: 36 }, (_, i) => { const a = i * Math.PI / 18; return `<line x1="${Math.sin(a) * 100}" y1="${-Math.cos(a) * 100}" x2="${Math.sin(a) * 106}" y2="${-Math.cos(a) * 106}" stroke="rgba(103,232,249,.35)"/>`; }).join("");
+  $("#wheel").innerHTML = `<g class="rot" id="wheelRot" style="transform:rotate(${-turned * 60}deg)"><circle r="112" fill="none" stroke="#2c3768" stroke-width="14"/><circle r="112" fill="none" stroke="rgba(103,232,249,.5)"/>${ticks}${spokes}<circle r="34" fill="#0d1330" stroke="#67e8f9" stroke-width="1.5"/><text id="hubTxt" y="5" text-anchor="middle" font-family="Archivo,Arial" font-size="15" font-weight="800" fill="#67e8f9" style="transform-box:fill-box;transform-origin:center">LM</text></g>`;
   $$("#wheel .spoke").forEach(g => g.addEventListener("click", () => { helmTouched = true; showSkill(+g.dataset.skill); }));
 }
 function showSkill(i, silent) {

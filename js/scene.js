@@ -19,10 +19,10 @@ export function createGalaxy(canvas, worlds, opts = {}) {
   renderer.setSize(innerWidth, innerHeight, false);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
-  renderer.setClearColor(0x02030a, 1);
+  renderer.setClearColor(0x030816, 1);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x02030a, 0.0016);
+  scene.fog = new THREE.FogExp2(0x030816, 0.0016);
   const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, .1, 3000);
   camera.position.set(0, 60, 900);
 
@@ -34,7 +34,7 @@ export function createGalaxy(canvas, worlds, opts = {}) {
   composer.addPass(new OutputPass());
 
   scene.add(new THREE.AmbientLight(0x404a70, .55));
-  const coreLight = new THREE.PointLight(0xffd8a0, 2.2, 0, 0); scene.add(coreLight);
+  const coreLight = new THREE.PointLight(0xd6ecff, 2.2, 0, 0); scene.add(coreLight);
   const keyLight = new THREE.DirectionalLight(0x9fc4ff, 1.1); keyLight.position.set(80, 120, 60); scene.add(keyLight);
 
   /* ---------- textures ---------- */
@@ -78,7 +78,7 @@ export function createGalaxy(canvas, worlds, opts = {}) {
   const galaxy = new THREE.Group(); scene.add(galaxy);
   {
     const n = Math.round(42000 * Q), arms = 4, R = 230, pos = new Float32Array(n*3), col = new Float32Array(n*3);
-    const inner = new THREE.Color("#ffd29a"), mid = new THREE.Color("#8a6bff"), outer = new THREE.Color("#2fb5ff"), c = new THREE.Color();
+    const inner = new THREE.Color("#e6f4ff"), mid = new THREE.Color("#3b6fe0"), outer = new THREE.Color("#67e8f9"), c = new THREE.Color();
     for (let i = 0; i < n; i++) {
       const r = Math.pow(Math.random(), 1.6) * R, arm = (i % arms) / arms * TAU, spin = r * .028;
       const spread = (Math.random() - .5) * (6 + r*.16), spreadY = (Math.random() - .5) * (14 * Math.exp(-r/60) + 2);
@@ -99,14 +99,14 @@ export function createGalaxy(canvas, worlds, opts = {}) {
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, vertexColors: true });
     galaxy.add(new THREE.Points(geo, mat));
     // core
-    const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffcf8a, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: .95 }));
+    const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xbfe6ff, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: .95 }));
     core.scale.set(60, 60, 1); core.material.opacity = .7; galaxy.add(core);
-    const core2 = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xfff3dd, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+    const core2 = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffffff, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
     core2.scale.set(16, 16, 1); galaxy.add(core2); scene.userData.cores = [core, core2];
   }
   /* nebulae */
   {
-    const cols = ["#5b3cff", "#2a8cff", "#c04dff", "#1fd1c5", "#ff7a59"];
+    const cols = ["#1e40af", "#0891b2", "#1e3a8a", "#0e7490", "#2563eb"];
     for (let i = 0; i < 14; i++) {
       const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: cols[i % cols.length], transparent: true, opacity: .06 + Math.random()*.06, blending: THREE.AdditiveBlending, depthWrite: false }));
       const a = Math.random()*TAU, r = 40 + Math.random()*220; s.position.set(Math.cos(a)*r, (Math.random()-.5)*40, Math.sin(a)*r);
@@ -326,9 +326,9 @@ export function createGalaxy(canvas, worlds, opts = {}) {
     const pts = []; ordered.forEach(o => pts.push(o.pos.clone().add(new THREE.Vector3(0, o.size*.2, 0))));
     const curve = new THREE.CatmullRomCurve3(pts, false, "catmullrom", .2);
     const geo = new THREE.TubeGeometry(curve, 240, .32, 6, false);
-    linkLine = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0xffc46b, transparent: true, opacity: .95, blending: THREE.AdditiveBlending, depthWrite: false }));
+    linkLine = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0x67e8f9, transparent: true, opacity: .95, blending: THREE.AdditiveBlending, depthWrite: false }));
     linkLine.geometry.setDrawRange(0, 0); linkGroup.add(linkLine); linkProg = 0;
-    ordered.forEach(o => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffd38a, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false })); s.scale.setScalar(o.size*5); s.position.copy(o.pos); linkGroup.add(s); });
+    ordered.forEach(o => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0x9ff4ff, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false })); s.scale.setScalar(o.size*5); s.position.copy(o.pos); linkGroup.add(s); });
   }
 
   /* ---------- camera rig ---------- */
