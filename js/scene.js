@@ -19,10 +19,10 @@ export function createGalaxy(canvas, worlds, opts = {}) {
   renderer.setSize(innerWidth, innerHeight, false);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
-  renderer.setClearColor(0x02030a, 1);
+  renderer.setClearColor(0x030816, 1);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x02030a, 0.0016);
+  scene.fog = new THREE.FogExp2(0x030816, 0.0016);
   const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, .1, 3000);
   camera.position.set(0, 60, 900);
 
@@ -34,7 +34,7 @@ export function createGalaxy(canvas, worlds, opts = {}) {
   composer.addPass(new OutputPass());
 
   scene.add(new THREE.AmbientLight(0x404a70, .55));
-  const coreLight = new THREE.PointLight(0xffd8a0, 2.2, 0, 0); scene.add(coreLight);
+  const coreLight = new THREE.PointLight(0xd6ecff, 2.2, 0, 0); scene.add(coreLight);
   const keyLight = new THREE.DirectionalLight(0x9fc4ff, 1.1); keyLight.position.set(80, 120, 60); scene.add(keyLight);
 
   /* ---------- textures ---------- */
@@ -78,7 +78,7 @@ export function createGalaxy(canvas, worlds, opts = {}) {
   const galaxy = new THREE.Group(); scene.add(galaxy);
   {
     const n = Math.round(42000 * Q), arms = 4, R = 230, pos = new Float32Array(n*3), col = new Float32Array(n*3);
-    const inner = new THREE.Color("#ffd29a"), mid = new THREE.Color("#8a6bff"), outer = new THREE.Color("#2fb5ff"), c = new THREE.Color();
+    const inner = new THREE.Color("#e6f4ff"), mid = new THREE.Color("#3b6fe0"), outer = new THREE.Color("#67e8f9"), c = new THREE.Color();
     for (let i = 0; i < n; i++) {
       const r = Math.pow(Math.random(), 1.6) * R, arm = (i % arms) / arms * TAU, spin = r * .028;
       const spread = (Math.random() - .5) * (6 + r*.16), spreadY = (Math.random() - .5) * (14 * Math.exp(-r/60) + 2);
@@ -99,14 +99,14 @@ export function createGalaxy(canvas, worlds, opts = {}) {
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, vertexColors: true });
     galaxy.add(new THREE.Points(geo, mat));
     // core
-    const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffcf8a, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: .95 }));
+    const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xbfe6ff, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: .95 }));
     core.scale.set(60, 60, 1); core.material.opacity = .7; galaxy.add(core);
-    const core2 = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xfff3dd, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+    const core2 = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffffff, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
     core2.scale.set(16, 16, 1); galaxy.add(core2); scene.userData.cores = [core, core2];
   }
   /* nebulae */
   {
-    const cols = ["#5b3cff", "#2a8cff", "#c04dff", "#1fd1c5", "#ff7a59"];
+    const cols = ["#1e40af", "#0891b2", "#1e3a8a", "#0e7490", "#2563eb"];
     for (let i = 0; i < 14; i++) {
       const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: cols[i % cols.length], transparent: true, opacity: .06 + Math.random()*.06, blending: THREE.AdditiveBlending, depthWrite: false }));
       const a = Math.random()*TAU, r = 40 + Math.random()*220; s.position.set(Math.cos(a)*r, (Math.random()-.5)*40, Math.sin(a)*r);
@@ -326,9 +326,9 @@ export function createGalaxy(canvas, worlds, opts = {}) {
     const pts = []; ordered.forEach(o => pts.push(o.pos.clone().add(new THREE.Vector3(0, o.size*.2, 0))));
     const curve = new THREE.CatmullRomCurve3(pts, false, "catmullrom", .2);
     const geo = new THREE.TubeGeometry(curve, 240, .32, 6, false);
-    linkLine = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0xffc46b, transparent: true, opacity: .95, blending: THREE.AdditiveBlending, depthWrite: false }));
+    linkLine = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0x67e8f9, transparent: true, opacity: .95, blending: THREE.AdditiveBlending, depthWrite: false }));
     linkLine.geometry.setDrawRange(0, 0); linkGroup.add(linkLine); linkProg = 0;
-    ordered.forEach(o => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffd38a, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false })); s.scale.setScalar(o.size*5); s.position.copy(o.pos); linkGroup.add(s); });
+    ordered.forEach(o => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0x9ff4ff, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false })); s.scale.setScalar(o.size*5); s.position.copy(o.pos); linkGroup.add(s); });
   }
 
   /* ---------- camera rig ---------- */
@@ -350,6 +350,27 @@ export function createGalaxy(canvas, worlds, opts = {}) {
     cam.from.copy(camera.position); cam.lookFrom.copy(camLook); cam.to.copy(pos); cam.lookTo.copy(look); cam.t = 0; cam.dur = reduce ? .01 : dur; cam.arc = arc;
   }
 
+  /* ---------- user orbit: drag to turn, wheel to zoom ---------- */
+  const orb = { yaw: 0, pitch: 0, zoom: 1, vy: 0, vp: 0, down: false, moved: 0, lx: 0, ly: 0, last: -9 };
+  const qY = new THREE.Quaternion(), qP = new THREE.Quaternion(), rightV = new THREE.Vector3(), lookT = new THREE.Vector3();
+  const clampP = () => { orb.pitch = Math.max(-.55, Math.min(.42, orb.pitch)); };
+  function orbit(p, pivot, out, zoom) {
+    out.copy(p).sub(pivot); rightV.set(out.z, 0, -out.x); if (rightV.lengthSq() < 1e-6) rightV.set(1, 0, 0); rightV.normalize();
+    qP.setFromAxisAngle(rightV, orb.pitch); qY.setFromAxisAngle(new THREE.Vector3(0, 1, 0), orb.yaw);
+    out.applyQuaternion(qP).applyQuaternion(qY); if (zoom) out.multiplyScalar(orb.zoom); return out.add(pivot);
+  }
+  function resetOrbit() { orb.yaw = orb.pitch = orb.vy = orb.vp = 0; orb.zoom = 1; }
+  const el = renderer.domElement;
+  el.addEventListener("pointerdown", e => { if (e.button !== 0 || mode === "intro" || mode === "warp") return; orb.down = true; orb.moved = 0; orb.lx = e.clientX; orb.ly = e.clientY; orb.vy = orb.vp = 0; try { el.setPointerCapture(e.pointerId); } catch (_) {} });
+  el.addEventListener("pointermove", e => {
+    if (!orb.down) return; const dx = e.clientX - orb.lx, dy = e.clientY - orb.ly; orb.lx = e.clientX; orb.ly = e.clientY;
+    orb.moved += Math.abs(dx) + Math.abs(dy); if (orb.moved < 5) return;
+    el.classList.add("grabbing"); orb.vy = -dx * .005; orb.vp = -dy * .004; orb.yaw += orb.vy; orb.pitch += orb.vp; clampP(); orb.last = clock.elapsedTime;
+  });
+  const up_ = () => { orb.down = false; el.classList.remove("grabbing"); };
+  el.addEventListener("pointerup", up_); el.addEventListener("pointercancel", up_);
+  el.addEventListener("wheel", e => { if (mode === "intro" || mode === "warp") return; e.preventDefault(); orb.zoom = Math.max(.5, Math.min(1.6, orb.zoom * (1 + Math.sign(e.deltaY) * Math.min(.12, Math.abs(e.deltaY) * .0015)))); orb.last = clock.elapsedTime; }, { passive: false });
+
   /* ship state */
   const shipState = { at: -1, tele: null, idleA: 0 };
   function shipAnchor(i, a) {
@@ -369,11 +390,11 @@ export function createGalaxy(canvas, worlds, opts = {}) {
       setTimeout(() => onDone && onDone(), 4300);
     },
     skipIntro() { warpTarget = 0; warpPower = 0; camera.position.copy(OVERVIEW.pos); camLook.copy(OVERVIEW.look); cam.t = 1; cam.to.copy(OVERVIEW.pos); cam.lookTo.copy(OVERVIEW.look); mode = "overview"; if (shipState.at < 0) { shipState.at = 0; ship.position.copy(shipAnchor(0, 0)); } },
-    overview() { focus = -1; mode = "overview"; moveCam(OVERVIEW.pos, OVERVIEW.look, 2.2, 10); },
-    welcome() { focus = -1; mode = "intro"; warpTarget = 0; moveCam(new THREE.Vector3(0, 60, 900), new THREE.Vector3(0, 0, 0), reduce ? .01 : 2.4, 0); },
+    overview() { resetOrbit(); focus = -1; mode = "overview"; moveCam(OVERVIEW.pos, OVERVIEW.look, 2.2, 10); },
+    welcome() { resetOrbit(); focus = -1; mode = "intro"; warpTarget = 0; moveCam(new THREE.Vector3(0, 60, 900), new THREE.Vector3(0, 0, 0), reduce ? .01 : 2.4, 0); },
     focus(i, onArrive) {
       const from = shipState.at;
-      focus = i; mode = "focus";
+      resetOrbit(); focus = i; mode = "focus";
       const f = frameFor(i);
       const far = from < 0 || worldObjs[from].pos.distanceTo(worldObjs[i].pos) > 25;
       if (from < 0) { shipState.at = i; ship.position.copy(shipAnchor(i, 0)); moveCam(f.pos, f.look, 2.2, 14); setTimeout(() => onArrive && onArrive(), reduce ? 0 : 1400); return; }
@@ -396,6 +417,7 @@ export function createGalaxy(canvas, worlds, opts = {}) {
       return { x: (v.x + 1)/2 * innerWidth, y: (1 - v.y)/2 * innerHeight, visible: v.z < 1 && v.z > -1, dist: camera.position.distanceTo(o.pos) };
     },
     setMouse(x, y) { mouse.x = x; mouse.y = y; },
+    dragged() { return orb.moved > 6; },
     resize() {
       camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
       renderer.setSize(innerWidth, innerHeight, false); composer.setSize(innerWidth, innerHeight);
@@ -428,13 +450,19 @@ export function createGalaxy(canvas, worlds, opts = {}) {
       cam.t = Math.min(1, cam.t + dt / cam.dur); const k = ease(cam.t);
       camera.position.lerpVectors(cam.from, cam.to, k); camera.position.y += Math.sin(k * Math.PI) * cam.arc;
       camLook.lerpVectors(cam.lookFrom, cam.lookTo, k);
-    } else if (mode === "overview" && !reduce) {
-      orbitA += dt * .02;
-      tmpV.set(OVERVIEW.pos.x + Math.sin(orbitA)*30 + mouse.x*24, OVERVIEW.pos.y + mouse.y*-14, OVERVIEW.pos.z + Math.cos(orbitA)*12 - 12);
-      camera.position.lerp(tmpV, dt * .8);
-    } else if (mode === "focus" && !reduce && focus >= 0) {
-      const f = frameFor(focus); tmpV.copy(f.pos).add(new THREE.Vector3(mouse.x*2.2, -mouse.y*1.4, 0)); camera.position.lerp(tmpV, dt * 1.5);
+    } else if (mode === "overview") {
+      const live = T - orb.last < 1.2 || orb.down;
+      if (!reduce && !live) orbitA += dt * .02;
+      tmpV.set(OVERVIEW.pos.x + Math.sin(orbitA)*30 + (live ? 0 : mouse.x*24), OVERVIEW.pos.y + (live ? 0 : mouse.y*-14), OVERVIEW.pos.z + Math.cos(orbitA)*12 - 12);
+      orbit(tmpV, OVERVIEW.look, tmpV, true);
+      camera.position.lerp(tmpV, Math.min(1, dt * (live || reduce ? 6 : .8)));
+    } else if (mode === "focus" && focus >= 0) {
+      const live = T - orb.last < 1.2 || orb.down, f = frameFor(focus), pivot = worldObjs[focus].pos;
+      tmpV.copy(f.pos); if (!reduce && !live) tmpV.add(new THREE.Vector3(mouse.x*2.2, -mouse.y*1.4, 0));
+      orbit(tmpV, pivot, tmpV, true); camera.position.lerp(tmpV, Math.min(1, dt * (live || reduce ? 6 : 1.5)));
+      orbit(f.look, pivot, lookT, false); camLook.lerp(lookT, Math.min(1, dt * 6));
     }
+    if (!orb.down && (Math.abs(orb.vy) > 1e-4 || Math.abs(orb.vp) > 1e-4)) { orb.yaw += orb.vy; orb.pitch += orb.vp; clampP(); orb.vy *= .9; orb.vp *= .9; orb.last = T; }
     camera.lookAt(camLook);
 
     // worlds
