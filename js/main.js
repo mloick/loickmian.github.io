@@ -42,7 +42,7 @@ const X = {
     tour: "Start the guided tour", free: "Explore freely",
     phases: { basecamp: ["Basecamp", "2021 – 2026"], command: ["First commands", "2022 – 2025"], mission: ["Current mission", "2026 – today"], frontier: ["New frontiers", "Now → 2027"] },
     guide: { basecamp: "Where it all started: my studies, with student jobs alongside.", command: "My first projects as a project manager.", mission: "This is where I am today.", frontier: "And this is what I'm building next." },
-    guideIdle: "Click any world, or let me take you on the tour.",
+    guideIdle: "Click a world, drag to turn the galaxy, scroll to zoom. Or let me take you on the tour.",
     next: "Next stop", stop: "Stop", of: "of", end: "That's the tour. Shall we talk?",
     caseL: ["Problem", "What I did", "Result"], log: "The details", skillsHere: "Skills at work here", clear: "Clear",
     status: { done: "Completed", current: "Current role", live: "Live", building: "Ongoing", founder: "Founder", classified: "Classified" },
@@ -118,7 +118,7 @@ const X = {
     tour: "Lancer la visite guidée", free: "Explorer librement",
     phases: { basecamp: ["Camp de base", "2021 – 2026"], command: ["Premières missions", "2022 – 2025"], mission: ["Mission en cours", "2026 – auj."], frontier: ["Nouveaux horizons", "Auj. → 2027"] },
     guide: { basecamp: "Tout a commencé ici : mes études, avec des jobs étudiants en parallèle.", command: "Mes premiers projets en tant que chef de projet.", mission: "Voici où j'en suis aujourd'hui.", frontier: "Et voici ce que je construis pour la suite." },
-    guideIdle: "Cliquez sur un monde, ou laissez-moi vous faire la visite.",
+    guideIdle: "Cliquez sur un monde, faites glisser pour tourner la galaxie, molette pour zoomer. Ou laissez-moi vous faire la visite.",
     next: "Escale suivante", stop: "Escale", of: "sur", end: "Fin de la visite. On en parle ?",
     caseL: ["Le problème", "Ce que j'ai fait", "Le résultat"], log: "Le détail", skillsHere: "Compétences mobilisées", clear: "Effacer",
     status: { done: "Terminé", current: "Poste actuel", live: "En ligne", building: "En continu", founder: "Fondateur", classified: "Confidentiel" },
@@ -605,7 +605,7 @@ addEventListener("keydown", e => {
   if (!$("#panel").hidden && $("#sheet").hidden && current >= 0) { if (e.key === "ArrowRight") $("#nextBtn").click(); if (e.key === "ArrowLeft" && current > 0) go(current - 1); }
 });
 addEventListener("pointermove", e => galaxy && galaxy.setMouse(e.clientX / innerWidth * 2 - 1, e.clientY / innerHeight * 2 - 1));
-$("#gl").addEventListener("click", e => { if (!galaxy || $("#hud").hidden || !$("#sheet").hidden) return; const i = galaxy.pick(e.clientX, e.clientY); if (i >= 0) go(i); });
+$("#gl").addEventListener("click", e => { if (!galaxy || $("#hud").hidden || !$("#sheet").hidden || galaxy.dragged()) return; const i = galaxy.pick(e.clientX, e.clientY); if (i >= 0) go(i); });
 addEventListener("resize", () => galaxy && galaxy.resize());
 /* a faint star trail behind the cursor */
 if (!reduce && matchMedia("(hover:hover) and (pointer:fine)").matches) {

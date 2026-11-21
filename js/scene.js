@@ -350,6 +350,27 @@ export function createGalaxy(canvas, worlds, opts = {}) {
     cam.from.copy(camera.position); cam.lookFrom.copy(camLook); cam.to.copy(pos); cam.lookTo.copy(look); cam.t = 0; cam.dur = reduce ? .01 : dur; cam.arc = arc;
   }
 
+  /* ---------- user orbit: drag to turn, wheel to zoom ---------- */
+  const orb = { yaw: 0, pitch: 0, zoom: 1, vy: 0, vp: 0, down: false, moved: 0, lx: 0, ly: 0, last: -9 };
+  const qY = new THREE.Quaternion(), qP = new THREE.Quaternion(), rightV = new THREE.Vector3(), lookT = new THREE.Vector3();
+  const clampP = () => { orb.pitch = Math.max(-.55, Math.min(.42, orb.pitch)); };
+  function orbit(p, pivot, out, zoom) {
+    out.copy(p).sub(pivot); rightV.set(out.z, 0, -out.x); if (rightV.lengthSq() < 1e-6) rightV.set(1, 0, 0); rightV.normalize();
+    qP.setFromAxisAngle(rightV, orb.pitch); qY.setFromAxisAngle(new THREE.Vector3(0, 1, 0), orb.yaw);
+    out.applyQuaternion(qP).applyQuaternion(qY); if (zoom) out.multiplyScalar(orb.zoom); return out.add(pivot);
+  }
+  function resetOrbit() { orb.yaw = orb.pitch = orb.vy = orb.vp = 0; orb.zoom = 1; }
+  const el = renderer.domElement;
+  el.addEventListener("pointerdown", e => { if (e.button !== 0 || mode === "intro" || mode === "warp") return; orb.down = true; orb.moved = 0; orb.lx = e.clientX; orb.ly = e.clientY; orb.vy = orb.vp = 0; try { el.setPointerCapture(e.pointerId); } catch (_) {} });
+  el.addEventListener("pointermove", e => {
+    if (!orb.down) return; const dx = e.clientX - orb.lx, dy = e.clientY - orb.ly; orb.lx = e.clientX; orb.ly = e.clientY;
+    orb.moved += Math.abs(dx) + Math.abs(dy); if (orb.moved < 5) return;
+    el.classList.add("grabbing"); orb.vy = -dx * .005; orb.vp = -dy * .004; orb.yaw += orb.vy; orb.pitch += orb.vp; clampP(); orb.last = clock.elapsedTime;
+  });
+  const up_ = () => { orb.down = false; el.classList.remove("grabbing"); };
+  el.addEventListener("pointerup", up_); el.addEventListener("pointercancel", up_);
+  el.addEventListener("wheel", e => { if (mode === "intro" || mode === "warp") return; e.preventDefault(); orb.zoom = Math.max(.5, Math.min(1.6, orb.zoom * (1 + Math.sign(e.deltaY) * Math.min(.12, Math.abs(e.deltaY) * .0015)))); orb.last = clock.elapsedTime; }, { passive: false });
+
   /* ship state */
   const shipState = { at: -1, tele: null, idleA: 0 };
   function shipAnchor(i, a) {
@@ -369,11 +390,11 @@ export function createGalaxy(canvas, worlds, opts = {}) {
       setTimeout(() => onDone && onDone(), 4300);
     },
     skipIntro() { warpTarget = 0; warpPower = 0; camera.position.copy(OVERVIEW.pos); camLook.copy(OVERVIEW.look); cam.t = 1; cam.to.copy(OVERVIEW.pos); cam.lookTo.copy(OVERVIEW.look); mode = "overview"; if (shipState.at < 0) { shipState.at = 0; ship.position.copy(shipAnchor(0, 0)); } },
-    overview() { focus = -1; mode = "overview"; moveCam(OVERVIEW.pos, OVERVIEW.look, 2.2, 10); },
-    welcome() { focus = -1; mode = "intro"; warpTarget = 0; moveCam(new THREE.Vector3(0, 60, 900), new THREE.Vector3(0, 0, 0), reduce ? .01 : 2.4, 0); },
+    overview() { resetOrbit(); focus = -1; mode = "overview"; moveCam(OVERVIEW.pos, OVERVIEW.look, 2.2, 10); },
+    welcome() { resetOrbit(); focus = -1; mode = "intro"; warpTarget = 0; moveCam(new THREE.Vector3(0, 60, 900), new THREE.Vector3(0, 0, 0), reduce ? .01 : 2.4, 0); },
     focus(i, onArrive) {
       const from = shipState.at;
-      focus = i; mode = "focus";
+      resetOrbit(); focus = i; mode = "focus";
       const f = frameFor(i);
       const far = from < 0 || worldObjs[from].pos.distanceTo(worldObjs[i].pos) > 25;
       if (from < 0) { shipState.at = i; ship.position.copy(shipAnchor(i, 0)); moveCam(f.pos, f.look, 2.2, 14); setTimeout(() => onArrive && onArrive(), reduce ? 0 : 1400); return; }
@@ -396,6 +417,7 @@ export function createGalaxy(canvas, worlds, opts = {}) {
       return { x: (v.x + 1)/2 * innerWidth, y: (1 - v.y)/2 * innerHeight, visible: v.z < 1 && v.z > -1, dist: camera.position.distanceTo(o.pos) };
     },
     setMouse(x, y) { mouse.x = x; mouse.y = y; },
+    dragged() { return orb.moved > 6; },
     resize() {
       camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
       renderer.setSize(innerWidth, innerHeight, false); composer.setSize(innerWidth, innerHeight);
@@ -428,13 +450,19 @@ export function createGalaxy(canvas, worlds, opts = {}) {
       cam.t = Math.min(1, cam.t + dt / cam.dur); const k = ease(cam.t);
       camera.position.lerpVectors(cam.from, cam.to, k); camera.position.y += Math.sin(k * Math.PI) * cam.arc;
       camLook.lerpVectors(cam.lookFrom, cam.lookTo, k);
-    } else if (mode === "overview" && !reduce) {
-      orbitA += dt * .02;
-      tmpV.set(OVERVIEW.pos.x + Math.sin(orbitA)*30 + mouse.x*24, OVERVIEW.pos.y + mouse.y*-14, OVERVIEW.pos.z + Math.cos(orbitA)*12 - 12);
-      camera.position.lerp(tmpV, dt * .8);
-    } else if (mode === "focus" && !reduce && focus >= 0) {
-      const f = frameFor(focus); tmpV.copy(f.pos).add(new THREE.Vector3(mouse.x*2.2, -mouse.y*1.4, 0)); camera.position.lerp(tmpV, dt * 1.5);
+    } else if (mode === "overview") {
+      const live = T - orb.last < 1.2 || orb.down;
+      if (!reduce && !live) orbitA += dt * .02;
+      tmpV.set(OVERVIEW.pos.x + Math.sin(orbitA)*30 + (live ? 0 : mouse.x*24), OVERVIEW.pos.y + (live ? 0 : mouse.y*-14), OVERVIEW.pos.z + Math.cos(orbitA)*12 - 12);
+      orbit(tmpV, OVERVIEW.look, tmpV, true);
+      camera.position.lerp(tmpV, Math.min(1, dt * (live || reduce ? 6 : .8)));
+    } else if (mode === "focus" && focus >= 0) {
+      const live = T - orb.last < 1.2 || orb.down, f = frameFor(focus), pivot = worldObjs[focus].pos;
+      tmpV.copy(f.pos); if (!reduce && !live) tmpV.add(new THREE.Vector3(mouse.x*2.2, -mouse.y*1.4, 0));
+      orbit(tmpV, pivot, tmpV, true); camera.position.lerp(tmpV, Math.min(1, dt * (live || reduce ? 6 : 1.5)));
+      orbit(f.look, pivot, lookT, false); camLook.lerp(lookT, Math.min(1, dt * 6));
     }
+    if (!orb.down && (Math.abs(orb.vy) > 1e-4 || Math.abs(orb.vp) > 1e-4)) { orb.yaw += orb.vy; orb.pitch += orb.vp; clampP(); orb.vy *= .9; orb.vp *= .9; orb.last = T; }
     camera.lookAt(camLook);
 
     // worlds
